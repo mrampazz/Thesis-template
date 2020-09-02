@@ -36,6 +36,8 @@
 \usepackage[T1]{fontenc}                % codifica dei font:
                                         % NOTA BENE! richiede una distribuzione *completa* di LaTeX
 
+\usepackage{lmodern}
+
 \usepackage[utf8]{inputenc}             % codifica di input; anche [latin1] va bene
                                         % NOTA BENE! va accordata con le preferenze dell'editor
 
@@ -110,9 +112,8 @@
 \frontmatter
 \input{inizio-fine/frontespizio}
 \input{inizio-fine/colophon}
-\input{inizio-fine/dedica}
+%\input{inizio-fine/dedica}
 \input{inizio-fine/sommario}
-\input{inizio-fine/ringraziamenti}
 \input{inizio-fine/indici}
 \cleardoublepage
 
@@ -136,4 +137,5 @@
 \backmatter
 \printglossaries
 \input{inizio-fine/bibliografia}
+\input{inizio-fine/ringraziamenti}
 \end{document}

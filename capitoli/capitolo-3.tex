@@ -3,44 +3,59 @@
 % !TEX root = ../tesi.tex
 
 %**************************************************************
-\chapter{Descrizione dello stage}
-\label{cap:descrizione-stage}
+\chapter{Progettazione}
+\label{cap:progettazione}
 %**************************************************************
 
 %\intro{Breve introduzione al capitolo}\\
 % struttura maybe?
-\section{Prima settimana}
-\subsection{Studio tecnologie e strumenti}
-\subsection{Riunioni per la definizione del Product Backlog}
+\section{Suddivisione dei componenti grafici}
+In questa sezione verranno descritti i componenti grafici e i relativi Container Redux. I componenti grafici si occupano solamente di renderizzare i dati. I container Redux si occupano di mappare lo State di Redux ai props di ogni componente in modo che essi possano accedere solo alla porzione di stato di cui hanno bisogno.
+\subsection{View}
+\subsubsection{TableView}
+Questo componente è stato realizzato per definire la struttura generale del componente e per suddividere in modo responsivo lo spazio in quattro quadranti. Come si può vedere dalla seguente immagine ho realizzato il componente utilizzando il layout CSS Grid. Questo mi ha permesso di gestire, in modo responsivo, la struttura del componente.
 
-\section{Seconda settimana}
-\subsection{Studio tecnologie e strumenti}
-\subsection{Riunioni per la definizione del Product Backlog}
+\subsubsection{TableHeaderView}
+Questo componente rappresenta le dimensioni superiori della tabella pivot.
+Dire che la struttura della tabella è stata realizzata con flex, table, etc.
 
-\section{Terza settimana}
-\subsection{Studio tecnologie e strumenti}
-\subsection{Riunioni per la definizione del Product Backlog}
+\subsubsection{TableSidebarView}
+Questo componente rappresenta le dimensioni laterali della tabella pivot.
+Dire che la struttura della tabella è stata realizzata con flex, table, etc.
 
-\section{Quarta settimana}
-\subsection{Studio tecnologie e strumenti}
-\subsection{Riunioni per la definizione del Product Backlog}
+\subsubsection{TableBodyView}
+Questo componente rappresenta i dati della tabella pivot
+Dire che la struttura della tabella è stata realizzata con flex, table, etc.
 
-\section{Quinta settimana}
-\subsection{Studio tecnologie e strumenti}
-\subsection{Riunioni per la definizione del Product Backlog}
+\subsection{Container Redux}
+\subsubsection{TableController}
+\subsubsection{TableHeaderController}
+\subsubsection{TableSidebarController}
+\subsubsection{TableBodyController}
 
-\section{Sesta settimana}
-\subsection{Studio tecnologie e strumenti}
-\subsection{Riunioni per la definizione del Product Backlog}
+\section{Struttura dati dell'applicazione}
 
-\section{Settima settimana}
-\subsection{Studio tecnologie e strumenti}
-\subsection{Riunioni per la definizione del Product Backlog}
+\subsection{Descrizione}
+Per definire lo stato dell'applicazione sono state create delle 'data class' per gestire in modo ordinato lo stato del prodotto.
+\subsubsection{TableState}
+Lo stato del prodotto è definito da un singolo oggetto: 'data class TableState'.
+\subsubsection{UICells}
+\subsubsection{TableHeader}
+\subsubsection{TableHeaderAction}
+\subsubsection{BodyCells}
 
-\section{Ottava settimana}
-\subsection{Studio tecnologie e strumenti}
-\subsection{Riunioni per la definizione del Product Backlog}
+\section{Realizzazione del JSON parser}
+Lo stato dell'applicazione viene popolato in seguito ad una richiesta ad API. Queste API ritornano risultati in formato JSON. Lavorando con Kotlin non è possibile avere la stessa libertà di accesso ad un JSON come in Javascript, quindi sono stati creati delle classi per eseguire la lettura del JSON e la sua traduzione in oggetti 'data class'. GRUPPO4 ha fornito due API che dovevano essere compatibili con questo componente quindi per ognuna di esse ho realizzato un parser per trasformare un json in oggetti 'data class' e un adapter per trasformare gli oggetti data class nella data structure utilizzato nello stato dell'applicazione.
 
+\subsection{Adapter: creavista}
+Descrivi l'API\\
+Descrivi il parser\\
+Descrivi le funzioni\\
+
+\subsection{Adapter: nuova interfaccia}
+Descrivi l'API\\
+Descrivi il parser\\
+Descrivi le funzioni\\
 
 %**************************************************************
 %\section{Introduzione al progetto}
@@ -54,7 +69,7 @@
 %\begin{risk}{Performance del simulatore hardware}
 %    \riskdescription{le performance del simulatore hardware e la comunicazione con questo potrebbero risultare lenti o non abbastanza buoni da causare il fallimento dei test}
 %    \risksolution{coinvolgimento del responsabile a capo del progetto relativo il simulatore hardware}
-    \label{risk:hardware-simulator} 
+ %   \label{risk:hardware-simulator} 
 %\end{risk}
 
 %**************************************************************

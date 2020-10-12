@@ -86,7 +86,7 @@
 \usepackage{tabularx}                   % tabelle di larghezza prefissata                                    
 \usepackage{longtable}                  % tabelle su più pagine                                        
 \usepackage{ltxtable}                   % tabelle su più pagine e adattabili in larghezza
-
+\renewcommand\arraystretch{1.5}
 \usepackage[toc, acronym]{glossaries}   % glossario
                                         % per includerlo nel documento bisogna:
                                         % 1. compilare una prima volta tesi.tex;
@@ -124,9 +124,9 @@
 \input{capitoli/capitolo-1}             % Introduzione
 \input{capitoli/capitolo-2}             % Processi
 \input{capitoli/capitolo-3}             % Kick-Off
+\input{capitoli/capitolo-desc-stage}
 \input{capitoli/capitolo-4}             % Concept Preview
 \input{capitoli/capitolo-5}             % Product Prototype
-\input{capitoli/capitolo-6}             % Product Design Freeze e SOP
 \input{capitoli/capitolo-7}             % Conclusioni
 \appendix                               
 \input{capitoli/capitolo-A}             % Appendice A

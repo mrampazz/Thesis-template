@@ -82,18 +82,25 @@ Infatti abbiamo concentrato le funzionalità principali da implementare nei prim
 \section{Programmazione funzionale}
 
 \section{Dataflow dell'applicazione}
-Un concetto che è stato discusso molto dal team di sviluppo riguardava il dataflow dell'applicazione. Cioè il modo in cui i dati vengono modificati e utilizzati all'interno del flow dell'applicazione. La scelta sul tipo di dataflow da utilizzare era tra React e Redux.
+Un concetto che è stato discusso molto dal team di sviluppo riguardava il dataflow dell'applicazione. Cioè il modo in cui i dati vengono modificati e utilizzati all'interno del flow dell'applicazione. Durante la prima settimana del tirocinio è stato discusso come verrà gestito lo stato dell'applicazione e in particolare della sua scalabilità. Dato che l'utilizzo di React è un requisito obbligatorio per questo stage abbiamo valutato l'utilizzo del dataflow di React.
 
 \subsection{Dataflow React}
-Nella libreria React il dataflow può essere definito come unidirezionale perchè ogni componente può avere uno stato locale che è accessibile solo dal componente stesso. Per passare dati tra componenti si possono usare le props. Il problema è che le props possono essere passate solo da componente a componente. Questo rende l'architettura dell'applicazione molto complicata e difficile da manutenere perchè in questo modo lo stato di tutta l'applicazione sarà gestito da un componente.
-Questo, naturalmente, è un problema perchè tutta la responsabilità dell'applicazione dipende da un componente grafico.
+Nella libreria React il dataflow è definito come unidirezionale perchè ogni componente può avere uno stato locale accessibile solo dal componente stesso e può passare informazioni ai suoi componenti figli mediante le \textit{props}. \\
+Seguendo questo dataflow però bisognerebbe dare la responsabilità ad un componente grafico di contenere lo stato dell'applicazione nel suo stato locale per poi passare le informazioni mediante le props. Questo rende l'architettura dell'applicazione molto limitata, difficile da manutenere e poco scalabile dato che lo stato di tutta l'applicazione viene gestito da un componente grafico. Come infatti si può vedere nel seguente grafico che rappresenta il dataflow di react abbiamo che il primo componente passa i dati contenuti nel suo state locale ai suoi figli mediante le props che a loro volta passeranno le stesse props ai loro figli.
 
-\subsection{Dataflow Redux}
-Per ovviare a questi problemi abbiamo utilizzato il dataflow offerto da una architettura Redux. Pur essendo un dataflow unidirezionale rende la gestione dello stato dell'applicazione più prevedibile e più manutenibile. Redux si basa su tre principi:
+\begin{minipage}{\linewidth}
+	\makebox[\linewidth] {
+		\includegraphics[scale=0.75]{./immagini/dataflow_react.png}
+	}
+\end{minipage}
+
+
+\subsection{Redux}
+Per garantire garantire scalabilità e facilità di gestione dello stato dell'applicazione abbiamo utilizzato la libreria Redux. Pur essendo un dataflow unidirezionale rende la gestione dello stato dell'applicazione più prevedibile e più manutenibile. Redux si basa su tre principi:
 \begin{itemize}
 	\item lo stato è l'unica fonte di verità;
 	\item lo stato non è modificabile direttamente;
-	\item le modifiche avvengono medianti funzioni pure.
+	\item le modifiche avvengono medianti funzioni pure che creano un nuovo stato per evitare side effects.
 \end{itemize}
 \noindent
 Gli elementi dell'architettura di Redux sono i seguenti:
@@ -105,13 +112,19 @@ Gli elementi dell'architettura di Redux sono i seguenti:
 \noindent
 
 \subsection{Soluzione}
-La soluzione che è stata trovata dal team di sviluppo è stata quella di usare in concomitanza React e Redux. React è stato usato per gestire solo gli aggiornamenti visivi dell'applicazione, mentre Redux per gestire lo stato dell'applicazione.
-In questo modo il dataflow del prodotto è il seguente:
+La soluzione che è stata trovata dal team di sviluppo è stata quella di usare in concomitanza React e Redux. React è stato usato per gestire solo gli aggiornamenti visivi dell'applicazione, mentre Redux per gestire lo stato dell'applicazione. Il dataflow del prodotto è quindi il seguente:
 \begin{enumerate}
 	\item se lo stato deve cambiare verrà mandata allo Store una richiesta di cambiamento con un Action;
 	\item lo Store si occuperà di chiamare un Reducer in modo da modificare lo stato;
 	\item lo stato verrà aggiornato e i cambiamenti saranno visibili a tutti i componenti React che sono registrati allo Store.
 \end{enumerate}
-\noindent
 
+\noindent
+Nella seguente figura è rappresentato il dataflow del componente. \\
 In questo modo abbiamo ottenuto un'architettura chiara, manutenibile e abbiamo mantenuto la divisione tra lo stato dell'applicazione e la sua renderizzazione.
+
+\begin{minipage}{\linewidth}
+	\makebox[\linewidth] {
+		\includegraphics[scale=0.75]{./immagini/dataflow_react_redux.png}
+	}
+\end{minipage}

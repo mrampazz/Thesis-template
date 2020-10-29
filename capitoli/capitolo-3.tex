@@ -39,23 +39,24 @@ Dire che la struttura della tabella è stata realizzata con flex, table, etc.
 Per definire lo stato dell'applicazione sono state create delle 'data class' per gestire in modo ordinato lo stato del prodotto.
 \subsubsection{TableState}
 Lo stato del prodotto è definito da un singolo oggetto: 'data class TableState'.
-\subsubsection{UICells}
-\subsubsection{TableHeader}
-\subsubsection{TableHeaderAction}
+\subsubsection{Cells}
+\subsubsection{CellAction}
 \subsubsection{BodyCells}
 
+
+
 \section{Realizzazione del JSON parser}
-Lo stato dell'applicazione viene popolato in seguito ad una richiesta ad API. Queste API ritornano risultati in formato JSON. Lavorando con Kotlin non è possibile avere la stessa libertà di accesso ad un JSON come in Javascript, quindi sono stati creati delle classi per eseguire la lettura del JSON e la sua traduzione in oggetti 'data class'. GRUPPO4 ha fornito due API che dovevano essere compatibili con questo componente quindi per ognuna di esse ho realizzato un parser per trasformare un json in oggetti 'data class' e un adapter per trasformare gli oggetti data class nella data structure utilizzato nello stato dell'applicazione.
+Lo stato dell'applicazione viene popolato in seguito ad una richiesta ad API. Queste API ritornano risultati in formato JSON. Lavorando con Kotlin non è possibile avere la stessa libertà di accesso ad un JSON come in Javascript, quindi sono stati creati delle classi per eseguire la lettura del JSON e la sua traduzione in oggetti 'data class'. GRUPPO4 ha fornito una API che deve essere compatibili con questo componente quindi per ho realizzato un parser per trasformare un json in oggetti 'data class' e un adapter per trasformare gli oggetti data class nella data structure utilizzata nello stato dell'applicazione.
 
 \subsection{Adapter: creavista}
 Descrivi l'API\\
 Descrivi il parser\\
+La realizzazione del parse e del successivo adapter è stato uno delle difficoltà più grandi che ho superato. La struttura del JSON faceva cagare. Per realizzare un datastructure decente ho preso i dati dal json e li ho trasformati in una rappresentazione ad albero. Nel seguente modo:
+ESEMPIO FOTO OR WHATEVER.
+Dopodichè ho trasformato la rappresentazione ad albero degli oggetti in List che costituite nel seguente modo: ESEMPIO. IN particolare per quanto riguarda la dimensione delle righe ho suddiviso questa list in tante liste quante sono le dimensioni delle righe. Mentre per le coonne ho suddiviso la List in tante liste quante sono le dimensioni delle colonne.
+
 Descrivi le funzioni\\
 
-\subsection{Adapter: nuova interfaccia}
-Descrivi l'API\\
-Descrivi il parser\\
-Descrivi le funzioni\\
 
 %**************************************************************
 %\section{Introduzione al progetto}

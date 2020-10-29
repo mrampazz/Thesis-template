@@ -21,7 +21,7 @@
 	US1.3 & Come Cliente voglio poter visualizzare solo i dati senza le dimensioni relative ad essi & M & SI \\ \hline
 	US2.1 & Come Cliente voglio poter utilizzare l'API precedente di Creavista & A & SI \\ \hline
 	US2.2 & Come Cliente voglio poter utilizzare la nuova API di Creavista & A & SI \\ \hline
-	US2.3 & Come Cliente voglio avere un caricamento veloce & A & SI \\ \hline
+	US2.3 & Come Cliente voglio avere un caricamento veloce & M & SI \\ \hline
 	US3.1 & Come cliente voglio poter salvare la mia configurazione & M & SI \\ \hline
 	US3.2 & Come cliente voglio poter esportare i miei dati & B & SI \\ \hline
 	US3.3 & Come cliente voglio poter decidere quali filtri voglio utilizzare per ogni dimensione & A & SI \\ \hline
@@ -53,13 +53,17 @@
 	R1.1.3 & Sviluppo di TableSidebarController & O & SI & -     \\ \hline
 	R1.1.4 & Sviluppo di TableBodyController    & O & SI & -     \\ \hline
 	
-	R2.0   & Sviluppo dei JSON parser          & O & SI & US2.1 \\ \hline
+	R2.0   & Sviluppo dei JSON parser          & O & NO & US2.1 \\ \hline
+	
 	R2.1   & Sviluppo parser per Creavista     & O & SI & -     \\ \hline
 	R2.1.1 & Sviluppo data structure in Kotlin & O & SI & -     \\ \hline
 	R2.1.2 & Sviluppo adapter                  & O & SI & -     \\ \hline
 	
-	R2.2   & Sviluppo parser per API nuova     & O & SI & US2.2 \\ \hline
-	R2.2.1 & Sviluppo data structure in Kotlin & O & SI & -     \\ \hline
-	R2.2.2 & Sviluppo adapter                  & O & SI & -     \\ \hline
+	R2.2   & Sviluppo parser per API nuova     & O & NO & US2.2 \\ \hline
+	R2.2.1 & Sviluppo data structure in Kotlin & O & NO & -     \\ \hline
+	R2.2.2 & Sviluppo adapter                  & O & NO & -     \\ \hline
+	
+	R3.0 & Sviluppo di un sistema di caricamento automatico                   & O & NO & US2.3 \\ \hline
+	R3.1 & Sviluppo di InfiniteScroller per gestire il caricamento automatico & O & SI & - \\ \hline
 	\hline
 \end{longtable}

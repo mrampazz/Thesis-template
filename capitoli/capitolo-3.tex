@@ -9,8 +9,79 @@
 
 %\intro{Breve introduzione al capitolo}\\
 % struttura maybe?
+
+\section{Introduzione}
+In questo capitolo verrà discusso il modo in cui sono state progettate le singole parti dell'applicazioni e il ragionamento alla base di tale progettazione. In particolare verranno descritte le seguenti strutture:
+\begin{itemize}
+	\item stato dell'applicazione;
+	\item componenti grafici;
+	\item parser json;
+	\item adapter dello stato.
+\end{itemize}
+
+\section{Stato dell'applicazione}
+\subsection{Struttura dati}
+Per rappresentare la struttura dati dello stato della tabella pivot ho utilizzato le 'data class' di kotlin. Degli oggetti, molto simili ad oggetti JavaScript che hanno come unico scopo quello di contenere informazioni. La struttura dati dell'applicazione è descritta mediante 'data class TableState' descritta nel seguente modo:
+\begin{lstlisting}[caption={TableState}, label={lst:example1}, language=Kotlin]
+data class TableState(
+  val cols: ArrayList<ArrayList<DimensionsNode>>,
+  val rows: ArrayList<ArrayList<DimensionsNode>>,
+  val cells: ArrayList<ArrayList<BodyCells>>,
+  val rowAction: ArrayList<ArrayList<HeaderAction>>,
+  val colAction: ArrayList<ArrayList<HeaderAction>>
+)
+\end{lstlisting}
+\noindent
+\\
+Le altre dataclass utilizzate dallo stato dell'applicazione sono: DimensionsNode, NodeActionType, HeaderAction e BodyCells.
+\begin{lstlisting}[caption={DimensionsNode}, label={lst:example1}, language=Kotlin]
+data class DimensionsNode(
+  var id: String,
+  var label: String,
+  var level: Int? = null,
+  var childDepth: Int? = null,
+  var path: List<String>? = null,
+  var actionType: NodeActionType = NodeActionType.NULL,
+  var isChild: Boolean = false
+)
+\end{lstlisting}
+
+\begin{lstlisting}[caption={BodyCells}, label={lst:example1}, language=Kotlin]
+data class HeaderAction(
+  val actionType: NodeActionType,
+  val dim: Int,
+  val depth: Int,
+)
+
+enum class NodeActionType(val type: String) {
+  EXPAND("E"),
+  COLLAPSE("C"),
+  NULL("")
+}
+\end{lstlisting}
+
+\begin{lstlisting}[caption={BodyCells}, label={lst:example1}, language=Kotlin]
+data class BodyCells(
+  val value: Int,
+  val cPath: Array<String>,
+  val rPath: Array<String>
+)
+\end{lstlisting}
+
+\subsection{Stato Redux}
+
+\section{Componenti grafici}
+\subsection{View}
+\subsection{Container}
+
+\section{Parser JSON}
+\subsection{Struttura dati @Serializable}
+
+\section{Adapter}
+\subsection{Utilizzo del paradigma della programmazione funzionale}
+\subsubsection{Funzioni utilizzate}
+
 \section{Suddivisione dei componenti grafici}
-In questa sezione verranno descritti i componenti grafici e i relativi Container Redux. I componenti grafici si occupano solamente di renderizzare i dati. I container Redux si occupano di mappare lo State di Redux ai props di ogni componente in modo che essi possano accedere solo alla porzione di stato di cui hanno bisogno.
 \subsection{View}
 \subsubsection{TableView}
 Questo componente è stato realizzato per definire la struttura generale del componente e per suddividere in modo responsivo lo spazio in quattro quadranti. Come si può vedere dalla seguente immagine ho realizzato il componente utilizzando il layout CSS Grid. Questo mi ha permesso di gestire, in modo responsivo, la struttura del componente.
@@ -27,14 +98,25 @@ Dire che la struttura della tabella è stata realizzata con flex, table, etc.
 Questo componente rappresenta i dati della tabella pivot
 Dire che la struttura della tabella è stata realizzata con flex, table, etc.
 
+\subsubsection{TableLabel}
+Questo componente rappresenta i dati della tabella pivot
+Dire che la struttura della tabella è stata realizzata con flex, table, etc.
+
+\subsubsection{TableActionUI}
+Questo componente rappresenta i dati della tabella pivot
+Dire che la struttura della tabella è stata realizzata con flex, table, etc.
+
+
 \subsection{Container Redux}
 \subsubsection{TableController}
 \subsubsection{TableHeaderController}
 \subsubsection{TableSidebarController}
 \subsubsection{TableBodyController}
+\subsubsection{TableActionUIController}
+\subsubsection{TableLabelController}
+
 
 \section{Struttura dati dell'applicazione}
-
 \subsection{Descrizione}
 Per definire lo stato dell'applicazione sono state create delle 'data class' per gestire in modo ordinato lo stato del prodotto.
 \subsubsection{TableState}
@@ -42,7 +124,6 @@ Lo stato del prodotto è definito da un singolo oggetto: 'data class TableState'
 \subsubsection{Cells}
 \subsubsection{CellAction}
 \subsubsection{BodyCells}
-
 
 
 \section{Realizzazione del JSON parser}

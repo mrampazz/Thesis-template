@@ -8,21 +8,47 @@
 %**************************************************************
 
 %\intro{Breve introduzione al capitolo}\\
-% struttura maybe?
+% struttura maybe?\\
 
-\section{Introduzione}
-In questo capitolo verrà discusso il modo in cui sono state progettate le singole parti dell'applicazione e il ragionamento alla base di tale progettazione. In particolare verranno descritte le seguenti strutture:
+\section{Dataflow dell'applicazione}
+Un aspetto che è stato molto discusso dal team di sviluppo riguarda il \emph{dataflow} dell'applicazione. Durante la prima settimana del tirocinio, oltre allo studio delle tecnologie, si è pensato a come verrà gestito lo stato dell'applicazione e in particolare delle possibili soluzioni per garantire la scalabilità del componente. Per gestire lo stato dell'applicazione sono state individuate due possibili soluzioni: React e Redux.
+
+\subsection{React}
+React è una libreria per realizzare interfacce utente che utilizza un dataflow unidirezionale. Questo perchè ogni componente può avere uno stato locale accessibile solo da se stesso e può passare informazioni ai suoi componenti figli mediante le \emph{props}. \\
+Questo dataflow è molto semplice però presenta alcune limitazioni per quanto riguarda la scalabilità. Per avere uno stato unico di tutta l'applicazione bisognerebbe dare la responsabilità ad un componente grafico di gestirlo e passarlo mediante le sue \emph{props}. L'architettura che deriva da questo dataflow, nel caso di applicazioni complesse con molti componenti, è limitata, difficile da manutenere e poco scalabile. \\
+Tuttavia questo semplice dataflow ha il vantaggio che per famiglie di componenti piccole i cambiamenti di stato locale e i passaggi di informazioni mediante le \emph{props} sono molto veloci e semplici.
+
+\subsection{Redux}
+Per garantire scalabilità e facilità nella gestione dello stato dell'applicazione abbiamo discusso riguardo l'utilizzo di Redux. Come React essa offre un dataflow unidirezionale tuttavia lo stato non è più contenuto all'interno di una gerarchia di componenti grafici. Esso viene gestito in una struttura di Redux chiamata \emph{store}. Questa struttura esterna ai componenti grafici rende la gestione dello stato dell'applicazione più prevedibile e manutenibile. Redux si basa su tre principi:
 \begin{itemize}
-	\item stato dell'applicazione;
-	\item componenti grafici;
-	\item parser json;
-	\item adapter dello stato.
+	\item lo stato è l'unica fonte di verità;
+	\item lo stato non è modificabile direttamente;
+	\item le modifiche avvengono medianti funzioni pure (glossario) che creano un nuovo stato per evitare side effects.
 \end{itemize}
+\noindent
+Gli elementi dell'architettura di Redux sono i seguenti:
+\begin{itemize}
+	\item \textbf{Actions}: oggetti che rappresentano un azione che innesca un update dello stato;
+	\item \textbf{Reducers}: \emph{funzioni pure} che hanno come parametro un Actions e si occupano di modificare lo stato;
+	\item \textbf{Store}: lo Store è un'interfaccia che contiene lo stato dell'applicazione e fornisce funzioni per leggere, modificare e registrare listeners allo stato.
+\end{itemize}
+\noindent
 
-\section{Stato dell'applicazione}
-\subsection{Struttura dati}
-Per rappresentare la struttura dati dello stato della tabella pivot ho utilizzato le \verb|data class| di kotlin. Degli oggetti che hanno come unico scopo quello di contenere informazioni. Per prima cosa ho realizzato un nuovo package di nome \verb|Entities| all'interno dell'applicazione, al suo interno ho definito le \verb|data class|, che chiamerò con il nome di entità. \\
-L'idea alla base della struttura dello stato dell'applicazione era quella di avere una struttura dati semplice da iterare in modo da avere funzioni di renderizzazione concise e facili da manutenere. Le entità che ho realizzato sono le seguenti:
+\subsection{Soluzione}
+La soluzione adottata è stata quella di usare sia React che Redux. React è stato usato per gestire solo gli aggiornamenti visivi dell'applicazione, mentre Redux per gestire lo stato. Il dataflow del prodotto è quindi il seguente:
+\begin{enumerate}
+	\item se l'utente esegue una azione che implica un cambiamento dello stato verrà mandata allo Store una Action;
+	\item lo Store si occuperà di chiamare un Reducer in modo da ricevere lo stato successivo;
+	\item lo stato verrà aggiornato e i cambiamenti saranno visibili a tutti i componenti React che sono registrati allo Store.
+\end{enumerate}
+Utilizzando questo dataflow lo stato dell'applicazione non dipende da un componente grafico perchè è esterno alla gerarchia dei componenti grafici. Quindi ogni componente React che ha bisogno di una frazione dei dati dello stato può semplicemente registrarsi allo Store per ricevere i dati. \\
+Dato che i cambiamenti effettuati dalle Actions possono essere solo asincroni ho utilizzato un interfaccia che fornisce le stesse funzionalità di un Actions ma ne espande l'utilità permettendo operazioni asincrone.
+
+
+\section{Model}
+\subsection{Struttura}
+Per rappresentare la struttura dati dello stato della tabella pivot ho utilizzato le \verb|data class| di kotlin. Degli oggetti che hanno come unico scopo quello di contenere informazioni. Per prima cosa ho realizzato un nuovo package di nome \verb|Entities|. Al suo interno ho definito le \verb|data class| che costituiscono lo stato dell'applicazione. \\
+L'idea alla base della struttura dello stato era quella di avere una struttura dati semplice da iterare in modo da avere funzioni di renderizzazione concise e facili da manutenere. Le entità che ho realizzato sono le seguenti:
 \begin{itemize}
 	\item \verb|TableState|;
 	\item \verb|DimensionsNode|;
@@ -44,16 +70,16 @@ data class TableState(
 \end{lstlisting}
 
 \paragraph{Descrizione campi dati} \mbox{} \\
-I primi due campi dati da descrivere sono \verb|cols| e \verb|rows|. Sono due matrici di \verb|NodeDimensions| che rappresentano rispettivamente le celle d'intestazione della tabella pivot delle colonne e delle righe.\\ 
-%insert image
-Il campo dato \verb|cells| è una matrice di \verb|BodyCells| che rappresenta le celle che contengono gli effettivi dati della tabella pivot.\\
-%insert image
-Infine si hanno \verb|rowAction| e \verb|colAction|. Sono due matrici di \verb|HeaderAction| e rappresentano i pulsanti all'interno del componente TableActionUI.
-%insert image
-
-\noindent
+\begin{itemize}
+	\item \verb|cols|: celle dell'intestazione della tabella delle colonne;
+	\item \verb|rows|: celle dell'intestazione della tabella delle righe;
+	\item \verb|cells|: celle contententi i dati della tabella;
+	\item \verb|rowAction|: pulsanti all'interno del componente TableActionUI;
+	\item \verb|colAction|: pulsanti all'interno del componente TableActionUI.
+\end{itemize}
 
 \subsubsection{DimensionsNode}
+L'entità \verb|DimensionsNode| è la \verb|data class| che contiene le informazioni riguardanti una cella d'intestazione della tabella pivot.
 \begin{lstlisting}[caption={DimensionsNode}, label={lst:dimensionsnode}, language=Kotlin]
 data class DimensionsNode(
   var id: String,
@@ -66,8 +92,18 @@ data class DimensionsNode(
 )
 \end{lstlisting}
 \paragraph{Descrizione campi dati} \mbox{} \\
+\begin{itemize}
+	\item \verb|id|: codice della cella;
+	\item \verb|label|: testo da renderizzare;
+	\item \verb|level|: indica a che dimensione dell'intestazione appartiene la cella;
+	\item \verb|childDepth|: indica la profondità della cella in una gerarchia ad albero;
+	\item \verb|path|: codice identificativo della cella costituito da una lista di \verb|id| che rappresenta la gerarchia di una cella;
+	\item \verb|actionType|: indica il tipo dell'azione che bisogna eseguire;
+	\item \verb|isChild|: indica se la cella è un figlio di un'altra cella.
+\end{itemize}
 
 \subsubsection{HeaderAction}
+L'entità \verb|HeaderAction| è la \verb|data class| che contiene le informazioni riguardanti i pulsanti che si occupano di aprire intere colonne o righe di dimensioni nella TableActionUI.
 \begin{lstlisting}[caption={HeaderAction}, label={lst:headeraction}, language=Kotlin]
 data class HeaderAction(
   val actionType: NodeActionType,
@@ -76,9 +112,14 @@ data class HeaderAction(
 )
 \end{lstlisting}
 \paragraph{Descrizione campi dati} \mbox{} \\
-
+\begin{itemize}
+	\item \verb|actionType|:  indica il tipo dell'azione che bisogna eseguire;
+	\item \verb|dim|: indica la dimensione su cui applicare l'azione;
+	\item \verb|depth|: indica la profondità all'interno della dimensione su cui applicare l'azione.
+\end{itemize}
 
 \subsubsection{NodeActionType}
+L'entità \verb|HeaderAction| è una \verb|enum class| che definisce il tipo di azione che può essere eseguita da una cella.
 \begin{lstlisting}[caption={NodeActionType}, label={lst:nodeactiontype}, language=Kotlin]
 enum class NodeActionType(val type: String) {
   EXPAND("E"),
@@ -87,8 +128,14 @@ enum class NodeActionType(val type: String) {
 }
 \end{lstlisting}
 \paragraph{Descrizione campi dati} \mbox{} \\
+\begin{itemize}
+	\item \verb|EXPAND|:  indica che la cella può espandere per mostrare i suoi figli;
+	\item \verb|COLLAPSE|: indica che la cella può nascondere i suoi figli;
+	\item \verb|NULL|: indica che la cella non ha un'azione.
+\end{itemize}
 
 \subsubsection{BodyCells}
+L'entità \verb|BodyCells| è la \verb|data class| che contiene le informazioni riguardanti le celle che contengono i dati della tabella.
 \begin{lstlisting}[caption={BodyCells}, label={lst:bodycells}, language=Kotlin]
 data class BodyCells(
   val value: Int,
@@ -97,17 +144,208 @@ data class BodyCells(
 )
 \end{lstlisting}
 \paragraph{Descrizione campi dati} \mbox{} \\
-
-\subsection{Stato Redux}
-% maybe move to cap 1
-Lo stato gestito da Redux è equivalente alla struttura di \verb|TableState| con l'aggiunta del campo dato \verb|isLoading| così da avere un variabile per gestire la tabella durante il caricamento dall'API esterna di dati. Per rendere modulare lo stato è stata realizzata una "Slice". Uno "Slice" è definito come una parte di stato dell'applicazione che può essere unito con altri slice per realizzare lo stato completo dell'applicazione. Questa architettura è molto utile per garantire scalabilità allo stato. In questo componente lo stato dell'applicazione è stato definito in uno "Slice" dello stato chiamato \verb|TableStateSlice| che è costituito da quattro elementi:
 \begin{itemize}
-	\item \emph{state}: \verb|data class| che contiene tutte le informazioni necessarie per la renderizzazione della tabella pivot;
-	\item \emph{actions}: oggetti di tipo \verb|RAction| che vengono usati per innescare l'update dello stato; 
-	\item \emph{thunk}: oggetti di tipo \verb|object| che hanno come scopo quello di realizzare operazioni complesse asincrone, è stato usato un thunk per gestire il caricamento asincrono dei dati dall'API;
-	\item \emph{reducers}: funzione pura che riceve come argomento un \verb|RAction| e ritorna una copia dello stato modificato.
+	\item \verb|value|: indica il dato;
+	\item \verb|cPath|: indica a che dimensioni delle colonne appartiene il dato;
+	\item \verb|rPath|: indica a che dimensioni delle righe appartiene il dato.
 \end{itemize}
 
+\subsection{Gestione delle richieste all'API}
+Il primo passo per utilizzare dei dati reali all'interno della tabella pivot è stato quello di realizzare una funzione per effettuare richiest HTTP alla API di Gruppo4. Per farlo ho utilizzato l'implementazione di Kotlin di \verb|window.fetch|. La funzione risultante è la seguente:
+\begin{lstlisting}[caption={BodyCells}, label={lst:bodycells}, language=Kotlin]
+suspend fun fetch() {
+  val res = window.fetch(url, RequestInit(
+    method = "GET",
+    credentials = RequestCredentials.Companion.INCLUDE,
+    headers = {
+      json("Accept" to "application/json")
+      json("Content-Type" to "application/json")
+   }))
+   .await()
+   .json()
+   .await()
+   
+   // Codice identificativo dell'istanza della tabella pivot necessario
+   // per le chiamate successive
+   INSTANCE_KEY = (res as kotlin.js.Json)["InstanceKey"] as String?
+}
+\end{lstlisting}
+Per quanto riguarda le richieste di ricezione di nuovi dati ho utilizzato la stessa implementazione di Kotlin per realizzare la seguente funzione:
+\begin{lstlisting}[caption={BodyCells}, label={lst:bodycells}, language=Kotlin]
+suspend fun sendAction(body: String, type: String) {
+  val res: Any? = window.fetch("$url$INSTANCE_KEY/$type", RequestInit(
+    method = "POST",
+    body = body,
+    credentials = RequestCredentials.Companion.INCLUDE,
+    headers = {
+      json("Accept" to "application/json")
+      json("Content-Type" to "application/json")
+    }))
+    .await()
+    .json()
+    .await()
+}
+\end{lstlisting}
+\subsection{JSON Parser}
+Dopo aver ricevuto i dati, ho effettuato il parsing del JSON, per farlo ho per prima cosa studiato il JSON ritornante dall'API, in seguito ho sviluppato le \verb|data class| necessarie per effettuare la lettura del JSON. La realizzazione di questa parte del progetto è stata rallentata molto da un problema all'API dovuto al cambiamento della struttura durante lo sviluppo da parte dell'azienda.  
+\subsubsection{Struttura JSON API}
+L'oggetto JSON che si ottiene dall'API ha la seguente struttura:
+\begin{lstlisting}[caption={BodyCells}, label={lst:bodycells}, language=json]
+{
+  "Rows": {
+  	"Paths": [
+  	  ["_all", "_all", ...], [ ... ]
+  	],
+  	"Actions": [
+  	  { "Action": "C", "Dim": 1, "Depth": 0 }, { ... }
+  	],
+  	"Tree": [
+  	  {
+  	    "Code": "_all",
+  	    "Label": "All",
+  	    "SubDim": [
+  	      {
+  	        "Code": "_all",
+  	        "Label": "All",
+  	        "SubDim": null,
+  	        "Children": null
+  	      }
+  	    ]  
+  	  }
+  	]
+  }
+  "Cols": // stessa struttura di "Rows"
+  "Cells": [
+    [51515, 2315, 747, 22],
+    [ ... ]
+  ]
+}
+\end{lstlisting}
+
+\subsubsection{Entità @Serializable}
+Per utilizzare in modo appropriato il JSON risultante dalla richiesta all'API ho realizzato delle entità \verb|@Serializable| che mi hanno permesso di tradurre tutto il JSON risultante in \verb|data class|.
+
+\subsubsection{Adapter}
+L'ultimo passo consiste nell'effettuare la traduzione da entità @Serializable nelle entità dello stato descritte precedentemente. La realizzazione dell'adapter può essere suddiviso in tre passaggi che corrispondono alle entità da tradurre.
+
+\paragraph{Traduzione in BodyCells}\mbox{} \\
+\paragraph{Traduzione in HeaderAction}\mbox{} \\
+\paragraph{Traduzione in DimensionNode}\mbox{} \\
+
+
+\section{Redux}
+Per rendere modulare lo stato è stata realizzata una "Slice". Uno "Slice" è definito come una parte di stato dell'applicazione che può essere unito con altri slice per realizzare lo stato completo dell'applicazione. Questa architettura è molto utile per garantire scalabilità allo stato; nell'applicazione lo stato è definito in un oggetto chiamato \verb|TableStateSlice| definito in questo modo:
+\begin{lstlisting}[caption={BodyCells}, label={lst:bodycells}, language=Kotlin]
+object TableStateSlice {
+  // Stato
+  data class State( ... )
+
+  // Thunk
+  private val initTableState = InitState()
+  fun initTable() : RThunk = initTableState
+
+  // Actions
+  class UpdateCells(val cells: ArrayList<ArrayList<BodyCells>>): RAction
+  ...
+
+  // Reducer
+  fun reducer(state: State = State(), action: RAction) : State { ... }
+}
+
+\end{lstlisting}
+
+\subsection{Stato}
+Lo stato gestito da Redux è equivalente alla struttura di \verb|TableState| con l'aggiunta del campo dato \verb|isLoading| così da avere un variabile per gestire la tabella durante il caricamento dall'API esterna di dati. Lo stato dell'applicazione è definito nel seguente modo:
+
+\begin{lstlisting}[caption={BodyCells}, label={lst:bodycells}, language=Kotlin]
+data class State(
+  val cols: ArrayList<ArrayList<DimensionsNode>> = ArrayList(),
+  val rows: ArrayList<ArrayList<DimensionsNode>> = ArrayList(),
+  val cells: ArrayList<ArrayList<BodyCells>> = ArrayList(),
+  val rowActions: ArrayList<ArrayList<HeaderAction>> = ArrayList(),
+  val colActions: ArrayList<ArrayList<HeaderAction>> = ArrayList(),
+  val isLoading: Boolean = false
+)
+\end{lstlisting}
+
+\subsection{Thunk}
+I thunk sono definiti come middleware di Redux e sono usate per effettuare operazioni asincrone complesse, l'interfaccia dei Thunk purtroppo non era presente nell'implementazione di Redux di kotlin quindi ho realizzato una semplice interfaccia che implementa le funzionalità dei thunk.
+\begin{lstlisting}[caption={BodyCells}, label={lst:bodycells}, language=Kotlin]
+interface RThunk : RAction {
+  operator fun invoke(
+	dispatch: (RAction) -> WrapperAction,
+	getState: () -> AppState
+  ) : WrapperAction
+}
+
+fun rThunk() =
+  applyMiddleware<AppState, RAction, WrapperAction, RAction, WrapperAction>(
+	{ store ->
+	  { next ->
+	    { action ->
+		  if (action is RThunk)
+			action(store::dispatch, store::getState)
+		  else
+			next(action)
+		}
+	  }
+	}
+  )
+
+val nullAction = js {}.unsafeCast<WrapperAction>()
+\end{lstlisting}
+\noindent \\
+Dall'interfaccia \verb|RThunk| ho realizzato la classe \verb|InitState| che, mediante la funzione \verb|invoke| utilizza le coroutines di kotlin per riempire lo stato di \verb|TableStateSlice| con i dati ricevuti dall'API.
+\begin{lstlisting}[caption={BodyCells}, label={lst:bodycells}, language=Kotlin]
+class InitState : RThunk {
+  override fun invoke(
+    dispatch: (RAction) -> WrapperAction, 
+    getState: () -> AppState
+  ): WrapperAction {
+    val mainScope = MainScope()
+      mainScope.launch {
+        val res : TableState = fetchCreavistaJson()
+        dispatch(TableStateSlice.UpdateRows(res.rows))
+        dispatch(TableStateSlice.UpdateCols(res.cols))
+        dispatch(TableStateSlice.UpdateCells(res.cells))
+        dispatch(TableStateSlice.UpdateRowTree(res.rowTree))
+        dispatch(TableStateSlice.UpdateColTree(res.colTree))
+        dispatch(TableStateSlice.UpdateRowActions(res.rowAction))
+        dispatch(TableStateSlice.UpdateColActions(res.colAction))
+        console.log(res)
+      }
+    return nullAction
+  }
+}
+\end{lstlisting}
+
+\subsection{Actions}
+Le actions sono definiti come delle classi di tipo \verb|RAction| che vengono usati per innescare l'update dello stato.
+
+\begin{lstlisting}[caption={BodyCells}, label={lst:bodycells}, language=Kotlin]
+class UpdateCells(val cells: ArrayList<ArrayList<BodyCells>>): RAction
+class UpdateRows(val rows: ArrayList<ArrayList<DimensionsNode>>): RAction
+class UpdateCols(val cols: ArrayList<ArrayList<DimensionsNode>>): RAction
+class SetIsLoading(val b: Boolean): RAction
+class UpdateRowActions(val n: ArrayList<ArrayList<HeaderAction>>): RAction
+class UpdateColActions(val n: ArrayList<ArrayList<HeaderAction>>): RAction
+\end{lstlisting}
+
+\subsection{Reducer}
+funzione pura che riceve come argomento un \verb|RAction| e ritorna una copia dello stato modificato.
+\begin{lstlisting}[caption={BodyCells}, label={lst:bodycells}, language=Kotlin]
+fun reducer(state: State = State(), action: RAction) : State {
+  return when (action) {
+    is UpdateCells -> state.copy(cells = action.cells)
+    is UpdateRows -> state.copy(rows = action.rows)
+    is UpdateCols -> state.copy(cols = action.cols)
+    is SetIsLoading -> state.copy(isLoading = action.b)
+    is UpdateRowActions -> state.copy(rowActions = action.n)
+    is UpdateColActions -> state.copy(colActions = action.n)
+    else -> state
+  }
+}
+\end{lstlisting}
 
 \section{Componenti grafici}
 \subsection{View}

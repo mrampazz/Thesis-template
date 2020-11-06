@@ -37,79 +37,58 @@ Le caratteristiche principali della metodologia agile applicata per la realizzaz
 		\end{itemize}
 \end{itemize}
 % scrivere descrizione più accurata della metodologie agili applicate
-\subsection{Definizione delle User Stories}
-Per prima cosa il team di sviluppo si è occupato di realizzare le User Stories. Per definire un singolo elemento è stata utilizzata la seguente struttura:
-\begin{longtable} {
-		|>{}p{10mm}| 
-		|>{}p{70mm}|
-		|>{}p{15mm}|
-		|>{}p{25mm}|
-		>{}p{0mm}}
-	\hline
-	\textbf{Id} & \textbf{Descrizione} & \textbf{Priorità} & \textbf{Implementato} \\ \hline
-	US1.1 & Descrizione dell'user story & A & SI \\ \hline
-	\hline
-	\caption{Esempio tabella User Story}
-\end{longtable}
-\noindent
-Per ogni descrizione di un user story si possono identificare le seguenti informazioni:
-\begin{itemize}
-	\item \textbf{Ruolo}: definisce il tipo di utente;
-	\item \textbf{Obiettivo}: definisce di che cosa ha bisogno l'utente;
-	\item \textbf{Beneficio}: definisce i vantaggi che porta all'utente.
-\end{itemize} 
-\noindent
-La sinteticità e la facilità nel definire le user story porta a vantaggi nella comunicazione tra il team di sviluppo e il cliente, rende più semplice l'aggiornamento dei requisiti e i costi di scrittura e manutenzione delle user stories sono molto bassi.
-
-\subsection{Definizione del Product Backlog}
-Uno dei primi obiettivi del progetto posti dal team di sviluppo è stato quello di definire il Product Backlog, cioè i requisiti del prodotto. Per ognuna delle user story precedentemente scritta è stata assegnata una priorità seguendo la seguente legenda:
-\begin{longtable} {
-		|>{\centering}p{10mm}| 
-		|>{}p{25mm}|
-		|>{}p{85mm}|
-		>{}p{0mm}}
-	\hline
-	\textbf{A} & \textit{Priorità alta}  & funzionalità necessarie per il corretto funzionamento dell'applicazione \\ \hline
-	\textbf{M} & \textit{Priorità media} & funzionalità che migliorano il prodotto \\ \hline
-	\textbf{B} & \textit{Priorità bassa} & funzionalità non necessarie per il corretto funzionamento dell'applicazione \\ \hline
-	\hline
-	\caption{Tabella priorità User Story}
-\end{longtable}
-\noindent
-Questo ci ha permesso di categorizzare le funzionalità principali del componente d'interfaccia grafico da quelle opzionali. Abbiamo quindi popolato il Product Backlog per ordine di \textit{priorità}, in questo modo la suddivisione delle user story per sprint, mediante le riunioni di \textit{Sprint Planning}, è stata chiara e veloce. \\
-Infatti abbiamo concentrato le funzionalità principali da implementare nei primi due sprint così da avere già a partire dal terzo sprint una prodotto con le funzionalità principali già implementate.
 
 \section{Programmazione funzionale}
 La programmazione funzionale è un paradigma di programmazione dichiarativa dove un programma è costituito dall'applicazione e dalla composizione di funzioni. In questo progetto si è utilizzata, dove possibile, la programmazione funzionale in particolare mediante le \emph{Funzioni di ordine superiore} fornite da Kotlin. Queste funzioni sono molto utili perchè permettono di scrivere codice più leggibile, conciso e soprattutto hanno la caratteristica di evitare \emph{side-effects}. Come definito dalla documentazione di Kotlin (bib: https://kotlinlang.org/docs/reference/lambdas.html), le funzioni scritte nel linguaggio Kotlin sono considerate come \emph{first-class} quindi esse possono essere contenute in variabili e strutture dati, possono essere passate come argomento di altre funzioni e possono essere ritornate da altre \emph{Funzioni di ordine superiore}. Queste funzioni sono state usate estensivamente nella realizzazione del "parser" descritto nel capitolo 4:descrizione-stage.
 
-\section{Dataflow dell'applicazione}
-Un concetto che è stato discusso molto dal team di sviluppo riguardava il \emph{dataflow} dell'applicazione. Durante la prima settimana del tirocinio è stato discusso come verrà gestito lo stato dell'applicazione e in particolare delle soluzioni per garantire la scalabilità del componente. Per gestire lo stato dell'applicazione sono state individuate due possibili soluzioni: React e Redux.
+\section{Versionamento della soluzione}
+\subsection{Git}
+Git è un VCS (Version Control System) distribuito che permette di tenere traccia delle modifiche in un prodotto software e di organizzarne la codifica. In questo tirocinio è stata usata la tecnica del feature-branch: ogni aggiunta di feature corrisponde all'apertura di un nuovo branch che deve essere poi approvato previa verifica prima di essere unito al branch \verb|master|.
 
-\subsection{React}
-React è una libreria per realizzare interfacce utente che utilizza un dataflow unidirezionale. Questo perchè ogni componente può avere uno stato locale accessibile solo dal componente stesso e può passare informazioni ai suoi componenti figli mediante le \emph{props}. \\
-Questo dataflow è molto semplice però presenta alcune limitazioni per quanto riguarda la scalabilità. Per avere uno stato unico di tutta l'applicazione bisognerebbe dare la responsabilità ad un componente grafico di gestirlo e passarlo mediante le sue \emph{props}. L'architettura che deriva da questo dataflow, nel caso di applicazioni complesse con molti componenti, è limitata, difficile da manutenere e poco scalabile. \\
-Tuttavia questo semplice dataflow ha il vantaggio che per famiglie di componenti piccole i cambiamenti di stato locale e i passaggi di informazioni mediante le \emph{props} sono molto veloci e semplici.
+\subsection{Gitlab}
+Gitlab è uno strumento web che permette di implementare un DevOps lifecycle che fornisce una gestione di repository git, un ITS (Issue Tracking System) e altri strumenti quali la "Continuous integration" e "Continuous deployement". Per lo sviluppo di questo progetto mi è stato fornito l'accesso al server privato aziendale di Gitlab.
 
-\subsection{Redux}
-Per garantire garantire scalabilità e facilità di gestione dello stato dell'applicazione abbiamo discusso riguardo l'utilizzo di Redux. Come React essa offre un dataflow unidirezionale tuttavia lo stato non è più contenuto all'interno di una gerarchia di componenti grafici, bensì esso viene contenuto in una struttura chiamata \emph{store}. Questa struttura esterna ai componenti grafici rende la gestione dello stato dell'applicazione più prevedibile e più manutenibile. Redux si basa su tre principi:
+\section{Ambiente di sviluppo locale}
+\subsection{IntelliJ Idea}
+IntelliJ IDEA Community Edition è una IDE realizzata da JetBrains che fornisce funzionalità di supporto per lo sviluppo di molti linguaggi, specialmente Kotlin. Questa IDE è stata vivamente consigliata dal mio tutor aziendale per lo sviluppo in Kotlin rispetto ad altri editor per molti vantaggi come l'autocompletamento e la possibilità di eseguire un refactoring automatico di funzioni e classi.
+ 
+\subsection{Gradle}
+Gradle è uno strumento di \emph{build automation} per molti linguaggi tra cui Kotlin e Java. Gradle è stato usato per la gestione e l'installazione delle dipendenze del componente, il file di configurazione di Gradle è \verb|build.gradle.kts|, al suo interno sono definite le seguenti dipendenze:
 \begin{itemize}
-	\item lo stato è l'unica fonte di verità;
-	\item lo stato non è modificabile direttamente;
-	\item le modifiche avvengono medianti funzioni pure (glossario) che creano un nuovo stato per evitare side effects.
+	\item \verb|stdlib-js|:;
+	\item \verb|kotlin-react|:;
+	\item \verb|kotlin-react-dom|:;
+	\item \verb|react|:;
+	\item \verb|react-dom|:;
+	\item \verb|kotlin-redux|:;
+	\item \verb|kotlin-react-redux|:;
+	\item \verb|kotlin-extensions|:;
+	\item \verb|kotlinx-serialization-core|:;
+	\item \verb|kotlinx-coroutines-core|:.
 \end{itemize}
-\noindent
-Gli elementi dell'architettura di Redux sono i seguenti:
-\begin{itemize}
-	\item \textbf{Actions}: oggetti che rappresentano un azione che innesca un update dello stato;
-	\item \textbf{Reducers}: \emph{funzioni pure} che hanno come parametro un Actions e si occupano di modificare lo stato;
-	\item \textbf{Store}: lo Store è un'interfaccia che contiene lo stato dell'applicazione e fornisce funzioni per leggere, modificare e registrare listeners allo stato.
-\end{itemize}
-\noindent
 
-\subsection{Soluzione}
-La soluzione adottata è stata quella di usare sia React che Redux. React è stato usato per gestire solo gli aggiornamenti visivi dell'applicazione, mentre Redux per gestire lo stato dell'applicazione. Il dataflow del prodotto è quindi il seguente:
-\begin{enumerate}
-	\item se lo stato deve cambiare verrà mandata allo Store una richiesta di cambiamento con un Action;
-	\item lo Store si occuperà di chiamare un Reducer in modo da modificare lo stato;
-	\item lo stato verrà aggiornato e i cambiamenti saranno visibili a tutti i componenti React che sono registrati allo Store.
-\end{enumerate}
+\subsection{Organizzazione del lavoro}
+Per l'organizzazione del lavoro, in particolare per la gestione dei macro obiettivi di ogni sprint, ho utilizzato l'ITS fornito da Gitlab che fornisce un'interfaccia Kanban che permette di categorizzare in modo efficace le singole attività da realizzare.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

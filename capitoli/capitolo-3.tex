@@ -11,7 +11,7 @@
 % struttura maybe?
 
 \section{Introduzione}
-In questo capitolo verrà discusso il modo in cui sono state progettate le singole parti dell'applicazioni e il ragionamento alla base di tale progettazione. In particolare verranno descritte le seguenti strutture:
+In questo capitolo verrà discusso il modo in cui sono state progettate le singole parti dell'applicazione e il ragionamento alla base di tale progettazione. In particolare verranno descritte le seguenti strutture:
 \begin{itemize}
 	\item stato dell'applicazione;
 	\item componenti grafici;
@@ -21,8 +21,19 @@ In questo capitolo verrà discusso il modo in cui sono state progettate le singo
 
 \section{Stato dell'applicazione}
 \subsection{Struttura dati}
-Per rappresentare la struttura dati dello stato della tabella pivot ho utilizzato le 'data class' di kotlin. Degli oggetti, molto simili ad oggetti JavaScript che hanno come unico scopo quello di contenere informazioni. La struttura dati dell'applicazione è descritta mediante 'data class TableState' descritta nel seguente modo:
-\begin{lstlisting}[caption={TableState}, label={lst:example1}, language=Kotlin]
+Per rappresentare la struttura dati dello stato della tabella pivot ho utilizzato le \verb|data class| di kotlin. Degli oggetti che hanno come unico scopo quello di contenere informazioni. Per prima cosa ho realizzato un nuovo package di nome \verb|Entities| all'interno dell'applicazione, al suo interno ho definito le \verb|data class|, che chiamerò con il nome di entità. \\
+L'idea alla base della struttura dello stato dell'applicazione era quella di avere una struttura dati semplice da iterare in modo da avere funzioni di renderizzazione concise e facili da manutenere. Le entità che ho realizzato sono le seguenti:
+\begin{itemize}
+	\item \verb|TableState|;
+	\item \verb|DimensionsNode|;
+	\item \verb|NodeActionType|;
+	\item \verb|BodyCells|;
+	\item \verb|HeaderAction|.
+\end{itemize}
+
+\subsubsection{TableState}
+L'entità \verb|TableState| è la \verb|data class| che contiene l'intero stato dell'applicazione. Al suo interno sono presenti tutte le informazioni necessarie per la corretta renderizzazione della tabella pivot.
+\begin{lstlisting}[caption={TableState}, label={lst:tablestate}, language=Kotlin]
 data class TableState(
   val cols: ArrayList<ArrayList<DimensionsNode>>,
   val rows: ArrayList<ArrayList<DimensionsNode>>,
@@ -31,10 +42,19 @@ data class TableState(
   val colAction: ArrayList<ArrayList<HeaderAction>>
 )
 \end{lstlisting}
+
+\paragraph{Descrizione campi dati} \mbox{} \\
+I primi due campi dati da descrivere sono \verb|cols| e \verb|rows|. Sono due matrici di \verb|NodeDimensions| che rappresentano rispettivamente le celle d'intestazione della tabella pivot delle colonne e delle righe.\\ 
+%insert image
+Il campo dato \verb|cells| è una matrice di \verb|BodyCells| che rappresenta le celle che contengono gli effettivi dati della tabella pivot.\\
+%insert image
+Infine si hanno \verb|rowAction| e \verb|colAction|. Sono due matrici di \verb|HeaderAction| e rappresentano i pulsanti all'interno del componente TableActionUI.
+%insert image
+
 \noindent
-\\
-Le altre dataclass utilizzate dallo stato dell'applicazione sono: DimensionsNode, NodeActionType, HeaderAction e BodyCells.
-\begin{lstlisting}[caption={DimensionsNode}, label={lst:example1}, language=Kotlin]
+
+\subsubsection{DimensionsNode}
+\begin{lstlisting}[caption={DimensionsNode}, label={lst:dimensionsnode}, language=Kotlin]
 data class DimensionsNode(
   var id: String,
   var label: String,
@@ -45,43 +65,51 @@ data class DimensionsNode(
   var isChild: Boolean = false
 )
 \end{lstlisting}
+\paragraph{Descrizione campi dati} \mbox{} \\
 
-\begin{lstlisting}[caption={BodyCells}, label={lst:example1}, language=Kotlin]
+\subsubsection{HeaderAction}
+\begin{lstlisting}[caption={HeaderAction}, label={lst:headeraction}, language=Kotlin]
 data class HeaderAction(
   val actionType: NodeActionType,
   val dim: Int,
   val depth: Int,
 )
+\end{lstlisting}
+\paragraph{Descrizione campi dati} \mbox{} \\
 
+
+\subsubsection{NodeActionType}
+\begin{lstlisting}[caption={NodeActionType}, label={lst:nodeactiontype}, language=Kotlin]
 enum class NodeActionType(val type: String) {
   EXPAND("E"),
   COLLAPSE("C"),
   NULL("")
 }
 \end{lstlisting}
+\paragraph{Descrizione campi dati} \mbox{} \\
 
-\begin{lstlisting}[caption={BodyCells}, label={lst:example1}, language=Kotlin]
+\subsubsection{BodyCells}
+\begin{lstlisting}[caption={BodyCells}, label={lst:bodycells}, language=Kotlin]
 data class BodyCells(
   val value: Int,
-  val cPath: Array<String>,
-  val rPath: Array<String>
+  val cPath: List<String>,
+  val rPath: List<String>
 )
 \end{lstlisting}
+\paragraph{Descrizione campi dati} \mbox{} \\
 
 \subsection{Stato Redux}
+% maybe move to cap 1
+Lo stato gestito da Redux è equivalente alla struttura di \verb|TableState| con l'aggiunta del campo dato \verb|isLoading| così da avere un variabile per gestire la tabella durante il caricamento dall'API esterna di dati. Per rendere modulare lo stato è stata realizzata una "Slice". Uno "Slice" è definito come una parte di stato dell'applicazione che può essere unito con altri slice per realizzare lo stato completo dell'applicazione. Questa architettura è molto utile per garantire scalabilità allo stato. In questo componente lo stato dell'applicazione è stato definito in uno "Slice" dello stato chiamato \verb|TableStateSlice| che è costituito da quattro elementi:
+\begin{itemize}
+	\item \emph{state}: \verb|data class| che contiene tutte le informazioni necessarie per la renderizzazione della tabella pivot;
+	\item \emph{actions}: oggetti di tipo \verb|RAction| che vengono usati per innescare l'update dello stato; 
+	\item \emph{thunk}: oggetti di tipo \verb|object| che hanno come scopo quello di realizzare operazioni complesse asincrone, è stato usato un thunk per gestire il caricamento asincrono dei dati dall'API;
+	\item \emph{reducers}: funzione pura che riceve come argomento un \verb|RAction| e ritorna una copia dello stato modificato.
+\end{itemize}
+
 
 \section{Componenti grafici}
-\subsection{View}
-\subsection{Container}
-
-\section{Parser JSON}
-\subsection{Struttura dati @Serializable}
-
-\section{Adapter}
-\subsection{Utilizzo del paradigma della programmazione funzionale}
-\subsubsection{Funzioni utilizzate}
-
-\section{Suddivisione dei componenti grafici}
 \subsection{View}
 \subsubsection{TableView}
 Questo componente è stato realizzato per definire la struttura generale del componente e per suddividere in modo responsivo lo spazio in quattro quadranti. Come si può vedere dalla seguente immagine ho realizzato il componente utilizzando il layout CSS Grid. Questo mi ha permesso di gestire, in modo responsivo, la struttura del componente.
@@ -106,7 +134,6 @@ Dire che la struttura della tabella è stata realizzata con flex, table, etc.
 Questo componente rappresenta i dati della tabella pivot
 Dire che la struttura della tabella è stata realizzata con flex, table, etc.
 
-
 \subsection{Container Redux}
 \subsubsection{TableController}
 \subsubsection{TableHeaderController}
@@ -115,28 +142,12 @@ Dire che la struttura della tabella è stata realizzata con flex, table, etc.
 \subsubsection{TableActionUIController}
 \subsubsection{TableLabelController}
 
+\section{Parser JSON}
+\subsection{Struttura dati @Serializable}
 
-\section{Struttura dati dell'applicazione}
-\subsection{Descrizione}
-Per definire lo stato dell'applicazione sono state create delle 'data class' per gestire in modo ordinato lo stato del prodotto.
-\subsubsection{TableState}
-Lo stato del prodotto è definito da un singolo oggetto: 'data class TableState'.
-\subsubsection{Cells}
-\subsubsection{CellAction}
-\subsubsection{BodyCells}
-
-
-\section{Realizzazione del JSON parser}
-Lo stato dell'applicazione viene popolato in seguito ad una richiesta ad API. Queste API ritornano risultati in formato JSON. Lavorando con Kotlin non è possibile avere la stessa libertà di accesso ad un JSON come in Javascript, quindi sono stati creati delle classi per eseguire la lettura del JSON e la sua traduzione in oggetti 'data class'. GRUPPO4 ha fornito una API che deve essere compatibili con questo componente quindi per ho realizzato un parser per trasformare un json in oggetti 'data class' e un adapter per trasformare gli oggetti data class nella data structure utilizzata nello stato dell'applicazione.
-
-\subsection{Adapter: creavista}
-Descrivi l'API\\
-Descrivi il parser\\
-La realizzazione del parse e del successivo adapter è stato uno delle difficoltà più grandi che ho superato. La struttura del JSON faceva cagare. Per realizzare un datastructure decente ho preso i dati dal json e li ho trasformati in una rappresentazione ad albero. Nel seguente modo:
-ESEMPIO FOTO OR WHATEVER.
-Dopodichè ho trasformato la rappresentazione ad albero degli oggetti in List che costituite nel seguente modo: ESEMPIO. IN particolare per quanto riguarda la dimensione delle righe ho suddiviso questa list in tante liste quante sono le dimensioni delle righe. Mentre per le coonne ho suddiviso la List in tante liste quante sono le dimensioni delle colonne.
-
-Descrivi le funzioni\\
+\section{Adapter}
+\subsection{Utilizzo del paradigma della programmazione funzionale}
+\subsubsection{Funzioni utilizzate}
 
 
 %**************************************************************

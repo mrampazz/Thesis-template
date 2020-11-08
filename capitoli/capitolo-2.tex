@@ -7,65 +7,90 @@
 \label{cap:processi-metodologie}
 %**************************************************************
 
-In questo capitolo verrà fornito una descrizione dei metodi e dei processi messi in atto durante il tirocinio, in particolare riguardo i seguenti argomenti: metodologia agile, programmazione funzionale e il concetto di Dataflow dell'applicazione.
+In questo capitolo verrà fornito una descrizione dei metodi e dei processi messi in atto durante il tirocinio, in particolare riguardo: la metodologia agile, la programmazione funzionale e il concetto di \emph{dataflow}\glsfirstoccur dell'applicazione.
 
 %**************************************************************
 \section{Metodologia Agile}
-Per lo sviluppo del prodotto è stato deciso di utilizzare una metodologia agile in modo da reagire velocemente a problemi e a cambiamenti così da migliorare ed l'efficienza nella realizzazione della componente. L'azienda ha deciso di utilizzare una metodologia agile simile a SCRUM. Infatti applicare nella sua interezza il metodo SCRUM sarebbe stato impossibile dato il ristretto numero di sviluppatori nel team di sviluppo. \\
+Per lo sviluppo del prodotto è stato deciso di applicare una metodologia agile in modo da reagire velocemente a possibili problemi e cambiamenti dei requisiti così da migliorare e velocizzare la realizzazione dell'applicativo. L'azienda ha deciso di utilizzare una metodologia agile simile a SCRUM. Infatti applicare nella sua interezza il metodo SCRUM sarebbe stato impossibile dato il ristretto numero di sviluppatori nel team di sviluppo e il limitato periodo riservato alla codifica. \\
 Le caratteristiche principali della metodologia agile applicata per la realizzazione di questo progetto sono le seguenti:
 \begin{itemize}
 	\item \textbf{Modello incrementale}: vengono realizzati rilasci multipli e successivi che aiutano a definire più chiaramente i requisiti più importanti dato che essi verranno implementati per primi. Ogni rilascio corrisponde ad una parte funzionante di applicazione;
 	
-	\item \textbf{Modello iterativo}: un modello iterativo ha la caratteristica di avere una maggior capacità di adattamento in seguito a problemi di implementazione e cambiamenti nei requisiti da parte del cliente;
+	\item \textbf{Modello iterativo}: un modello iterativo ha la caratteristica di avere una maggior capacità di adattamento in seguito a problemi di implementazione e cambiamenti nei requisiti;
 	
-	\item \textbf{Organizzazione in sprint di sviluppo}: il processo[controlla se è il termine giusto] di codifica viene suddiviso in sprint di sviluppo, data la breve durata del tirocinio curriculare essi avranno una durata di circa 4-5 giorni;
-	
-	\item \textbf{Backlog}: 
-		\begin{itemize}
-			\item \textbf{Product Backlog}: rappresenta i requisiti e le funzionalità del prodotto definiti mediante le User Stories;
-			\item \textbf{Sprint Backlog}: rappresenta l'insieme delle User Stories da realizzare nello sprint indicato;
-		\end{itemize}
-	
-	\item \textbf{User Stories}: l'idea alla base di uno sviluppo agile è la realizzazione delle User Stories. Ogni user story è definita da una \textbf{descrizione del problema} e da una \textbf{priorità}.
-	
-	\item \textbf{Riunioni}:
-		\begin{itemize}
-			\item \textbf{Sprint planning}: per pianificare il lavoro da svolgere durante lo sprint;
-			\item \textbf{Sprint review}: riunione retrospettiva per verificare il lavoro svolto durante lo sprint;
-			\item \textbf{Backlog refinement}: per aggiungere nuove User Stories o migliorare e/o modificare User Stories già create;
-			\item \textbf{Riunioni giornaliere}: per verificare lo svolgimento del lavoro, in questo tirocinio sono state sostituite con comunicazioni telematiche giornaliere.
-		\end{itemize}
+	\item \textbf{Organizzazione in sprint di sviluppo}: il periodo di codifica viene suddiviso in sprint di sviluppo, data la breve durata del tirocinio curriculare essi avranno una durata di circa 4-5 giorni;
 \end{itemize}
-% scrivere descrizione più accurata della metodologie agili applicate
+\noindent
+Gli elementi/artifacts che sono stati utilizzati sono i seguenti:
+\begin{itemize}
+	\item \textbf{Product backlog}: documento molto importante che contiene i requisiti e le funzionalità del prodotto definiti mediante le User Stories ordinate per priorità (\emph{Business value});
+	
+	\item \textbf{Sprint backlog}: rappresenta l'insieme delle User Stories da realizzare nello sprint;
+	
+	\item \textbf{Increment}: insieme di tutte le user stories che sono state completate dall'ultima release del software.
+\end{itemize}
+\noindent
+La metodologia agile applicata presenta i seguenti eventi che sono stati ripetuti ogni settimana in corrispondenza di ogni sprint:
+\begin{itemize}
+	\item \textbf{Sprint Planning}: riunione tra i partecipanti del team di sviluppo dove vengono determinati quali user stories del product backlog verranno completate nello sprint;
+	
+	\item \textbf{Daily Stand-up}: breve riunione giornaliera dove ogni membro descrive velocemente i progressi dall'ultimo  \emph{Daily Stand-up}, i problemi riscontrati e i suoi prossimi obiettivi, questo evento è stato, in molte occasioni, sostituito da una riunione telematica date le circostanze sociali;
+	
+	\item \textbf{Sprint Review}: riunione dove viene mostrato il prodotto con tutte le modifiche completate durante lo sprint (\emph{increment});
+	
+	\item \textbf{Backlog refinement}: riunione per aggiungere, modificare o eliminare user stories dal \emph{product backlog};
+	
+	\item \textbf{Retrospective}: riunione finale dove vengono determinati i fattori positivi e negativi in modo da identificare le strategie migliori per ottenere un miglioramento continuo dei processi.
+\end{itemize}
+\noindent
+%\begin{minipage}{\linewidth}
+%	\makebox[\linewidth] {
+%		\includegraphics[scale=0.75]{./immagini/dataflow_react_redux.png}
+%	}
+%\end{minipage}
 
 \section{Programmazione funzionale}
-La programmazione funzionale è un paradigma di programmazione dichiarativa dove un programma è costituito dall'applicazione e dalla composizione di funzioni. In questo progetto si è utilizzata, dove possibile, la programmazione funzionale in particolare mediante le \emph{Funzioni di ordine superiore} fornite da Kotlin. Queste funzioni sono molto utili perchè permettono di scrivere codice più leggibile, conciso e soprattutto hanno la caratteristica di evitare \emph{side-effects}. Come definito dalla documentazione di Kotlin (bib: https://kotlinlang.org/docs/reference/lambdas.html), le funzioni scritte nel linguaggio Kotlin sono considerate come \emph{first-class} quindi esse possono essere contenute in variabili e strutture dati, possono essere passate come argomento di altre funzioni e possono essere ritornate da altre \emph{Funzioni di ordine superiore}. Queste funzioni sono state usate estensivamente nella realizzazione del "parser" descritto nel capitolo 4:descrizione-stage.
+La programmazione funzionale è un paradigma di programmazione dichiarativa dove un programma è costituito dall'applicazione e dalla composizione di funzioni. In questo progetto si è utilizzata, dove possibile, la programmazione funzionale in particolare mediante le \emph{Funzioni di ordine superiore} fornite da Kotlin. Queste funzioni sono molto utili perchè permettono di scrivere codice più leggibile, conciso e soprattutto hanno la caratteristica di evitare \emph{side-effects}. Come definito dalla documentazione di Kotlin (bib: https://kotlinlang.org/docs/reference/lambdas.html), le funzioni scritte nel linguaggio Kotlin sono considerate come \emph{first-class} quindi esse possono essere contenute in variabili e strutture dati, possono essere passate come argomento di altre funzioni e possono essere ritornate da altre \emph{Funzioni di ordine superiore}. Le higher-order functions più usate nel progetto sono state:
+\begin{itemize}
+	\item map;
+	\item sortedWith;
+	\item flatMap;
+	\item groupBy;
+	\item more?
+\end{itemize}
 
 \section{Versionamento della soluzione}
 \subsection{Git}
 Git è un VCS (Version Control System) distribuito che permette di tenere traccia delle modifiche in un prodotto software e di organizzarne la codifica. In questo tirocinio è stata usata la tecnica del feature-branch: ogni aggiunta di feature corrisponde all'apertura di un nuovo branch che deve essere poi approvato previa verifica prima di essere unito al branch \verb|master|.
 
 \subsection{Gitlab}
-Gitlab è uno strumento web che permette di implementare un DevOps lifecycle che fornisce una gestione di repository git, un ITS (Issue Tracking System) e altri strumenti quali la "Continuous integration" e "Continuous deployement". Per lo sviluppo di questo progetto mi è stato fornito l'accesso al server privato aziendale di Gitlab.
+Gitlab è uno strumento web che permette di implementare un DevOps lifecycle che fornisce una gestione di repository git, un ITS (Issue Tracking System) e altri strumenti quali la "Continuous integration" e "Continuous deployement". Per lo sviluppo di questo progetto mi è stato fornito l'accesso al server privato aziendale Gitlab.
 
 \section{Ambiente di sviluppo locale}
 \subsection{IntelliJ Idea}
-IntelliJ IDEA Community Edition è una IDE realizzata da JetBrains che fornisce funzionalità di supporto per lo sviluppo di molti linguaggi, specialmente Kotlin. Questa IDE è stata vivamente consigliata dal mio tutor aziendale per lo sviluppo in Kotlin rispetto ad altri editor per molti vantaggi come l'autocompletamento e la possibilità di eseguire un refactoring automatico di funzioni e classi.
+IntelliJ IDEA Community Edition è una IDE realizzata da JetBrains che fornisce funzionalità di supporto per lo sviluppo di molti linguaggi, specialmente Kotlin. Questa IDE è stata vivamente consigliata dal mio tutor aziendale per lo sviluppo in Kotlin rispetto ad altri editor per molti vantaggi come l'autocompletamento, la possibilità di eseguire un refactoring automatico di funzioni e classi e una interfacia grafica per eseguire task di Gradle.
  
 \subsection{Gradle}
 Gradle è uno strumento di \emph{build automation} per molti linguaggi tra cui Kotlin e Java. Gradle è stato usato per la gestione e l'installazione delle dipendenze del componente, il file di configurazione di Gradle è \verb|build.gradle.kts|, al suo interno sono definite le seguenti dipendenze:
 \begin{itemize}
-	\item \verb|stdlib-js|:;
-	\item \verb|kotlin-react|:;
-	\item \verb|kotlin-react-dom|:;
-	\item \verb|react|:;
-	\item \verb|react-dom|:;
+	\item \verb|stdlib-js|: insieme di classi e funzioni in kotlin che forniscono un entry-point per funzioni e oggetti Javascript;
+	
+	\item \verb|kotlin-react|: implementazione di kotlin della liberia React;
+	
+	\item \verb|react|: pacchetto npm della libreria React necessario per il funzionamento di \verb|kotlin-react|;
+	
 	\item \verb|kotlin-redux|:;
+	
 	\item \verb|kotlin-react-redux|:;
+	
 	\item \verb|kotlin-extensions|:;
+	
 	\item \verb|kotlinx-serialization-core|:;
+	
 	\item \verb|kotlinx-coroutines-core|:.
 \end{itemize}
+\noindent
+Oltre alla gestione delle dipendenze Gradle offre delle task, utili per compilare ed eseguire l'applicativo. Nell'ambito del progetto ho utilizzato la task: \verb|runDevelopment| e come parametro della task: \verb|--continuous| in modo da eseguire automaticamente la compilazione del codice quando viene cambiato uno dei file sorgente.
 
 \subsection{Organizzazione del lavoro}
 Per l'organizzazione del lavoro, in particolare per la gestione dei macro obiettivi di ogni sprint, ho utilizzato l'ITS fornito da Gitlab che fornisce un'interfaccia Kanban che permette di categorizzare in modo efficace le singole attività da realizzare.

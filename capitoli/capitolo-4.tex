@@ -6,7 +6,7 @@
 \chapter{Analisi dei requisiti}
 \label{cap:analisi-requisiti}
 %**************************************************************
-\subsection{Definizione delle User Stories}
+\section{Definizione delle User Stories}
 Per prima cosa il team di sviluppo si è occupato di realizzare le User Stories. Per definire un singolo elemento è stata utilizzata la seguente struttura:
 \begin{longtable} {
 		|>{}p{10mm}| 
@@ -30,7 +30,7 @@ Per ogni descrizione di un user story si possono identificare le seguenti inform
 \noindent
 La sinteticità e la facilità nel definire le user story porta a vantaggi nella comunicazione tra il team di sviluppo e il cliente, rende più semplice l'aggiornamento dei requisiti e i costi di scrittura e manutenzione delle user stories sono molto bassi.
 
-\subsection{Definizione del Product Backlog}
+\section{Definizione del Product Backlog}
 Uno dei primi obiettivi del progetto posti dal team di sviluppo è stato quello di definire il Product Backlog, cioè i requisiti del prodotto. Per ognuna delle user story precedentemente scritta è stata assegnata una priorità seguendo la seguente legenda:
 \begin{longtable} {
 		|>{\centering}p{10mm}| 
@@ -46,7 +46,7 @@ Uno dei primi obiettivi del progetto posti dal team di sviluppo è stato quello 
 \end{longtable}
 \noindent
 Questo ci ha permesso di categorizzare le funzionalità principali del componente d'interfaccia grafico da quelle opzionali. Abbiamo quindi popolato il Product Backlog per ordine di \textit{priorità}, in questo modo la suddivisione delle user story per sprint, mediante le riunioni di \textit{Sprint Planning}, è stata chiara e veloce. \\
-Infatti abbiamo concentrato le funzionalità principali da implementare nei primi due sprint così da avere già a partire dal terzo sprint una prodotto con le funzionalità principali già implementate.
+Infatti abbiamo concentrato le funzionalità principali da implementare nei primi due sprint così da avere già a partire dal terzo sprint una prodotto con le funzionalità principali già implementate. Dato che ogni sprint di sviluppo prevede una riunione di \emph{backlog refinement} verrano elencate tutte le iterazioni del Product Backlog.
 
 
 \section{Product Backlog}
@@ -58,17 +58,12 @@ Infatti abbiamo concentrato le funzionalità principali da implementare nei prim
 		>{}p{0mm}}
 	\hline
 	\textbf{Id} & \textbf{Descrizione} & \textbf{Priorità} & \textbf{Implementato} \\ \hline
-	US1.1 & Come Cliente voglio poter visualizzare i miei dati e le dimensioni relative ai dati & A & SI \\ \hline
-	US1.2 & Come Cliente voglio poter utilizzare questa applicazione web dal mio PC, dal mio telefono e dal mio Tablet & A & SI \\ \hline
-	US1.3 & Come Cliente voglio poter visualizzare solo i dati senza le dimensioni relative ad essi & M & SI \\ \hline
-	US2.1 & Come Cliente voglio poter utilizzare l'API precedente di Creavista & A & SI \\ \hline
-	US2.2 & Come Cliente voglio poter utilizzare la nuova API di Creavista & A & SI \\ \hline
-	US2.3 & Come Cliente voglio avere un caricamento veloce & M & SI \\ \hline
-	US3.1 & Come cliente voglio poter salvare la mia configurazione & M & SI \\ \hline
-	US3.2 & Come cliente voglio poter esportare i miei dati & B & SI \\ \hline
-	US3.3 & Come cliente voglio poter decidere quali filtri voglio utilizzare per ogni dimensione & A & SI \\ \hline
-	US3.4 & Come cliente voglio poter modificare i filtri che sto utilizzando & A & SI \\ \hline
-	\hline
+	US1.1 & Come Utente voglio poter visualizzare i miei dati e le dimensioni relative ai dati & A & SI \\ \hline
+	US1.2 & Come Utente voglio poter visualizzare solo i dati senza le dimensioni relative ad essi & M & SI \\ \hline
+	US2.0 & Come Utente voglio poter utilizzare questa applicazione web dal mio PC & A & SI \\ \hline
+	US2.1 & Come Utente voglio poter utilizzare questa applicazione web dal mio tablet & A & SI \\ \hline
+	US2.2 & Come Utente voglio poter utilizzare questa applicazione web dal mio telefono & A & SI \\ \hline
+	US3.0 & Come Cliente voglio avere un caricamento veloce & M & SI \\ \hline
 \end{longtable}
 \newpage
 \section{Requisiti individuati dal Product Backlog}
@@ -83,29 +78,37 @@ Infatti abbiamo concentrato le funzionalità principali da implementare nei prim
 	\textbf{Id} & \textbf{Descrizione} & \textbf{Tipo} & \textbf{Impl.} & \textbf{User Story} \\ \hline
 	R1.0   & Definizione e pianificazione dei componenti & O & SI & US1.1\\ \hline
 	
-	R1.1   & Sviluppo dei componenti React visivi & O & SI & US1.1 \\ \hline
+	R1.1   & Sviluppo dei componenti React 		  & O & SI & US1.1 \\ \hline
 	R1.1.1 & Sviluppo di TableView                & O & SI & -     \\ \hline
 	R1.1.2 & Sviluppo di TableHeaderView          & O & SI & -     \\ \hline
 	R1.1.3 & Sviluppo di TableSidebarView         & O & SI & -     \\ \hline
 	R1.1.4 & Sviluppo di TableBodyView            & O & SI & -     \\ \hline
 	
-	R1.2   & Sviluppo dei container Redux       & O & SI & US1.1 \\ \hline
-	R1.1.1 & Sviluppo di TableController        & O & SI & -     \\ \hline
-	R1.1.2 & Sviluppo di TableHeaderController  & O & SI & -     \\ \hline
-	R1.1.3 & Sviluppo di TableSidebarController & O & SI & -     \\ \hline
-	R1.1.4 & Sviluppo di TableBodyController    & O & SI & -     \\ \hline
+	R2.0   & Sviluppo parser per Creavista     & O & SI & US2.1 \\ \hline
+	R2.1   & Sviluppo data structure in Kotlin & O & SI & -     \\ \hline
+	R2.2   & Sviluppo adapter                  & O & SI & -     \\ \hline
 	
-	R2.0   & Sviluppo dei JSON parser          & O & NO & US2.1 \\ \hline
+	R3.0   & Sviluppo architettura Redux & O & SI & - \\ \hline
 	
-	R2.1   & Sviluppo parser per Creavista     & O & SI & -     \\ \hline
-	R2.1.1 & Sviluppo data structure in Kotlin & O & SI & -     \\ \hline
-	R2.1.2 & Sviluppo adapter                  & O & SI & -     \\ \hline
+	R3.1   & Sviluppo dei container Redux       & O & SI & US1.1 \\ \hline
+	R3.1.2 & Sviluppo di TableController        & O & SI & -     \\ \hline
+	R3.1.3 & Sviluppo di TableHeaderController  & O & SI & -     \\ \hline
+	R3.1.4 & Sviluppo di TableSidebarController & O & SI & -     \\ \hline
+	R3.1.5 & Sviluppo di TableBodyController    & O & SI & -     \\ \hline
 	
-	R2.2   & Sviluppo parser per API nuova     & O & NO & US2.2 \\ \hline
-	R2.2.1 & Sviluppo data structure in Kotlin & O & NO & -     \\ \hline
-	R2.2.2 & Sviluppo adapter                  & O & NO & -     \\ \hline
+	R3.2   & Sviluppo dello slice dello stato & O & SI & - \\ \hline
+	R3.2.1 & Sviluppo dello stato dell'applicazione & O & SI & - \\ \hline
+	R3.2.2 & Sviluppo di Thunk & O & SI & - \\ \hline
+	R3.2.3 & Sviluppo delle Actions & O & SI & - \\ \hline
+	R3.2.4 & Sviluppo dei Reducers & O & SI & - \\ \hline
 	
-	R3.0 & Sviluppo di un sistema di caricamento automatico                   & O & NO & US2.3 \\ \hline
-	R3.1 & Sviluppo di InfiniteScroller per gestire il caricamento automatico & O & SI & - \\ \hline
+	R4.0 & Sviluppo struttura stato dell'applicazione & O & SI & - \\ \hline
+	R4.0.1 & Sviluppo NodeDimensions & O & SI & - \\ \hline
+	R4.0.2 & Sviluppo BodyCells & O & SI & - \\ \hline
+	R4.0.2 & Sviluppo HeaderAction & O & SI & - \\ \hline
+	R4.0.4 & Sviluppo NodeActionType & O & SI & - \\ \hline
+	
+	
+	
 	\hline
 \end{longtable}

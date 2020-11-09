@@ -7,7 +7,7 @@
 \label{cap:analisi-requisiti}
 %**************************************************************
 \section{Definizione delle User Stories}
-Per prima cosa il team di sviluppo si è occupato di realizzare le User Stories. Per definire un singolo elemento è stata utilizzata la seguente struttura:
+Per prima cosa il team di sviluppo si è occupato di realizzare le User Stories definite mediante la seguente struttura.
 \begin{longtable} {
 		|>{}p{10mm}| 
 		|>{}p{70mm}|
@@ -46,8 +46,7 @@ Uno dei primi obiettivi del progetto posti dal team di sviluppo è stato quello 
 \end{longtable}
 \noindent
 Questo ci ha permesso di categorizzare le funzionalità principali del componente d'interfaccia grafico da quelle opzionali. Abbiamo quindi popolato il Product Backlog per ordine di \textit{priorità}, in questo modo la suddivisione delle user story per sprint, mediante le riunioni di \textit{Sprint Planning}, è stata chiara e veloce. \\
-Infatti abbiamo concentrato le funzionalità principali da implementare nei primi due sprint così da avere già a partire dal terzo sprint una prodotto con le funzionalità principali già implementate. Dato che ogni sprint di sviluppo prevede una riunione di \emph{backlog refinement} verrano elencate tutte le iterazioni del Product Backlog.
-
+Infatti abbiamo concentrato le funzionalità principali da implementare nei primi due sprint così da avere, già a partire dal terzo sprint, un prodotto con le funzionalità principali già implementate. Dato che ogni sprint di sviluppo prevede una riunione di \emph{backlog refinement} verrano elencate tutte le iterazioni del Product Backlog.
 
 \section{Product Backlog}
 \begin{longtable} {
@@ -58,12 +57,20 @@ Infatti abbiamo concentrato le funzionalità principali da implementare nei prim
 		>{}p{0mm}}
 	\hline
 	\textbf{Id} & \textbf{Descrizione} & \textbf{Priorità} & \textbf{Implementato} \\ \hline
-	US1.1 & Come Utente voglio poter visualizzare i miei dati e le dimensioni relative ai dati & A & SI \\ \hline
-	US1.2 & Come Utente voglio poter visualizzare solo i dati senza le dimensioni relative ad essi & M & SI \\ \hline
-	US2.0 & Come Utente voglio poter utilizzare questa applicazione web dal mio PC & A & SI \\ \hline
-	US2.1 & Come Utente voglio poter utilizzare questa applicazione web dal mio tablet & A & SI \\ \hline
-	US2.2 & Come Utente voglio poter utilizzare questa applicazione web dal mio telefono & A & SI \\ \hline
-	US3.0 & Come Cliente voglio avere un caricamento veloce & M & SI \\ \hline
+	US1 & Come \textbf{utente} voglio poter visualizzare i miei dati e le dimensioni relative ai dati & A & SI \\ \hline
+	
+	US2 & Come \textbf{utente} voglio avere una interfaccia non ostruttiva & M & SI \\ \hline
+	
+	US3 & Come \textbf{utente} voglio poter utilizzare questa applicazione web dal mio PC & A & SI \\ \hline
+	
+	US4 & Come \textbf{utente} voglio poter utilizzare questa applicazione web dal mio tablet & A & SI \\ \hline
+	
+	US5 & Come \textbf{utente} voglio poter utilizzare questa applicazione web dal mio telefono & A & SI \\ \hline
+	
+	US6 & Come \textbf{utente} voglio avere un caricamento veloce & M & SI \\ \hline
+	
+	US7 & Come \textbf{utente} voglio poter esplorare liberamente i dati & A & SI \\ \hline
+	
 \end{longtable}
 \newpage
 \section{Requisiti individuati dal Product Backlog}
@@ -76,39 +83,35 @@ Infatti abbiamo concentrato le funzionalità principali da implementare nei prim
 		>{}p{0mm}}
 	\hline
 	\textbf{Id} & \textbf{Descrizione} & \textbf{Tipo} & \textbf{Impl.} & \textbf{User Story} \\ \hline
-	R1.0   & Definizione e pianificazione dei componenti & O & SI & US1.1\\ \hline
 	
-	R1.1   & Sviluppo dei componenti React 		  & O & SI & US1.1 \\ \hline
-	R1.1.1 & Sviluppo di TableView                & O & SI & -     \\ \hline
-	R1.1.2 & Sviluppo di TableHeaderView          & O & SI & -     \\ \hline
-	R1.1.3 & Sviluppo di TableSidebarView         & O & SI & -     \\ \hline
-	R1.1.4 & Sviluppo di TableBodyView            & O & SI & -     \\ \hline
+	R1.0   & \textbf{Definizione dello stato dell'applicazione} & O & SI & US1.1\\ \hline
+	R1.0.1 & Sviluppo TableState        & O & SI & US1.1\\ \hline
+	R1.0.2 & Sviluppo NodeDimensions    & O & SI & US1.1\\ \hline
+	R1.0.3 & Sviluppo BodyCells         & O & SI & US1.1\\ \hline
+	R1.0.4 & Sviluppo HeaderAction      & O & SI & US1.1\\ \hline
+	R1.0.5 & Sviluppo NodeActionType    & O & SI & US1.1\\ \hline
+	R1.1   & Sviluppo architettura Redux & O & SI & - \\ \hline
+	R1.1.1 & Sviluppo TableStateSlice    & O & SI & - \\ \hline
+	R1.1.2 & Sviluppo di Thunk & O & SI & - \\ \hline
+	R1.1.3 & Sviluppo delle Actions & O & SI & - \\ \hline
+	R1.1.4 & Sviluppo dei Reducers & O & SI & - \\ \hline
 	
-	R2.0   & Sviluppo parser per Creavista     & O & SI & US2.1 \\ \hline
-	R2.1   & Sviluppo data structure in Kotlin & O & SI & -     \\ \hline
-	R2.2   & Sviluppo adapter                  & O & SI & -     \\ \hline
-	
-	R3.0   & Sviluppo architettura Redux & O & SI & - \\ \hline
-	
-	R3.1   & Sviluppo dei container Redux       & O & SI & US1.1 \\ \hline
-	R3.1.2 & Sviluppo di TableController        & O & SI & -     \\ \hline
-	R3.1.3 & Sviluppo di TableHeaderController  & O & SI & -     \\ \hline
-	R3.1.4 & Sviluppo di TableSidebarController & O & SI & -     \\ \hline
-	R3.1.5 & Sviluppo di TableBodyController    & O & SI & -     \\ \hline
-	
-	R3.2   & Sviluppo dello slice dello stato & O & SI & - \\ \hline
-	R3.2.1 & Sviluppo dello stato dell'applicazione & O & SI & - \\ \hline
-	R3.2.2 & Sviluppo di Thunk & O & SI & - \\ \hline
-	R3.2.3 & Sviluppo delle Actions & O & SI & - \\ \hline
-	R3.2.4 & Sviluppo dei Reducers & O & SI & - \\ \hline
-	
-	R4.0 & Sviluppo struttura stato dell'applicazione & O & SI & - \\ \hline
-	R4.0.1 & Sviluppo NodeDimensions & O & SI & - \\ \hline
-	R4.0.2 & Sviluppo BodyCells & O & SI & - \\ \hline
-	R4.0.2 & Sviluppo HeaderAction & O & SI & - \\ \hline
-	R4.0.4 & Sviluppo NodeActionType & O & SI & - \\ \hline
-	
-	
+	\hline
+	R2.0   & \textbf{Definizione e pianificazione dei componenti} & O & SI & US1.1\\ \hline
+	R2.1   & Sviluppo dei componenti React 		  & O & SI & US1, US2, US3, US4, US5 \\ \hline
+	R2.1.1 & Sviluppo di TableView                & O & SI & -     \\ \hline
+	R2.1.2 & Sviluppo di TableHeaderView          & O & SI & -     \\ \hline
+	R2.1.3 & Sviluppo di TableSidebarView         & O & SI & -     \\ \hline
+	R2.1.4 & Sviluppo di TableBodyView            & O & SI & -     \\ \hline
+	R2.2   & Sviluppo dei container Redux         & O & SI & -     \\ \hline
+	R2.2.2 & Sviluppo di TableController          & O & SI & -     \\ \hline
+	R2.2.3 & Sviluppo di TableHeaderController    & O & SI & -     \\ \hline
+	R2.2.4 & Sviluppo di TableSidebarController   & O & SI & -     \\ \hline
+	R2.2.5 & Sviluppo di TableBodyController      & O & SI & -     \\ \hline
+	\hline
+	R3.0   & \textbf{Sviluppo parser per JSON dell'API}         & O & SI & -     \\ \hline
+	R3.1   & Sviluppo data class @Serializable 	   & O & SI & -     \\ \hline
+	R3.2   & Sviluppo adapter da JSON a TableState & O & SI & -     \\ \hline
 	
 	\hline
 \end{longtable}

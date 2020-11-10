@@ -11,11 +11,11 @@
 % struttura maybe?\\
 
 \section{Dataflow dell'applicazione}
-Un aspetto che è stato molto discusso dal team di sviluppo riguarda il \emph{dataflow} dell'applicazione. Durante la prima settimana del tirocinio, oltre allo studio delle tecnologie, si è pensato a come verrà gestito lo stato dell'applicazione e in particolare delle possibili soluzioni per garantire la scalabilità del componente. Per gestire lo stato dell'applicazione sono state individuate due possibili soluzioni: React e Redux.
+Un aspetto che è stato molto discusso dal team di sviluppo riguarda il \emph{dataflow}\glosp dell'applicazione. Durante la prima settimana del tirocinio, oltre allo studio delle tecnologie, si è pensato a come verrà gestito lo stato dell'applicazione e in particolare delle possibili soluzioni per garantirne la scalabilità. Le principali librerie discusse sono state: React e Redux.
 
 \subsection{React}
-React è una libreria per realizzare interfacce utente che utilizza un dataflow unidirezionale. Questo perchè ogni componente può avere uno stato locale accessibile solo da se stesso e può passare informazioni ai suoi componenti figli mediante le \emph{props}. \\
-Questo dataflow è molto semplice però presenta alcune limitazioni per quanto riguarda la scalabilità. Per avere uno stato unico di tutta l'applicazione bisognerebbe dare la responsabilità ad un componente grafico di gestirlo e passarlo mediante le sue \emph{props}. L'architettura che deriva da questo dataflow, nel caso di applicazioni complesse con molti componenti, è limitata, difficile da manutenere e poco scalabile. \\
+React è una libreria per realizzare interfacce utente che utilizza un \emph{dataflow} unidirezionale. Questo perchè ogni componente può avere uno stato locale accessibile solo da se stesso e può passare informazioni ai suoi componenti figli mediante le \emph{props}\glo. Il risultato è uno stato che dipende dalla gerarchia di componenti grafici. \\
+Questo dataflow è molto semplice però presenta alcune limitazioni per quanto riguarda la scalabilità. Per avere uno stato unico di tutta l'applicazione bisognerebbe dare la responsabilità ad un componente grafico di gestirlo e passarlo mediante le sue \emph{props}. L'architettura che ne deriva, nel caso di applicazioni complesse con molti componenti, è limitata, difficile da manutenere e poco scalabile. \\
 Tuttavia questo semplice dataflow ha il vantaggio che per famiglie di componenti piccole i cambiamenti di stato locale e i passaggi di informazioni mediante le \emph{props} sono molto veloci e semplici.
 
 \subsection{Redux}
@@ -23,14 +23,14 @@ Per garantire scalabilità e facilità nella gestione dello stato dell'applicazi
 \begin{itemize}
 	\item lo stato è l'unica fonte di verità;
 	\item lo stato non è modificabile direttamente;
-	\item le modifiche avvengono medianti funzioni pure (glossario) che creano un nuovo stato per evitare side effects.
+	\item le modifiche avvengono medianti \emph{funzioni pure}\glosp che creano un nuovo stato per evitare \emph{side effects}.
 \end{itemize}
 \noindent
 Gli elementi dell'architettura di Redux sono i seguenti:
 \begin{itemize}
 	\item \textbf{Actions}: oggetti che rappresentano un azione che innesca un update dello stato;
 	\item \textbf{Reducers}: \emph{funzioni pure} che hanno come parametro un Actions e si occupano di modificare lo stato;
-	\item \textbf{Store}: lo Store è un'interfaccia che contiene lo stato dell'applicazione e fornisce funzioni per leggere, modificare e registrare listeners allo stato.
+	\item \textbf{Store}: lo Store è un'interfaccia che contiene lo stato dell'applicazione e fornisce funzioni per leggere, modificare e registrare \emph{listeners} allo stato.
 \end{itemize}
 \noindent
 
@@ -47,7 +47,7 @@ Dato che i cambiamenti effettuati dalle Actions possono essere solo asincroni ho
 
 \section{Model}
 \subsection{Struttura}
-Per rappresentare la struttura dati dello stato della tabella pivot ho utilizzato le \verb|data class| di kotlin. Degli oggetti che hanno come unico scopo quello di contenere informazioni. Per prima cosa ho realizzato un nuovo package di nome \verb|Entities|. Al suo interno ho definito le \verb|data class| che costituiscono lo stato dell'applicazione. \\
+Per rappresentare la struttura dati dello stato della tabella pivot ho utilizzato le \verb|data class| di Kotlin. Degli oggetti che hanno come unico scopo quello di contenere informazioni. Per prima cosa ho realizzato un nuovo package di nome \verb|Entities|. Al suo interno ho definito le \verb|data class| che costituiscono lo stato dell'applicazione. \\
 L'idea alla base della struttura dello stato era quella di avere una struttura dati semplice da iterare in modo da avere funzioni di renderizzazione concise e facili da manutenere. Le entità che ho realizzato sono le seguenti:
 \begin{itemize}
 	\item \verb|TableState|;

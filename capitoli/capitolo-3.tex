@@ -23,14 +23,14 @@ Per garantire scalabilità e facilità nella gestione dello stato dell'applicazi
 \begin{itemize}
 	\item lo stato è l'unica fonte di verità;
 	\item lo stato non è modificabile direttamente;
-	\item le modifiche avvengono medianti \emph{funzioni pure}\glosp che creano un nuovo stato per evitare \emph{side effects}.
+	\item le modifiche avvengono medianti \emph{funzioni pure}\glosp che creano un nuovo stato per evitare \emph{side effects}\glo.
 \end{itemize}
 \noindent
 Gli elementi dell'architettura di Redux sono i seguenti:
 \begin{itemize}
 	\item \textbf{Actions}: oggetti che rappresentano un azione che innesca un update dello stato;
 	\item \textbf{Reducers}: \emph{funzioni pure} che hanno come parametro un Actions e si occupano di modificare lo stato;
-	\item \textbf{Store}: lo Store è un'interfaccia che contiene lo stato dell'applicazione e fornisce funzioni per leggere, modificare e registrare \emph{listeners} allo stato.
+	\item \textbf{Store}: lo Store è un'interfaccia che contiene lo stato dell'applicazione e fornisce funzioni per leggere, modificare e registrare \emph{listeners}\glosp allo stato.
 \end{itemize}
 \noindent
 
@@ -41,9 +41,7 @@ La soluzione adottata è stata quella di usare sia React che Redux. React è sta
 	\item lo Store si occuperà di chiamare un Reducer in modo da ricevere lo stato successivo;
 	\item lo stato verrà aggiornato e i cambiamenti saranno visibili a tutti i componenti React che sono registrati allo Store.
 \end{enumerate}
-Utilizzando questo dataflow lo stato dell'applicazione non dipende da un componente grafico perchè è esterno alla gerarchia dei componenti grafici. Quindi ogni componente React che ha bisogno di una frazione dei dati dello stato può semplicemente registrarsi allo Store per ricevere i dati. \\
-Dato che i cambiamenti effettuati dalle Actions possono essere solo asincroni ho utilizzato un interfaccia che fornisce le stesse funzionalità di un Actions ma ne espande l'utilità permettendo operazioni asincrone.
-
+Utilizzando questo dataflow lo stato dell'applicazione non dipende da un componente grafico perchè è esterno alla gerarchia dei componenti grafici. Quindi ogni componente React che ha bisogno di una frazione dei dati dello stato può semplicemente registrarsi allo Store per ricevere i dati.
 
 \section{Model}
 \subsection{Struttura}
@@ -152,7 +150,7 @@ data class BodyCells(
 
 \subsection{Gestione delle richieste all'API}
 Il primo passo per utilizzare dei dati reali all'interno della tabella pivot è stato quello di realizzare una funzione per effettuare richiest HTTP alla API di Gruppo4. Per farlo ho utilizzato l'implementazione di Kotlin di \verb|window.fetch|. La funzione risultante è la seguente:
-\begin{lstlisting}[caption={BodyCells}, label={lst:bodycells}, language=Kotlin]
+\begin{lstlisting}[caption={Funzione fetch()}, label={lst:bodycells}, language=Kotlin]
 suspend fun fetch() {
   val res = window.fetch(url, RequestInit(
     method = "GET",
@@ -171,7 +169,7 @@ suspend fun fetch() {
 }
 \end{lstlisting}
 Per quanto riguarda le richieste di ricezione di nuovi dati ho utilizzato la stessa implementazione di Kotlin per realizzare la seguente funzione:
-\begin{lstlisting}[caption={BodyCells}, label={lst:bodycells}, language=Kotlin]
+\begin{lstlisting}[caption={Funzione sendAction()}, label={lst:bodycells}, language=Kotlin]
 suspend fun sendAction(body: String, type: String) {
   val res: Any? = window.fetch("$url$INSTANCE_KEY/$type", RequestInit(
     method = "POST",
@@ -190,7 +188,7 @@ suspend fun sendAction(body: String, type: String) {
 Dopo aver ricevuto i dati, ho effettuato il parsing del JSON, per farlo ho per prima cosa studiato il JSON ritornante dall'API, in seguito ho sviluppato le \verb|data class| necessarie per effettuare la lettura del JSON. La realizzazione di questa parte del progetto è stata rallentata molto da un problema all'API dovuto al cambiamento della struttura durante lo sviluppo da parte dell'azienda.  
 \subsubsection{Struttura JSON API}
 L'oggetto JSON che si ottiene dall'API ha la seguente struttura:
-\begin{lstlisting}[caption={BodyCells}, label={lst:bodycells}, language=json]
+\begin{lstlisting}[caption={Struttura JSON API}, label={lst:bodycells}, language=json]
 {
   "Rows": {
   	"Paths": [
@@ -228,6 +226,8 @@ Per utilizzare in modo appropriato il JSON risultante dalla richiesta all'API ho
 \subsubsection{Adapter}
 L'ultimo passo consiste nell'effettuare la traduzione da entità @Serializable nelle entità dello stato descritte precedentemente. La realizzazione dell'adapter può essere suddiviso in tre passaggi che corrispondono alle entità da tradurre.
 
+\paragraph{Utilizzo della programmazione funzionale} \mbox{} \\
+
 \paragraph{Traduzione in BodyCells}\mbox{} \\
 
 
@@ -239,7 +239,7 @@ L'ultimo passo consiste nell'effettuare la traduzione da entità @Serializable n
 
 \section{Redux}
 Per rendere modulare lo stato è stata realizzata una "Slice". Uno "Slice" è definito come una parte di stato dell'applicazione che può essere unito con altri slice per realizzare lo stato completo dell'applicazione. Questa architettura è molto utile per garantire scalabilità allo stato; nell'applicazione lo stato è definito in un oggetto chiamato \verb|TableStateSlice| definito in questo modo:
-\begin{lstlisting}[caption={BodyCells}, label={lst:bodycells}, language=Kotlin]
+\begin{lstlisting}[caption={TableStateSlice}, label={lst:bodycells}, language=Kotlin]
 object TableStateSlice {
   // Stato
   data class State( ... )
@@ -261,7 +261,7 @@ object TableStateSlice {
 \subsection{Stato}
 Lo stato gestito da Redux è equivalente alla struttura di \verb|TableState| con l'aggiunta del campo dato \verb|isLoading| così da avere un variabile per gestire la tabella durante il caricamento dall'API esterna di dati. Lo stato dell'applicazione è definito nel seguente modo:
 
-\begin{lstlisting}[caption={BodyCells}, label={lst:bodycells}, language=Kotlin]
+\begin{lstlisting}[caption={State}, label={lst:bodycells}, language=Kotlin]
 data class State(
   val cols: ArrayList<ArrayList<DimensionsNode>> = ArrayList(),
   val rows: ArrayList<ArrayList<DimensionsNode>> = ArrayList(),
@@ -273,8 +273,9 @@ data class State(
 \end{lstlisting}
 
 \subsection{Thunk}
-I thunk sono definiti come middleware di Redux e sono usate per effettuare operazioni asincrone complesse, l'interfaccia dei Thunk purtroppo non era presente nell'implementazione di Redux di kotlin quindi ho realizzato una semplice interfaccia che implementa le funzionalità dei thunk.
-\begin{lstlisting}[caption={BodyCells}, label={lst:bodycells}, language=Kotlin]
+Dato che i cambiamenti allo stato innescati dalle Actions possono essere solo sincroni ho utilizzato un interfaccia che fornisce le stesse funzionalità di un Actions ma ne espande l'utilità permettendo operazioni asincrone, questa interfaccia è definita come \verb|thunk|.
+I \emph{thunk} sono definiti come \emph{middleware} di Redux e sono usati per effettuare operazioni asincrone complesse, l'interfaccia dei Thunk purtroppo non era presente nell'implementazione di Redux di kotlin quindi ho realizzato una semplice interfaccia che implementa le funzionalità dei thunk.
+\begin{lstlisting}[caption={Interfaccia Thunk}, label={lst:bodycells}, language=Kotlin]
 interface RThunk : RAction {
   operator fun invoke(
 	dispatch: (RAction) -> WrapperAction,
@@ -300,7 +301,7 @@ val nullAction = js {}.unsafeCast<WrapperAction>()
 \end{lstlisting}
 \noindent \\
 Dall'interfaccia \verb|RThunk| ho realizzato la classe \verb|InitState| che, mediante la funzione \verb|invoke| utilizza le coroutines di kotlin per riempire lo stato di \verb|TableStateSlice| con i dati ricevuti dall'API.
-\begin{lstlisting}[caption={BodyCells}, label={lst:bodycells}, language=Kotlin]
+\begin{lstlisting}[caption={InitState}, label={lst:bodycells}, language=Kotlin]
 class InitState : RThunk {
   override fun invoke(
     dispatch: (RAction) -> WrapperAction, 
@@ -312,11 +313,8 @@ class InitState : RThunk {
         dispatch(TableStateSlice.UpdateRows(res.rows))
         dispatch(TableStateSlice.UpdateCols(res.cols))
         dispatch(TableStateSlice.UpdateCells(res.cells))
-        dispatch(TableStateSlice.UpdateRowTree(res.rowTree))
-        dispatch(TableStateSlice.UpdateColTree(res.colTree))
         dispatch(TableStateSlice.UpdateRowActions(res.rowAction))
         dispatch(TableStateSlice.UpdateColActions(res.colAction))
-        console.log(res)
       }
     return nullAction
   }
@@ -326,7 +324,7 @@ class InitState : RThunk {
 \subsection{Actions}
 Le actions sono definiti come delle classi di tipo \verb|RAction| che vengono usati per innescare l'update dello stato.
 
-\begin{lstlisting}[caption={BodyCells}, label={lst:bodycells}, language=Kotlin]
+\begin{lstlisting}[caption={Actions}, label={lst:bodycells}, language=Kotlin]
 class UpdateCells(val cells: ArrayList<ArrayList<BodyCells>>): RAction
 class UpdateRows(val rows: ArrayList<ArrayList<DimensionsNode>>): RAction
 class UpdateCols(val cols: ArrayList<ArrayList<DimensionsNode>>): RAction
@@ -336,8 +334,8 @@ class UpdateColActions(val n: ArrayList<ArrayList<HeaderAction>>): RAction
 \end{lstlisting}
 
 \subsection{Reducer}
-funzione pura che riceve come argomento un \verb|RAction| e ritorna una copia dello stato modificato.
-\begin{lstlisting}[caption={BodyCells}, label={lst:bodycells}, language=Kotlin]
+Un \emph{reducer} è una \emph{funzione pura} che riceve come argomento un \verb|RAction| e ritorna una copia dello stato modificato. L'implementazione utilizzata in \verb|TableStateSlice| è la seguente:
+\begin{lstlisting}[caption={Reducer}, label={lst:bodycells}, language=Kotlin]
 fun reducer(state: State = State(), action: RAction) : State {
   return when (action) {
     is UpdateCells -> state.copy(cells = action.cells)
@@ -358,38 +356,27 @@ Questo componente è stato realizzato per definire la struttura generale del com
 
 \subsubsection{TableHeaderView}
 Questo componente rappresenta le dimensioni superiori della tabella pivot.
-Dire che la struttura della tabella è stata realizzata con flex, table, etc.
 
 \subsubsection{TableSidebarView}
 Questo componente rappresenta le dimensioni laterali della tabella pivot.
-Dire che la struttura della tabella è stata realizzata con flex, table, etc.
 
 \subsubsection{TableBodyView}
-Questo componente rappresenta i dati della tabella pivot
-Dire che la struttura della tabella è stata realizzata con flex, table, etc.
+Questo componente rappresenta i dati della tabella pivot.
 
 \subsubsection{TableLabel}
-Questo componente rappresenta i dati della tabella pivot
-Dire che la struttura della tabella è stata realizzata con flex, table, etc.
+Questo componente rappresenta una singola cella di intestazione della tabella.
 
 \subsubsection{TableActionUI}
-Questo componente rappresenta i dati della tabella pivot
-Dire che la struttura della tabella è stata realizzata con flex, table, etc.
+Questo componente rappresenta l'insieme delle interazioni che possono essere effettuate sulle dimensioni.
 
 \subsection{Container Redux}
+Per utilizzare lo stato di Redux nei componenti di React ho realizzato dei wrapper per i componenti di React che permettono di mappare lo stato e le funzioni per chiamare la funzione reducer per ogni componente grafico.
 \subsubsection{TableController}
 \subsubsection{TableHeaderController}
 \subsubsection{TableSidebarController}
 \subsubsection{TableBodyController}
 \subsubsection{TableActionUIController}
 \subsubsection{TableLabelController}
-
-\section{Parser JSON}
-\subsection{Struttura dati @Serializable}
-
-\section{Adapter}
-\subsection{Utilizzo del paradigma della programmazione funzionale}
-\subsubsection{Funzioni utilizzate}
 
 
 %**************************************************************

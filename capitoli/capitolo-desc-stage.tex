@@ -18,29 +18,123 @@ Infine verranno elencati i possibili ritardi, i problemi riscontrati e le soluzi
 \end{itemize}
 
 \subsection{S1: Struttura dello stato e dell'architettura Redux}
+\textbf{Durata:} \textit{5 giorni} \\
+Nel primo sprint di sviluppo sono stati implementati i requisiti considerati più importanti per porre delle solide basi dell'applicazione web; in particolare la progettazione e codifica della struttura dello stato e l'architettura di Redux.
+% maybe insert grafico
+
 \subsubsection{Sprint Backlog}
-\subsubsection{Soluzioni implementate}
+In particolare sono stati implementati questi requisiti.
+\begin{longtable} {
+		|>{}p{10mm}| 
+		|>{}p{90mm}|
+		|>{}p{15mm}|
+		|>{}p{15mm}|
+		|>{}p{15mm}|
+		>{}p{0mm}}
+	\hline
+	\textbf{Id} & \textbf{Descrizione} & \textbf{Tipo} \\ \hline
+	R1.0 & Definizione dello stato dell'applicazione & O \\ \hline
+	R1.0.1 & Sviluppo TableState        & O\\ \hline
+	R1.0.2 & Sviluppo NodeDimensions    & O\\ \hline
+	R1.0.3 & Sviluppo BodyCells         & O\\ \hline
+	R1.0.4 & Sviluppo HeaderAction      & O\\ \hline
+	R1.0.5 & Sviluppo NodeActionType    & O\\ \hline
+	R1.1   & Definizione architettura Redux & O\\ \hline
+	R1.1.1 & Sviluppo TableStateSlice    & O\\ \hline
+	R1.1.2 & Sviluppo di Thunk & O\\ \hline
+	R1.1.3 & Sviluppo delle Actions & O\\ \hline
+	R1.1.4 & Sviluppo dei Reducers & O\\ \hline
+\end{longtable}
+
+\subsubsection{Struttura del progetto}
+\dirtree{%
+	.1 kotlin.
+		.2 redux.
+			.3 slices.
+				.4 TableStateSlice.kt.
+			.3 thunks.
+				.4 RThunk.kt.
+				.4 InitState.kt.
+			.3 state.
+				.4 Index.kt.
+		.2 entities.
+			.3 StateEntities.kt.
+}
 \subsubsection{Sprint Review}
+Niente da segnalare.
+
 \subsubsection{Backlog refinement}
+Il Product Backlog non è stato modificato.
+
 \subsubsection{Problemi riscontrati}
+Implementare correttamente l'architettura Redux è risultato difficoltoso a causa della mia inesperienza con la libreria e la mancanza di documentazione relativa a \verb|kotlin-redux|. Questi problemi non hanno però causato rallentamenti nell'implementazione degli altri requisiti dello Sprint Backlog.
+
+
 
 \subsection{S2: Componenti grafici e container Redux}
+\textbf{Durata:} \textit{4 giorni} \\
+Nel secondo sprint di sviluppo ho lavorato sull'interfaccia grafica e quindi i componenti React e i relativi container Redux.
+
 \subsubsection{Sprint Backlog}
+
+\subsubsection{Struttura del progetto}
+\dirtree{%
+	.1 kotlin.
+	.2 redux.
+	.3 slices.
+	.4 TableStateSlice.kt.
+	.3 thunks.
+	.4 RThunk.kt.
+	.4 InitState.kt.
+	.3 state.
+	.4 Index.kt.
+	.3 container.
+	.4 TableViewController.kt.
+	.4 TableHeaderViewController.kt.
+	.4 TableSidebarViewController.kt.
+	.4 TableBodyViewController.kt.
+	.4 TableActionUIController.kt.
+	.4 TableLabelViewController.kt.
+	.2 entities.
+	.3 StateEntities.kt.
+	.2 view.
+	.3 TableView.kt.
+	.3 TableHeaderView.kt.
+	.3 TableSidebarView.kt.
+	.3 TableBodyView.kt.
+	.3 TableActionUI.kt.
+	.3 TableLabelView.kt.
+}
+
 \subsubsection{Soluzioni implementate}
 \subsubsection{Sprint Review}
+Niente da segnalare.
+
 \subsubsection{Backlog refinement}
+Il Product Backlog non è stato modificato.
+
 \subsubsection{Problemi riscontrati}
+La realizzazione dei container Redux è stat leggermente rallentata.
 
 \subsection{S3: Parser JSON e adapter}
 \subsubsection{Sprint Backlog}
 \subsubsection{Soluzioni implementate}
 \subsubsection{Sprint Review}
+Niente da segnalare.
+
 \subsubsection{Backlog refinement}
+Il Product Backlog non è stato modificato.
+
 \subsubsection{Problemi riscontrati}
+La realizzazione dell'adapter è stata rallentata molto dai continui cambiamenti, da parte dell'azienda, della struttura dell'API. I rallentamenti hanno causato ad una lunghezza dello sprint più elevata. La realizzazione dell'adapter ha infatti anche occupato parte della settimana riservata al quarto sprint.
 
 \subsection{S4: Caricamento parziale}
-\subsubsection{Sprint Backlog}
-\subsubsection{Soluzioni implementate}
+\subsubsection{Sprint Review}
+Niente da segnalare.
+
+\subsubsection{Backlog refinement}
+Il Product Backlog non è stato modificato.
+
 \subsubsection{Sprint Review}
 \subsubsection{Backlog refinement}
 \subsubsection{Problemi riscontrati}

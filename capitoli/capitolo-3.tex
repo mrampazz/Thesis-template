@@ -350,27 +350,50 @@ fun reducer(state: State = State(), action: RAction) : State {
 \end{lstlisting}
 
 \section{Componenti grafici}
-Lo sviluppo dei componenti grafici è stato diviso in tre parti: mockup della soluzione, realizzazione del componente React e infine la creazione dell'elemento container di Redux. Di seguito verranno elencati e spiegati, per ogni componente, i tre passaggi dello sviluppo.
+Per quanto riguarda la struttura dei componenti grafici l'azienda mi ha dato completa libertà per quanto riguarda la loro struttura.Ho diviso la loro realizzazione in due parti: mockup della soluzione e codifica del componente React. Di seguito verranno elencati e spiegati, per ogni componente, i due passaggi dello sviluppo.
+
 \subsubsection{TableView}
-Questo componente è stato realizzato per definire la struttura generale del componente e per suddividere in modo responsivo lo spazio in quattro quadranti. Come si può vedere dalla seguente immagine ho realizzato il componente utilizzando il layout CSS Grid. Questo mi ha permesso di gestire, in modo responsivo, la struttura del componente.
+Questo componente è stato realizzato per definire la struttura generale del componente. L'idea alla base di questo componente è stata quella di fornire uno spazio suddivisibile in quattro sezioni. Ogni sezione è stata in seguito popolata dagli altri componenti.
+\paragraph*{Mockup} \mbox{} \\
+Come si può vedere dalla seguente immagine ho realizzato il componente utilizzando il layout CSS Grid. Questo mi ha permesso di gestire, in modo responsivo, la struttura del componente. Ho valutato la scelta del tipo di layout tra flex e grid. Ho deciso di optare per quest'ultimo perchè forniva un modo semplice e conciso di suddividere questo componente in quattro sezioni distinte tra loro.
+
+\paragraph*{Codifica} \mbox{} \\
+
+
 
 \subsubsection{TableHeaderView}
 Questo componente rappresenta le dimensioni superiori della tabella pivot.
+\paragraph*{Mockup} \mbox{} \\
+\paragraph*{Codifica} \mbox{} \\
+
+
 
 \subsubsection{TableSidebarView}
 Questo componente rappresenta le dimensioni laterali della tabella pivot.
+\paragraph*{Mockup} \mbox{} \\
+\paragraph*{Codifica} \mbox{} \\
+
 
 \subsubsection{TableBodyView}
 Questo componente rappresenta i dati della tabella pivot.
+\paragraph*{Mockup} \mbox{} \\
+\paragraph*{Codifica} \mbox{} \\
+
 
 \subsubsection{TableLabel}
 Questo componente rappresenta una singola cella di intestazione della tabella.
+\paragraph*{Mockup} \mbox{} \\
+\paragraph*{Codifica} \mbox{} \\
+
 
 \subsubsection{TableActionUI}
 Questo componente rappresenta l'insieme delle interazioni che possono essere effettuate sulle dimensioni.
+\paragraph*{Mockup} \mbox{} \\
+\paragraph*{Codifica} \mbox{} \\
+
 
 \subsection{Container Redux}
-Per utilizzare lo stato di Redux nei componenti di React ho realizzato dei wrapper per i componenti di React che permettono di mappare lo stato e le funzioni per chiamare la funzione reducer per ogni componente grafico.
+Per utilizzare lo stato di Redux nei componenti di React ho realizzato dei wrapper per ogni componente di React che necessitava di utilizzare lo stato di Redux. Questi wrapper mi hanno permesso di mappare lo stato e le funzioni per chiamare la funzione reducer nelle props di ogni componente grafico.
 \subsubsection{TableController}
 \subsubsection{TableHeaderController}
 \subsubsection{TableSidebarController}

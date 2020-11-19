@@ -69,14 +69,33 @@ Il Product Backlog non è stato modificato.
 \subsubsection{Problemi riscontrati}
 Implementare correttamente l'architettura Redux è risultato difficoltoso a causa della mia inesperienza con la libreria e la mancanza di documentazione relativa a \verb|kotlin-redux|. Questi problemi non hanno però causato rallentamenti nell'implementazione degli altri requisiti dello Sprint Backlog.
 
-
+\newpage
 
 \subsection{S2: Componenti grafici e container Redux}
 \textbf{Durata:} \textit{4 giorni} \\
 Nel secondo sprint di sviluppo ho lavorato sull'interfaccia grafica e quindi i componenti React e i relativi container Redux.
 
 \subsubsection{Sprint Backlog}
-
+\begin{longtable} {
+		|>{}p{10mm}| 
+		|>{}p{90mm}|
+		|>{}p{15mm}|
+		|>{}p{15mm}|
+		|>{}p{15mm}|
+		>{}p{0mm}}
+	\hline
+R2.0   & \textbf{Definizione e pianificazione dei componenti} & O\\ \hline
+R2.1   & Sviluppo dei componenti React 		  & O\\ \hline
+R2.1.1 & Sviluppo di TableView                & O\\ \hline
+R2.1.2 & Sviluppo di TableHeaderView          & O\\ \hline
+R2.1.3 & Sviluppo di TableSidebarView         & O \\ \hline
+R2.1.4 & Sviluppo di TableBodyView            & O\\ \hline
+R2.2   & Sviluppo dei container Redux         & O  \\ \hline
+R2.2.2 & Sviluppo di TableController          & O   \\ \hline
+R2.2.3 & Sviluppo di TableHeaderController    & O      \\ \hline
+R2.2.4 & Sviluppo di TableSidebarController   & O      \\ \hline
+R2.2.5 & Sviluppo di TableBodyController      & O   \\ \hline
+\end{longtable}
 \subsubsection{Struttura del progetto}
 \dirtree{%
 	.1 kotlin.
@@ -106,7 +125,6 @@ Nel secondo sprint di sviluppo ho lavorato sull'interfaccia grafica e quindi i c
 	.3 TableLabelView.kt.
 }
 
-\subsubsection{Soluzioni implementate}
 \subsubsection{Sprint Review}
 Niente da segnalare.
 
@@ -114,7 +132,8 @@ Niente da segnalare.
 Il Product Backlog non è stato modificato.
 
 \subsubsection{Problemi riscontrati}
-La realizzazione dei container Redux è stat leggermente rallentata.
+Niente da segnalare.
+\newpage
 
 \subsection{S3: Parser JSON e adapter}
 \subsubsection{Sprint Backlog}
@@ -126,7 +145,9 @@ Niente da segnalare.
 Il Product Backlog non è stato modificato.
 
 \subsubsection{Problemi riscontrati}
-La realizzazione dell'adapter è stata rallentata molto dai continui cambiamenti, da parte dell'azienda, della struttura dell'API. I rallentamenti hanno causato ad una lunghezza dello sprint più elevata. La realizzazione dell'adapter ha infatti anche occupato parte della settimana riservata al quarto sprint.
+La realizzazione dell'adapter è stata rallentata da alcuni cambiamenti della struttura dell'API da parte dell'azienda. I rallentamenti hanno causato ad una lunghezza dello sprint più elevata. La realizzazione dell'adapter ha infatti anche occupato parte della settimana riservata al quarto sprint.
+
+\newpage
 
 \subsection{S4: Caricamento parziale}
 \subsubsection{Sprint Review}

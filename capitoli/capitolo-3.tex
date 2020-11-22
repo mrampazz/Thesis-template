@@ -148,8 +148,16 @@ data class BodyCells(
 	\item \verb|rPath|: indica a che dimensioni delle righe appartiene il dato.
 \end{itemize}
 
-\subsection{Gestione delle richieste all'API}
-Il primo passo per utilizzare dei dati reali all'interno della tabella pivot è stato quello di realizzare una funzione per effettuare richiest HTTP alla API di Gruppo4. Per farlo ho utilizzato l'implementazione di Kotlin di \verb|window.fetch|. La funzione risultante è la seguente:
+\subsection{Utilizzare dati reali}
+Durante i primi due sprint di sviluppo ho utilizzato dati mockati in modo da realizzare una struttura adeguata alla renderizzazione. Ho suddiviso l'utilizzo di dati reali in tre passaggi:
+\begin{enumerate}
+	\item effettuare richiesta API;
+	\item realizzare data class necessarie;
+	\item realizzare adapter;
+\end{enumerate}
+
+\subsubsection{Gestione delle richieste all'API}
+Il primo passo per utilizzare dei dati reali all'interno della tabella pivot è stato quello di realizzare una funzione per effettuare richieste HTTP alla API di Gruppo4. Per farlo ho utilizzato l'implementazione in Kotlin di \verb|window.fetch|. La funzione risultante è la seguente:
 \begin{lstlisting}[caption={Funzione fetch()}, label={lst:bodycells}, language=Kotlin]
 suspend fun fetch() {
   val res = window.fetch(url, RequestInit(
@@ -168,7 +176,12 @@ suspend fun fetch() {
    INSTANCE_KEY = (res as kotlin.js.Json)["InstanceKey"] as String?
 }
 \end{lstlisting}
-Per quanto riguarda le richieste di ricezione di nuovi dati ho utilizzato la stessa implementazione di Kotlin per realizzare la seguente funzione:
+La seguente funzione effettua una richiesta HTTP GET alla API di Gruppo4 la quale ritorna il JSON risultante e una chiave necessaria per effettuare le chiamate successive per la corretta tabella pivot. Per le richieste in seguito ad un'azione da parte di un utente ho utilizzato la seguente funzione \verb|sendAction()| che in modo similare alla precedente esegue una richiesta HTTP POST all'API della tabella di un JSON che contiene le seguenti informazioni:
+\begin{itemize}
+	\item \verb|axis|: può essere "R" o "C" (righe o colonne);
+	\item \verb|path|: array identificativo della cella su cui è stata effettuata l'azione.
+\end{itemize}
+L'implementazione di \verb|sendAction()| è la seguente: 
 \begin{lstlisting}[caption={Funzione sendAction()}, label={lst:bodycells}, language=Kotlin]
 suspend fun sendAction(body: String, type: String) {
   val res: Any? = window.fetch("$url$INSTANCE_KEY/$type", RequestInit(
@@ -184,9 +197,12 @@ suspend fun sendAction(body: String, type: String) {
     .await()
 }
 \end{lstlisting}
-\subsection{JSON Parser}
-Dopo aver ricevuto i dati, ho effettuato il parsing del JSON, per farlo ho per prima cosa studiato il JSON ritornante dall'API, in seguito ho sviluppato le \verb|data class| necessarie per effettuare la lettura del JSON. La realizzazione di questa parte del progetto è stata rallentata molto da un problema all'API dovuto al cambiamento della struttura durante lo sviluppo da parte dell'azienda.  
-\subsubsection{Struttura JSON API}
+
+\subsubsection{JSON Parser}
+Dopo aver ricevuto i dati, ho effettuato il parsing del JSON, per farlo ho per prima cosa studiato il JSON ritornante dall'API, in seguito ho sviluppato le \verb|data class|. Infatti in Kotlin per effettuare il parsing di un JSON bisogna mapparne correttamente la struttura.
+La realizzazione del parser non è stata difficoltosa, tuttavia è stata tediosa a causa dell'alto numero di \verb|data class| da realizzare.
+
+\paragraph{Struttura JSON API} \mbox{} \\
 L'oggetto JSON che si ottiene dall'API ha la seguente struttura:
 \begin{lstlisting}[caption={Struttura JSON API}, label={lst:bodycells}, language=json]
 {
@@ -220,8 +236,8 @@ L'oggetto JSON che si ottiene dall'API ha la seguente struttura:
 }
 \end{lstlisting}
 
-\subsubsection{Entità @Serializable}
-Per utilizzare in modo appropriato il JSON risultante dalla richiesta all'API ho realizzato delle entità \verb|@Serializable| che mi hanno permesso di tradurre tutto il JSON risultante in \verb|data class|.
+\paragraph{Entità @Serializable} \mbox{} \\
+Per utilizzare in modo appropriato il JSON risultante dalla richiesta all'API ho realizzato delle entità \verb|@Serializable| che mi hanno permesso di tradurre tutto il JSON risultante in una gerarchia di \verb|data class|.
 
 \subsubsection{Adapter}
 L'ultimo passo consiste nell'effettuare la traduzione da entità @Serializable nelle entità dello stato descritte precedentemente. La realizzazione dell'adapter può essere suddiviso in tre passaggi che corrispondono alle entità da tradurre.

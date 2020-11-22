@@ -11,19 +11,25 @@ Questa tesi descrive l'esperienza e il percorso lavorativo svolto presso l'azien
 
 %**************************************************************
 \section{L'azienda}
-Gruppo4 è una web agency Padovana. Da oltre vent'anni Gruppo4 ha accumulato competenze e l'esperienza necessaria per fornire soluzioni efficaci e innovative nel settore web. Mediante un modello organizzativo consolidato e certificato sviluppano WebApp che si distinguono per la chiarezza dell'interfaccia utente (UX/UI) e per la loro usabilità.
+Gruppo4 è una web agency Padovana, da oltre vent'anni ha accumulato competenze e l'esperienza necessaria per fornire soluzioni efficaci e innovative nel settore web. Mediante un modello organizzativo consolidato e certificato sviluppano applicazioni web che si distinguono per la chiarezza dell'interfaccia utente (UX/UI) e per la loro usabilità.
 
 %**************************************************************
 \section{Gli obiettivi del progetto}
-L'obiettivo principale di questo progetto consiste nella realizzazione di un componente di interfaccia grafica per il web in Kotlin. La soluzione deve essere una tabella pivot interattiva dove l'utente ha la possibilità di esplorare liberamente i Big Data contenuti al suo interno. Oltre alla realizzazione del componente, questo progetto ha anche lo scopo di valutare l'efficacia di Kotlin nel realizzare interfacce utente per il web in quanto l'azienda è particolarmente interessata alle sue applicazioni nello sviluppo di interfacce utente perchè Kotlin è già utilizzato nello sviluppo di \gls{api} di Gruppo4.
+L'obiettivo principale di questo progetto consiste nella realizzazione di un componente di interfaccia grafica per il web in Kotlin. Il componente deve essere una tabella pivot interattiva che permette ad un utente la possibilità di esplorare liberamente i \emph{big data} contenuti al suo interno. Oltre alla realizzazione del componente, questo progetto ha anche lo scopo di valutare l'efficacia di Kotlin nel realizzare interfacce utente per il web in quanto l'azienda utilizza Kotlin nello sviluppo di \gls{api}.
 
 %**************************************************************
 \section{Tabella pivot}
-L'azienda mi ha fornito una descrizione accurata della tabella pivot che vogliono ottenere. Nelle prossime sottosezioni descriverò le possibili interazioni con l'utente e gli elementi che la compongono.
-\subsection{Dimensioni}
-Per prima cosa bisogna parlare delle dimensioni della tabella. Esse sono divise in colonne e righe e rappresentano la descrizione dei dati. Queste dimensioni possono essere molteplici sia per righe e per colonne, inoltre ogni elemento delle dimensioni potrebbe avere dei sotto elementi.
-\subsection{Interazioni utente}
-La tabella pivot deve essere completamente esplorabile e ogni dimensione deve poter essere chiusa e aperta con una dimensione.
+L'azienda mi ha fornito una descrizione accurata della tabella pivot, in particolare della sua struttura e delle sue funzionalità. Nelle prossime sottosezioni descriverò gli elementi che la compongono e le possibili interazioni con l'utente.
+
+\subsection{Struttura}
+La tabella pivot è stata suddivisa principalmente in due parti ben distinte: le dimensioni e i dati ad esse. Le dimensioni rappresentano le celle di intestazione della tabella. Esse sono presenti su tutti e due gli assi (righe e colonne) e su un singolo asse possono essere presenti molteplici dimensioni. I dati riferiti alle celle di intestazione corrispondono alla seconda parte della tabella pivot e corrispondo a delle semplici celle che contengono valori interi.
+% img dimensione
+
+\subsection{Funzionalità}
+La tabella deve essere completamente esplorabile da un utente per questo motivo sono presenti due tipi di azioni: sulle dimensioni e sulle singole celle di una dimensione. \\
+Ogni cella di una dimensione deve poter essere aperta o chiusa con un semplice pulsante. Mentre ogni cella di una dimensione può essere aperta per renderizzare i figli di quel nodo se essi esistono. 
+% img azione dimensione
+% img azione cella
 
 %**************************************************************
 \section{Organizzazione del testo}

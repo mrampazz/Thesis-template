@@ -49,6 +49,50 @@ La soluzione adottata è stata quella di usare sia React che Redux. React è sta
 \end{enumerate}
 Utilizzando questo dataflow lo stato dell'applicazione non dipende da un componente grafico perchè è esterno alla gerarchia dei componenti grafici. Quindi ogni componente React che ha bisogno di una frazione dei dati dello stato può semplicemente registrarsi allo Store per ricevere i dati.
 
+\section{Stato}
+Per quanto riguarda lo stato dell'applicazione ho analizzato la struttura della tabella fornita dall'azienda e le funzionalità richieste. L'idea alla base della struttura dello stato era quella di avere una struttura dati semplice da iterare in modo da avere funzioni di renderizzazione concise e facili da manutenere. Dalla struttura della tabella pivot e dalla descrizione delle sue funzionalità ho ricavato le seguenti strutture dati:
+\paragraph*{data class DimensionsNode}- rappresenta una cella d'intestazione, deve contenere:
+\begin{itemize}
+	\item \verb|id|: codice della cella;
+	\item \verb|label|: testo da renderizzare;
+	\item \verb|level|: indica a che dimensione dell'intestazione appartiene la cella;
+	\item \verb|childDepth|: indica la profondità della cella in una gerarchia ad albero;
+	\item \verb|path|: codice identificativo della cella costituito da una lista di \verb|id| che rappresenta la gerarchia di una cella;
+	\item \verb|actionType|: indica il tipo dell'azione che bisogna eseguire, esso verrà indicato con una classe di tipo: \verb|enum class NodeActionType|;
+	\item \verb|isChild|: indica se la cella è un figlio di un'altra cella.
+\end{itemize}
+
+\paragraph*{data class BodyCells}- rappresenta una cella dei dati, deve contenere:
+\begin{itemize}
+	\item \verb|value|: indica il dato;
+	\item \verb|cPath|: indica l'insieme dei codici delle dimensioni delle colonne a cui appartiene il dato;
+	\item \verb|rPath|: indica l'insieme dei codici delle dimensioni delle righe a cui appartiene il dato.
+\end{itemize}	
+
+\paragraph*{data class HeaderAction}- rappresenta un tipo di azione, deve contenere:
+\begin{itemize}
+	\item \verb|actionType|:  indica il tipo dell'azione che bisogna eseguire, esso verrà indicato con una classe di tipo: \verb|enum class NodeActionType|;
+	\item \verb|dim|: indica la dimensione su cui applicare l'azione;
+	\item \verb|depth|: indica la profondità all'interno della dimensione su cui applicare l'azione.
+\end{itemize}
+
+\paragraph*{enum class NodeActionType}- rappresenta un tipo di azione:
+\begin{itemize}
+	\item \verb|EXPAND|:  indica che la cella può espandere per mostrare i suoi figli;
+	\item \verb|COLLAPSE|: indica che la cella può nascondere i suoi figli;
+	\item \verb|NULL|: indica che la cella non ha un'azione.
+\end{itemize}
+
+Quindi per rappresentare l'intero stato della tabella ho definito un ultimo \verb|data class|:
+\paragraph*{data class TableState}
+\begin{itemize}
+	\item \verb|rows|: matrice di DimensionsNode, rappresenta le dimensioni delle righe;
+	\item \verb|cols|: matrice di DimensionsNode, rappresenta le dimensioni delle colonne;
+	\item \verb|cells|: matrice di BodyCells, rappresenta le celle contente i dati della tabella;
+	\item \verb|rowActions|: matrice di HeaderAction, rappresenta le azioni disponibili per le dimensioni delle righe;
+	\item \verb|colActions|:  matrice di HeaderAction, rappresenta le azioni disponibili per le dimensioni delle colonne.
+\end{itemize}
+
 \section{Gestione dello stato}
 Come descritto nella sezione precedente nell'ambito di questo progetto è stata adottata la libreria Redux, per applicare al meglio la sua architettura ho progettato la sua codifica nel seguente modo. Per prima cosa ho suddiviso lo stato dell'applicazione in "Slice" cioè in pezzo di stato. In questo modo la struttura dello stato è modulare e scalabile dato che, se questa applicazione verrà ampliata in un futuro basterà aggiungere uno slice allo stato. Ogni slice deve essere strutturato nel seguente modo:
 \begin{lstlisting}[caption={Esempio Slice}, label={lst:bodycells}, language=Kotlin]
@@ -70,12 +114,19 @@ object Slice {
 \end{lstlisting}
 
 \subsection{Stato}
-Lo stato gestito da Redux è definito da un data class che contiene tutte le informazioni dello Slice.
+Lo stato gestito da Redux è definito da un data class che contiene tutte le informazioni dello Slice. Più precisamente conterrà i seguenti campi dati:
+\begin{itemize}
+	\item \verb|isLoading|: booleano che indica se si stanno effettuando chiamate http o funzionalità asincrone;
+	\item \verb|rows|: insieme di celle che rappresentano le dimensioni delle righe;
+	\item \verb|cols|: insieme di celle che rappresentano le dimensioni delle colonne;
+	\item \verb|cells|: insieme di celle che contengono i dati relativi alle dimensioni;
+	\item \verb|rowActions|: insieme di possibili azioni eseguibili sulle dimensioni delle righe;
+	\item \verb|colActions|: insieme di possibili azioni eseguibili sulle dimensioni delle colonne.
+\end{itemize}
 
 \subsection{Thunk}
-Dato che i cambiamenti allo stato innescati dalle Actions possono essere solo sincroni ho utilizzato un interfaccia che fornisce le stesse funzionalità di un Actions ma ne espande l'utilità permettendo operazioni asincrone, questa interfaccia è definita come \verb|thunk|.
+Dato che i cambiamenti allo stato innescati dalle Actions possono essere solo sincroni ho utilizzato un'interfaccia che fornisce le stesse funzionalità di un Actions ma ne espande l'utilità permettendo operazioni asincrone, questa interfaccia è definita come \verb|thunk|.
 I \emph{thunk} sono definiti come \emph{middleware} di Redux e sono usati per effettuare operazioni asincrone complesse, l'interfaccia dei Thunk purtroppo non era presente nell'implementazione di Redux di kotlin quindi ho realizzato una semplice interfaccia che implementa le funzionalità dei thunk.
-
 \begin{lstlisting}[caption={Interfaccia Thunk}, label={lst:bodycells}, language=Kotlin]
 interface RThunk : RAction {
 	operator fun invoke(
@@ -100,45 +151,34 @@ applyMiddleware<AppState, RAction, WrapperAction, RAction, WrapperAction>(
 
 val nullAction = js {}.unsafeCast<WrapperAction>()
 \end{lstlisting}
+
 \subsection{Actions}
-Le actions sono definiti come delle classi di tipo \verb|RAction| che vengono usati per innescare l'update dello stato.
+Le actions sono definiti come delle classi di tipo \verb|RAction| che vengono usati per innescare l'update dello stato. Solitamente un'action si occuperà di modificare solo un campo dato dello stato. Quindi dalla mia precedente progettazione dello stato ho individuato cinque Actions:
+\begin{itemize}
+	\item \verb|class UpdateRows(): RAction|;
+	\item \verb|class SetIsLoading(): RAction|;
+	\item \verb|class UpdateCols(): RAction|;
+	\item \verb|class UpdateCells(): RAction|;
+	\item \verb|class UpdateRowActions(): RAction|;
+	\item \verb|class UpdateColActions(): RAction|.
+\end{itemize}
 
 \subsection{Reducer}
-Un \emph{reducer} è una \emph{funzione pura} che riceve come argomento un \verb|RAction| e ritorna una copia dello stato modificato. 
+Un \emph{reducer} è una \emph{funzione pura} che riceve come argomento un \verb|RAction| e ritorna una copia dello stato modificato. In kotlin il modo per realizzare una funzione reducer è realizzare una struttura switch (in kotlin corrisponde ad una struttura when) dove vengono definiti tanti casi quanto sono le actions disponibili che vogliono essere utilizzate. Per le actions definite precedentemente:
+\begin{lstlisting}[caption={Interfaccia Thunk}, label={lst:bodycells}, language=Kotlin]
+fun reducer(state: State = State(), action: RAction) : State {
+  return when (action) {
+    is UpdateRows -> state.copy(...)
+    is SetIsLoading -> state.copy(...)
+    is UpdateCols -> state.copy(...)
+    is UpdateCells -> state.copy(...)
+    is UpdateRowActions -> state.copy(...)
+    is UpdateColActions -> state.copy(...)
+    else -> state
+  }
+}
+\end{lstlisting}
 
-\section{Stato}
-Per quanto riguarda lo stato dell'applicazione ho analizzato la struttura della tabella fornita dall'azienda e le funzionalità richieste. L'idea alla base della struttura dello stato era quella di avere una struttura dati semplice da iterare in modo da avere funzioni di renderizzazione concise e facili da manutenere. Dalla struttura della tabella pivot e dalla descrizione delle sue funzionalità ho ricavato le seguenti strutture dati:
-\paragraph*{data class DimensionsNode}- rappresenta una cella d'intestazione, deve contenere:
-\begin{itemize}
-	\item \verb|id|: codice della cella;
-	\item \verb|label|: testo da renderizzare;
-	\item \verb|level|: indica a che dimensione dell'intestazione appartiene la cella;
-	\item \verb|childDepth|: indica la profondità della cella in una gerarchia ad albero;
-	\item \verb|path|: codice identificativo della cella costituito da una lista di \verb|id| che rappresenta la gerarchia di una cella;
-	\item \verb|actionType|: indica il tipo dell'azione che bisogna eseguire, esso verrà indicato con una classe di tipo: \verb|enum class NodeActionType|;
-	\item \verb|isChild|: indica se la cella è un figlio di un'altra cella.
-\end{itemize}
-	
-\paragraph*{data class BodyCells}- rappresenta una cella dei dati, deve contenere:
-\begin{itemize}
-	\item \verb|value|: indica il dato;
-	\item \verb|cPath|: indica l'insieme dei codici delle dimensioni delle colonne a cui appartiene il dato;
-	\item \verb|rPath|: indica l'insieme dei codici delle dimensioni delle righe a cui appartiene il dato.
-\end{itemize}	
-
-\paragraph*{data class HeaderAction}- rappresenta un tipo di azione, deve contenere:
-\begin{itemize}
-	\item \verb|actionType|:  indica il tipo dell'azione che bisogna eseguire, esso verrà indicato con una classe di tipo: \verb|enum class NodeActionType|;
-	\item \verb|dim|: indica la dimensione su cui applicare l'azione;
-	\item \verb|depth|: indica la profondità all'interno della dimensione su cui applicare l'azione.
-\end{itemize}
-
-\paragraph*{enum class NodeActionType}- rappresenta un tipo di azione:
-\begin{itemize}
-	\item \verb|EXPAND|:  indica che la cella può espandere per mostrare i suoi figli;
-	\item \verb|COLLAPSE|: indica che la cella può nascondere i suoi figli;
-	\item \verb|NULL|: indica che la cella non ha un'azione.
-\end{itemize}
 
 \section{Parser e adapter}
 Per la progettazione ho per prima cosa definito i passaggi necessari per ricevere i dati dalla API di Gruppo4. Ho individuato la necessità di due funzioni \verb|fetch| e \verb|sendAction|, la prima per richiedere i dati iniziali e la seconda per ottenere nuovi dati in seguito all'azione passata per argomento a \verb|sendAction|. \\
@@ -169,47 +209,106 @@ Per quanto riguarda il parser del json ho studiato la struttura del json ritorna
 	}
 	"Cols": // stessa struttura di "Rows"
 	"Cells": [
-	[51515, 2315, 747, 22],
-	[ ... ]
+	  [51515, 2315, 747, 22],
+	  [ ... ]
+	],
+	"Filters": [
+	  {
+	    "Filtered": false,
+	    "ActiveFilters": ["f1", "f2", "f3"],
+	    "Type": "list",
+	    "Name": "associazioni_provincia",
+	    "Label": "Associazioni per provincia"
+	  }
 	]
 }
 \end{lstlisting}
 Da questa struttura ho identificato le seguenti \verb|data class @Serializable|:
 \begin{itemize}
-	\item \verb||;
-	\item \verb||;
-	\item \verb||;
-	\item \verb||;
-	\item \verb||;
+	\item \verb|Gruppo4Json|: rappresenta la struttura generale del json;
+	\item \verb|Gruppo4Data|: rappresenta la struttura dei campi dati "Rows" e "Cols";
+	\item \verb|Gruppo4Filter|: rappresenta la struttura contenuta nel campo dati "Filters";
+	\item \verb|Gruppo4Actions|: rappresenta la struttura contenuta nel campo dati "Actions" all'interno di "Rows" e "Cols";
+	\item \verb|Gruppo4Node|: rappresenta la struttura contenuta nel campo dati "Tree" all'interno di "Rows" e "Cols" e corrisponde ad un nodo della struttura ad albero.
 \end{itemize}
 
-Per quanto riguarda la progettazione dell'adapter ho individuato le data class ottenibili dal JSON e le data class definite nello stato. Da esse ho individuato le seguenti funzioni:
+Per quanto riguarda la progettazione dell'adapter ho individuato le data class ottenibili dal JSON e le data class definite nello stato. Da esse ho individuato le seguenti funzioni da realizzare:
 \begin{itemize}
-	\item \verb||;
-	\item \verb||;
-	\item \verb||;
-	\item \verb||;
-	\item \verb||;
+	\item \verb|fun convertListOfGruppo4Node()|:
+	\begin{itemize}
+		\item si occuperà di convertire una lista di \verb|Gruppo4Node| in \verb|DimensionsNode|;
+	\end{itemize}
+
+	\item \verb|fun convertTree()|:
+	\begin{itemize}
+		\item si occuperà di convertire la struttura ad albero in una struttura più semplice da iterare;
+	\end{itemize}
+	
+	\item \verb|fun convertListOfGruppo4Actions()|:
+	\begin{itemize}
+		\item si occuperà di convertire una lista di \verb|Gruppo4Actions| in \verb|HeaderAction|;
+	\end{itemize}
+
+	\item \verb|fun convertCells()|:
+	\begin{itemize}
+		\item si occuperà di unire i dati definiti nel campo dati "Cells" con i "Path" in modo da ottenere una matrice di \verb|BodyCells|.
+	\end{itemize}
 \end{itemize}
 
 \section{Componenti grafici}
-Per quanto riguarda la struttura dei componenti grafici l'azienda mi ha dato completa libertà per quanto riguarda la loro struttura. La progettazione di essi consiste nel loro mockup e la definizione degli stili grafici necessari. Questa prima immagine rappresenta il mockup iniziale da cui sono partito:
-% mockup generale
-Da questo mockup general ho individuato i seguenti componenti:
+Per quanto riguarda la struttura dei componenti grafici l'azienda mi ha dato completa libertà per quanto riguarda la loro struttura. La progettazione di essi consiste nel loro mockup e la definizione degli stili grafici necessari. Questa prima immagine rappresenta il mockup iniziale da cui sono partito: \\
+\begin{minipage}{\linewidth}
+	\makebox[\linewidth] {
+		\includegraphics[scale=0.75]{./immagini/mockup-generale.png}
+	}
+\end{minipage}
+\mbox{} \\
+Da questo mockup generale ho individuato i seguenti componenti grafici. In particolare ho definito la loro gerarchia di composizione:
 \begin{itemize}
-	\item \verb||;
-	\item \verb||;
-	\item \verb||;
-	\item \verb||;
-	\item \verb||;
+	\item \verb|Table|
+	\begin{itemize}
+		\item \verb|TableActionUI|
+		\item \verb|TableHeader|
+		\begin{itemize}
+			\item \verb|TableLabel|
+		\end{itemize}
+		\item \verb|TableSidebar|
+		\begin{itemize}
+			\item \verb|TableLabel|
+		\end{itemize}
+		\item \verb|TableBody|
+	\end{itemize}
 \end{itemize}
 
-Di seguito sono dei mockup di tutti i componenti che ho individuato nella tabella pivot:
-% altri mockup
+Di seguito sono dei mockup di tutti i componenti che ho individuato nella tabella pivot: \\
 
+\begin{minipage}{\linewidth}
+	\makebox[\linewidth] {
+		\includegraphics[scale=0.75]{./immagini/mockup-dim-1.png}
+	}
+\end{minipage}
+\mbox{} \\
 
+\begin{minipage}{\linewidth}
+	\makebox[\linewidth] {
+		\includegraphics[scale=0.75]{./immagini/mockup-dim-2.png}
+	}
+\end{minipage}
+\mbox{} \\
 
+\begin{minipage}{\linewidth}
+	\makebox[\linewidth] {
+		\includegraphics[scale=0.75]{./immagini/mockup-bodycells.png}
+	}
+\end{minipage}
+\mbox{} \\
 
+Da questi mockup ho deciso in che modo organizzare questi componenti. Ho deciso di suddividere il componente \verb|Table| in quattro quadranti utilizzando \verb|css grid|. Ogni quadrante conterrà i singoli componenti. \\
+Per quanto riguarda \verb|TableActionUI| ho pensato di suddividerlo in quattro quadranti in modo similare a \verb|Table| così da posizionare i pulsanti delle azioni in modo semplice.
+In \verb|TableBody| ho definito la sua struttura come una tabella html.
+Nel componente \verb|TableHeader| ho deciso di realizzare una tabella per ogni dimensione disponibile con una singola riga contenente un'insieme di \verb|TableLabel|.
+Il componente \verb|TableSidebar| è simile a \verb|TableHeader|, quindi per ogni dimensione disponibile viene creata una tabella con una singola colonna contenente un'insieme di \verb|TableLabel|.
+Infine per quanto riguarda il componente \verb|TableLabel| ho pensato di realizzarlo con un elemento \verb|<th>| con al suo interno un possibile pulsante per l'azione eseguibile e una etichetta, posizionati mediante l'uso di \verb|css flex|.
 
 
 

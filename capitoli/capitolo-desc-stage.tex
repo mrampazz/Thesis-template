@@ -20,7 +20,6 @@ Infine verranno elencati i possibili ritardi, i problemi riscontrati e le soluzi
 \section{S1: Struttura dello stato e dell'architettura Redux}
 \textbf{Durata:} \textit{5 giorni} \\
 Nel primo sprint di sviluppo sono stati implementati i requisiti considerati più importanti per porre delle solide basi dell'applicazione web; in particolare la progettazione e codifica della struttura dello stato e l'architettura di Redux.
-% maybe insert grafico
 
 \subsection{Sprint Backlog}
 In particolare sono stati implementati questi requisiti.
@@ -187,20 +186,6 @@ data class BodyCells(
 )
 \end{lstlisting}
 
-\subsection{Struttura del progetto}
-\dirtree{%
-	.1 kotlin.
-		.2 redux.
-			.3 slices.
-				.4 TableStateSlice.kt.
-			.3 thunks.
-				.4 RThunk.kt.
-				.4 InitState.kt.
-			.3 state.
-				.4 Index.kt.
-		.2 entities.
-			.3 StateEntities.kt.
-}
 \subsection{Sprint Review}
 Niente da segnalare.
 
@@ -240,38 +225,36 @@ R2.2.5 & Sviluppo di TableBodyController      & O   \\ \hline
 
 \subsection{Soluzioni implementate}
 \subsubsection{view}
-
+\begin{minipage}{\linewidth}
+	\makebox[\linewidth] {
+		\includegraphics[scale=0.75]{./immagini/table-pivot.png}
+	}
+\end{minipage}
 \subsubsection{redux.container}
-
-\subsection{Struttura del progetto}
-\dirtree{%
-	.1 kotlin.
-	.2 redux.
-	.3 slices.
-	.4 TableStateSlice.kt.
-	.3 thunks.
-	.4 RThunk.kt.
-	.4 InitState.kt.
-	.3 state.
-	.4 Index.kt.
-	.3 container.
-	.4 TableViewController.kt.
-	.4 TableHeaderViewController.kt.
-	.4 TableSidebarViewController.kt.
-	.4 TableBodyViewController.kt.
-	.4 TableActionUIController.kt.
-	.4 TableLabelViewController.kt.
-	.2 entities.
-	.3 StateEntities.kt.
-	.2 view.
-	.3 TableView.kt.
-	.3 TableHeaderView.kt.
-	.3 TableSidebarView.kt.
-	.3 TableBodyView.kt.
-	.3 TableActionUI.kt.
-	.3 TableLabelView.kt.
+Per ogni componente che richiedeva un collegamento con lo stato di Redux è stato realizzato un wrapper che permette di mappare lo stato di Redux nelle \emph{props} di un componente React. Questi wrapper sono stati definiti in questo modo:
+\begin{lstlisting}[caption={BodyCells}, label={lst:bodycells}, language=Kotlin]
+// campi dato dello stato da mappare alle props
+private interface StateProps : RProps {
+	var rows: ArrayList<DimensionsNode>
+	...
 }
 
+// funzioni per modificare lo stato da mappare alle props
+private interface DispatchProps: RProps {
+	var updateRows: (rows: ArrayList<DimensionsNode>) -> Unit
+	...
+}
+
+val reactComponent: RClass<RComponentProps> =
+rConnect<AppState, RAction, WrapperAction, RProps, StateProps, DispatchProps, RComponentProps>(
+mapStateToProps = { state, _ ->
+	rows = state.tableState.rows
+},
+mapDispatchToProps = { dispatch, _ ->
+	updateRows = { rows -> dispatch(TableStateSlice.UpdateRows(rows)) }
+}
+)(TableActionUI::class.js.unsafeCast<RClass<RComponentProps>>())
+\end{lstlisting}
 \subsection{Sprint Review}
 Niente da segnalare.
 
@@ -279,32 +262,40 @@ Niente da segnalare.
 Il Product Backlog non è stato modificato.
 
 \subsection{Problemi riscontrati}
-Niente da segnalare.
+All'inizio dello sprint ho realizzato i componenti grafici con una scrittura funzionale, tuttavia dopo aver implementato i container Redux ho notato la presenza di alcuni bug nell'uso di Redux e componenti React scritti in modo funzionale. Quindi ho riscritto i componenti con una scrittura a classi. Questo problema non ha però causato ritardi gravi. 
+
 \newpage
 
 \section{S3: Parser JSON e adapter}
+\textbf{Durata:} \textit{8 giorni} \\
+Nel terzo sprint ho realizzato le funzioni per eseguire richieste HTTP e le ho implementate in modo da funzionare correttamente con le funzioni eseguite nel primo sprint. In seguito ho realizzato le \verb|data class @Serializable| per eseguire il parsing del json. Infine ho scritto le funzioni che mi hanno permesso di tradurre i dati ricevuti dall'api nelle strutture dati definite nel primo sprint.
+ 
 \subsection{Sprint Backlog}
+INSERIRE TABELLA
+
 \subsection{Soluzioni implementate}
 \subsubsection{Gestione delle richieste all'API}
 Il primo passo per utilizzare dei dati reali all'interno della tabella pivot è stato quello di realizzare una funzione per effettuare richieste HTTP alla API di Gruppo4. Per farlo ho utilizzato l'implementazione in Kotlin di \verb|window.fetch|. La funzione risultante è la seguente:
 \begin{lstlisting}[caption={Funzione fetch()}, label={lst:bodycells}, language=Kotlin]
 suspend fun fetch() {
-val res = window.fetch(url, RequestInit(
-method = "GET",
-credentials = RequestCredentials.Companion.INCLUDE,
-headers = {
-json("Accept" to "application/json")
-json("Content-Type" to "application/json")
-}))
-.await()
-.json()
-.await()
+  val res = window.fetch(url, RequestInit(
+    method = "GET",
+    credentials = RequestCredentials.Companion.INCLUDE,
+    headers = {
+      json("Accept" to "application/json")
+      json("Content-Type" to "application/json")
+    }))
+    .await()
+    .json()
+    .await()
 
-// Codice identificativo dell'istanza della tabella pivot necessario
-// per le chiamate successive
-INSTANCE_KEY = (res as kotlin.js.Json)["InstanceKey"] as String?
+   // Codice identificativo dell'istanza della tabella pivot necessario
+   // per le chiamate successive
+   INSTANCE_KEY = (res as kotlin.js.Json)["InstanceKey"] as String?
 }
 \end{lstlisting}
+
+\noindent
 La seguente funzione effettua una richiesta HTTP GET alla API di Gruppo4 la quale ritorna il JSON risultante e una chiave necessaria per effettuare le chiamate successive per la corretta tabella pivot. Per le richieste in seguito ad un'azione da parte di un utente ho utilizzato la seguente funzione \verb|sendAction()| che in modo similare alla precedente esegue una richiesta HTTP POST all'API della tabella di un JSON che contiene le seguenti informazioni:
 \begin{itemize}
 	\item \verb|axis|: può essere "R" o "C" (righe o colonne);
@@ -313,19 +304,23 @@ La seguente funzione effettua una richiesta HTTP GET alla API di Gruppo4 la qual
 L'implementazione di \verb|sendAction()| è la seguente: 
 \begin{lstlisting}[caption={Funzione sendAction()}, label={lst:bodycells}, language=Kotlin]
 suspend fun sendAction(body: String, type: String) {
-val res: Any? = window.fetch("$url$INSTANCE_KEY/$type", RequestInit(
-method = "POST",
-body = body,
-credentials = RequestCredentials.Companion.INCLUDE,
-headers = {
-json("Accept" to "application/json")
-json("Content-Type" to "application/json")
-}))
-.await()
-.json()
-.await()
+    val res: Any? = window.fetch("$url$INSTANCE_KEY/$type", RequestInit(
+      method = "POST",
+      body = body,
+      credentials = RequestCredentials.Companion.INCLUDE,
+      headers = {
+        json("Accept" to "application/json")
+        json("Content-Type" to "application/json")
+      }))
+     .await()
+     .json()
+     .await()
 }
 \end{lstlisting}
+
+\subsubsection{Entità @Serializable}
+\subsubsection{Funzioni adapter}
+
 \subsection{Sprint Review}
 Niente da segnalare.
 
@@ -333,18 +328,20 @@ Niente da segnalare.
 Il Product Backlog non è stato modificato.
 
 \subsection{Problemi riscontrati}
-La realizzazione dell'adapter è stata rallentata da alcuni cambiamenti della struttura dell'API da parte dell'azienda. I rallentamenti hanno causato ad una lunghezza dello sprint più elevata. La realizzazione dell'adapter ha infatti anche occupato parte della settimana riservata al quarto sprint.
+La realizzazione dell'adapter è stata rallentata da cambiamenti della struttura dell'API da parte dell'azienda. I rallentamenti hanno causato una lunghezza dello sprint elevata. La realizzazione dell'adapter ha infatti anche occupato parte della settimana riservata al quarto sprint.
 
 \newpage
 
 \section{S4: Caricamento parziale}
+\textbf{Durata:} \textit{5 giorni} \\
+Nell'ultimo sprint finale sono state realizzate le funzioni che riguardano il caricamento parziale dei dati della tabella. Tuttavia per alcuni problemi riguardanti l'API fornita da Gruppo4 è stato impossibile realizzare in modo completo la funzionalità del caricamento parziale.
+
+\subsection{Sprint Backlog}
+INSERIRE TABELLA
 \subsection{Sprint Review}
 Niente da segnalare.
-
 \subsection{Backlog refinement}
 Il Product Backlog non è stato modificato.
 
-\subsection{Sprint Review}
-\subsection{Backlog refinement}
 \subsection{Problemi riscontrati}
-
+Nell'ultimo sprint sono stati riscontrati dei problemi per quanto riguarda la realizzazione del caricamento parziale durante lo scroll di un utente. Il componente che si occuperà di realizzare la chiamata all'API è stato implementato, tuttavia l'API di Gruppo4 non presenta ancora le informazioni necessarie per implementare questa funzionalità.

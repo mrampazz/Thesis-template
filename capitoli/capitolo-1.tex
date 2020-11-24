@@ -19,17 +19,19 @@ L'obiettivo principale di questo progetto consiste nella realizzazione di un com
 
 %**************************************************************
 \section{Tabella pivot}
-L'azienda mi ha fornito una descrizione accurata della tabella pivot, in particolare della sua struttura e delle sue funzionalità. Nelle prossime sottosezioni descriverò gli elementi che la compongono e le possibili interazioni con l'utente.
+L'azienda mi ha fornito una descrizione accurata della tabella pivot, in particolare della sua struttura e delle sue funzionalità. Nelle prossime sottosezioni descriverò gli elementi che la compongono e le possibili interazioni con l'utente. Durante la discussione dei requisiti del componente, l'azienda mi ha fornito un accesso ad una istanza della loro applicazione correntemente in uso per farmi una idea di del risultato che vogliono ottenere.
+\begin{minipage}{\linewidth}
+	\makebox[\linewidth] {
+		\includegraphics[scale=0.75]{./immagini/tabella-pivot-old.png}
+	}
+\end{minipage}
 
 \subsection{Struttura}
-La tabella pivot è stata suddivisa principalmente in due parti ben distinte: le dimensioni e i dati ad esse. Le dimensioni rappresentano le celle di intestazione della tabella. Esse sono presenti su tutti e due gli assi (righe e colonne) e su un singolo asse possono essere presenti molteplici dimensioni. I dati riferiti alle celle di intestazione corrispondono alla seconda parte della tabella pivot e corrispondo a delle semplici celle che contengono valori interi.
-% img dimensione
+La tabella pivot si può suddividere in tre parti ben distinte: le celle contenente i dati, le celle d'intestazione delle righe e quelle delle colonne. 
+Le celle d'intestazione sono definite come le dimensioni della tabella. Ognuna di essa rappresenta tutti i campi dati riguardanti una tabella di un database che in seguito viene unita ad altre tabelle rappresentante dalle altre dimensioni in modo da ottenere l'intera tabella.
 
 \subsection{Funzionalità}
-La tabella deve essere completamente esplorabile da un utente per questo motivo sono presenti due tipi di azioni: sulle dimensioni e sulle singole celle di una dimensione. \\
-Ogni cella di una dimensione deve poter essere aperta o chiusa con un semplice pulsante. Mentre ogni cella di una dimensione può essere aperta per renderizzare i figli di quel nodo se essi esistono. 
-% img azione dimensione
-% img azione cella
+La tabella deve essere completamente esplorabile da un utente. Come si può vedere dallo screenshot della tabella che sono presenti alcuni pulsanti. Essi servono per esguire due tipi di azioni: sulle dimensioni (tutti i figli di una dimensione possono essere aperti o chiusi contemporaneamente) e sulle singole celle di una dimensione (ogni cella di una dimensione deve poter essere aperta o chiusa con un semplice pulsante se essa presenta altri figli da renderizzare).
 
 %**************************************************************
 \section{Organizzazione del testo}

@@ -11,7 +11,7 @@ In questo capitolo verrà fornito una descrizione dei metodi e dei processi mess
 
 %**************************************************************
 \section{Metodologia Agile}
-Per lo sviluppo del prodotto è stato deciso di applicare una metodologia agile in modo da reagire velocemente a possibili problemi e cambiamenti dei requisiti così da migliorare e velocizzare la realizzazione dell'applicativo. L'azienda ha deciso di utilizzare una metodologia agile simile a \emph{SCRUM}\glo. Infatti applicare nella sua interezza il metodo \emph{SCRUM}\glosp sarebbe stato impossibile dato il ristretto numero di sviluppatori nel team di sviluppo e il limitato periodo riservato alla codifica. \\
+Per lo sviluppo del prodotto è stato deciso di applicare una metodologia agile in modo da reagire velocemente a possibili problemi e cambiamenti dei requisiti così da migliorare e velocizzare la realizzazione dell'applicativo. L'azienda ha deciso di utilizzare una metodologia agile simile a \emph{SCRUM}\glo. Infatti applicare nella sua interezza il metodo \emph{SCRUM} sarebbe stato impossibile dato il ristretto numero di sviluppatori nel team di sviluppo e il limitato periodo riservato alla codifica. \\
 Le caratteristiche principali della metodologia agile applicata per la realizzazione di questo progetto sono le seguenti:
 \begin{itemize}
 	\item \textbf{Modello incrementale}: vengono realizzati rilasci multipli e successivi che aiutano a definire più chiaramente i requisiti più importanti dato che essi verranno implementati per primi. Ogni rilascio corrisponde ad una parte funzionante di applicazione;
@@ -23,7 +23,7 @@ Le caratteristiche principali della metodologia agile applicata per la realizzaz
 \noindent
 Gli elementi che caratterizzano la metodologia agile utilizzata sono:
 \begin{itemize}
-	\item \textbf{Product backlog}: documento molto importante che contiene i requisiti e le funzionalità del prodotto definiti mediante le User Stories ordinate per priorità (\emph{Business value});
+	\item \textbf{Product backlog}: documento molto importante che contiene i requisiti e le funzionalità del prodotto definiti mediante le \emph{User Stories} ordinate per priorità (\emph{Business value});
 	
 	\item \textbf{Sprint backlog}: rappresenta l'insieme delle User Stories da realizzare nello sprint;
 	
@@ -34,7 +34,7 @@ La metodologia agile applicata presenta inoltre i seguenti eventi che sono stati
 \begin{itemize}
 	\item \textbf{Sprint Planning}: riunione tra i partecipanti del team di sviluppo dove vengono determinati quali user stories del product backlog verranno completate nello sprint;
 	
-	\item \textbf{Daily Stand-up}: breve riunione giornaliera dove ogni membro descrive velocemente i progressi dall'ultimo  \emph{Daily Stand-up}, i problemi riscontrati e i suoi prossimi obiettivi, questo evento è stato, in molte occasioni, sostituito da una riunione telematica;
+	\item \textbf{Daily Stand-up}: breve riunione giornaliera dove ogni membro descrive velocemente i progressi dall'ultimo \emph{Daily Stand-up}, i problemi riscontrati e i suoi prossimi obiettivi, questo evento è stato, in molte occasioni, sostituito da una riunione telematica;
 	
 	\item \textbf{Sprint Review}: riunione dove viene mostrato il prodotto con tutte le modifiche completate durante lo sprint (\emph{increment});
 	
@@ -57,13 +57,14 @@ La programmazione funzionale è un paradigma di programmazione dichiarativa dove
 	\item \verb|flatMap|: stesse funzionalità di \verb|map| ma può essere invocato su più di una lista e ritorna una collezione unica;
 	\item \verb|groupBy|: raggruppa gli elementi di una lista ottenuta con i risultati della funzione \verb|keySelector| applicata ad ogni elemento della lista originale, ritorna una collezione di tipo: \verb|Map<K, V>|.
 \end{itemize}
+Oltre all'uso delle \emph{Funzioni di ordine superiore} il paradigma di programmazione funzionale è stato applicato anche all'architettura dell'applicazione infatti è stato utilizzato un'insieme di funzioni dichiarative rispetto ad gerarchia di classi ed una sequenza di operazioni imperative che cambiano lo stato del programma.
 
 \section{Versionamento della soluzione}
 \subsection{Git}
 Git è un \emph{VCS}\glosp (Version Control System) distribuito che permette di tenere traccia delle modifiche in un prodotto software e di organizzarne la codifica. 
 
-\subsubsection{Feature-branch}
-In questo tirocinio è stata usata la tecnica del feature-branch: ogni aggiunta di feature corrisponde all'apertura di un nuovo branch\glosp che deve essere poi approvato previa verifica prima di essere unito al branch \verb|master|.
+\subsubsection*{Feature-branch}
+In questo tirocinio è stata usata la tecnica del feature-branch: ogni aggiunta di feature corrisponde all'apertura di un nuovo branch\glosp che deve essere poi approvato previa verifica prima di essere unito al branch \verb|master| mediante una \emph{pull request}.
 
 \subsection{Gitlab}
 Gitlab è uno strumento web che permette di implementare un DevOps lifecycle che fornisce una gestione di repository git, un \emph{ITS}\glosp (Issue Tracking System) e altri strumenti quali la \emph{Continuous integration} e \emph{Continuous deployement}. Per lo sviluppo di questo progetto mi è stato fornito l'accesso al server privato aziendale Gitlab.
@@ -97,7 +98,7 @@ Gradle è uno strumento di \emph{build automation}\glosp per molti linguaggi tra
 Oltre alla gestione delle dipendenze Gradle offre delle task, utili per compilare ed eseguire l'applicativo. Nell'ambito del progetto ho utilizzato la task: \verb|runDevelopment| e come parametro della task: \verb|--continuous| in modo da eseguire automaticamente la compilazione del codice quando viene cambiato uno dei file sorgente.
 
 \subsection{Organizzazione del lavoro}
-Per l'organizzazione del lavoro, in particolare per la gestione dei macro obiettivi di ogni sprint, ho utilizzato l'\emph{ITS} fornito da Gitlab che fornisce un'interfaccia \emph{Kanban} che permette di categorizzare in modo efficace le singole attività da realizzare.
+Per l'organizzazione del lavoro, in particolare per la gestione dei macro obiettivi di ogni sprint, ho utilizzato l'\emph{ITS}\glosp fornito da Gitlab che fornisce un'interfaccia \emph{Kanban} che permette di categorizzare in modo efficace le singole attività da realizzare.
 
 
 

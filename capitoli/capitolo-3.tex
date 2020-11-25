@@ -10,14 +10,15 @@
 In questo capitolo verrà descritta la progettazione dell'intero prodotto, in particolare verranno chiariti i seguenti argomenti:
 \begin{itemize}
 	\item progettazione delle classi che definiscono lo stato dell'applicazione;
-	\item la gestione dello stato dell'applicazione;
+	\item gestione dello stato dell'applicazione;
 	\item progettazione del parser json e dell'adapter per trasformare le informazioni ottenute dall'api nelle classi che definiscono lo stato dell'applicazione;
-	\item la gestione del caricamento parziale;
+	\item gestione del caricamento parziale dei dati della tabella;
 	\item descrizione e progettazione dei componenti grafici.
 \end{itemize}
 
 \section{Entità dello stato}
-Per quanto riguarda lo stato dell'applicazione ho analizzato la struttura della tabella fornita dall'azienda e le funzionalità richieste. L'idea alla base della struttura dello stato era quella di avere una struttura dati semplice da iterare in modo da avere funzioni di renderizzazione concise e facili da manutenere. Dalla struttura della tabella pivot e dalla descrizione delle sue funzionalità ho ricavato le seguenti strutture dati:
+Per quanto riguarda lo stato dell'applicazione ho analizzato la struttura della tabella fornita dall'azienda e le funzionalità richieste. Durante la progettazione della struttura dello stato ho dato priorità alla semplicità in modo da avere funzioni di renderizzazione concise e facili da manutenere. Dalla struttura della tabella pivot e dalla descrizione delle sue funzionalità ho ricavato le seguenti strutture dati:
+
 \paragraph*{data class DimensionsNode}- rappresenta una cella d'intestazione, deve contenere:
 \begin{itemize}
 	\item \verb|id|: codice della cella;
@@ -36,20 +37,20 @@ Per quanto riguarda lo stato dell'applicazione ho analizzato la struttura della 
 	\item \verb|rPath|: indica l'insieme dei codici delle dimensioni delle righe a cui appartiene il dato.
 \end{itemize}	
 
-\paragraph*{data class HeaderAction}- rappresenta un tipo di azione, deve contenere:
+\paragraph*{data class HeaderAction}- rappresenta una azione sulle dimensioni, deve contenere:
 \begin{itemize}
 	\item \verb|actionType|:  indica il tipo dell'azione che bisogna eseguire, esso verrà indicato con una classe di tipo: \verb|enum class NodeActionType|;
 	\item \verb|dim|: indica la dimensione su cui applicare l'azione;
 	\item \verb|depth|: indica la profondità all'interno della dimensione su cui applicare l'azione.
 \end{itemize}
 
-\paragraph*{enum class NodeActionType}- rappresenta un tipo di azione:
+\paragraph*{enum class NodeActionType}- rappresenta un tipo di azione che può essere:
 \begin{itemize}
 	\item \verb|EXPAND|:  indica che la cella può espandere per mostrare i suoi figli;
 	\item \verb|COLLAPSE|: indica che la cella può nascondere i suoi figli;
 	\item \verb|NULL|: indica che la cella non ha un'azione.
 \end{itemize}
-
+\noindent
 Quindi per rappresentare l'intero stato della tabella ho definito un ultimo \verb|data class|:
 \paragraph*{data class TableState}
 \begin{itemize}
@@ -64,40 +65,37 @@ Quindi per rappresentare l'intero stato della tabella ho definito un ultimo \ver
 In questa sezione verrà descritto il ragionamento e il modo in cui è avvenuta la progettazione degli elementi che si occuperanno di gestire lo stato dell'applicazione.
 
 \subsection{Dataflow dell'applicazione}
-Un aspetto che è stato molto discusso dal team di sviluppo riguarda il \emph{dataflow}\glosp dell'applicazione. Durante la prima settimana del tirocinio, oltre allo studio delle tecnologie, si è pensato a come verrà gestito lo stato dell'applicazione e in particolare delle possibili soluzioni per garantirne la scalabilità. Verrà descritto il dataflow fornito da React e Redux, infine verrà identificato quello adottato nell'ambito del progetto.
+Un aspetto che è stato molto discusso dal team di sviluppo riguarda il \emph{dataflow}\glosp dell'applicazione. Durante la prima settimana del tirocinio, oltre allo studio delle tecnologie, si è pensato a come verrà gestito lo stato dell'applicazione e in particolare alle possibili soluzioni per garantirne la scalabilità. Nelle prossime sezioni verranno descritti i \emph{dataflow} forniti da React e Redux, infine verrà identificato quello adottato nell'ambito del progetto.
 
 \subsubsection*{React}
-React è una libreria per realizzare interfacce utente che utilizza un \emph{dataflow} unidirezionale. Questo perchè ogni componente può avere uno stato locale accessibile solo da se stesso e può passare informazioni ai suoi componenti figli mediante le \emph{props}\glo. Il risultato è uno stato che dipende dalla gerarchia di componenti grafici. \\
-Questo dataflow è molto semplice però presenta alcune limitazioni per quanto riguarda la scalabilità. Per avere uno stato unico di tutta l'applicazione bisognerebbe dare la responsabilità ad un componente grafico di gestirlo e passarlo mediante le sue \emph{props}. L'architettura che ne deriva, nel caso di applicazioni complesse con molti componenti, è limitata, difficile da manutenere e poco scalabile. \\
-Tuttavia questo semplice dataflow ha il vantaggio che per famiglie di componenti piccole i cambiamenti di stato locale e i passaggi di informazioni mediante le \emph{props} sono molto veloci e semplici.
+React è una libreria per realizzare interfacce utente che utilizza un \emph{dataflow} unidirezionale, questo significa che il flusso dei dati deve passare mediante dei componenti grafici. I dati possono essere contenuti nello stato locale di un componente che è accessibile solo a quest'ultimo. Le informazioni possono invece essere passate tra un componente padre ai suoi componenti figli mediante le \emph{props}\glo. \\
+Questo \emph{dataflow} è molto semplice da utilizzare però presenta alcune limitazioni per quanto riguarda la scalabilità. Per avere uno stato unico di tutta l'applicazione bisognerebbe dare tutta la responsabilità ad un componente grafico. L'architettura che ne deriva, nel caso di applicazioni complesse, è difficile da manutenere e poco scalabile. \\
+Tuttavia questo semplice dataflow ha il vantaggio che per un numero ristretto di componenti i cambiamenti di stato locale e i passaggi di informazioni mediante le \emph{props} sono molto veloci e semplici.
 
 \subsubsection*{Redux}
-Per garantire scalabilità e facilità nella gestione dello stato dell'applicazione abbiamo discusso riguardo l'utilizzo di Redux. Essa offre un dataflow unidirezionale dove lo stato è gestito in una struttura di Redux chiamata \emph{store}. Questa struttura esterna ai componenti grafici rende la gestione dello stato dell'applicazione più prevedibile e manutenibile. Redux si basa su tre principi:
+Per garantire scalabilità nella gestione dello stato dell'applicazione è stato deciso di utilizzare la libreria Redux. Offre un dataflow unidirezionale dove lo stato è gestito in una struttura di Redux chiamata \emph{store}. Questa struttura è esterna ai componenti grafici, questo rende la gestione dello stato dell'applicazione più prevedibile e manutenibile. Redux si basa su tre principi:
 \begin{itemize}
 	\item lo stato è l'unica fonte di verità;
 	\item lo stato non è modificabile direttamente;
 	\item le modifiche avvengono medianti \emph{funzioni pure}\glosp che creano un nuovo stato per evitare \emph{side effects}\glo.
 \end{itemize}
+
 \noindent
 Gli elementi dell'architettura di Redux sono i seguenti:
 \begin{itemize}
-	\item \textbf{Actions}: oggetti che rappresentano un azione che innesca un update dello stato;
-	\item \textbf{Reducers}: \emph{funzioni pure} che hanno come parametro un Actions e si occupano di modificare lo stato;
+	\item \textbf{Actions}: oggetti che rappresentano un'azione che innesca un cambiamento dello stato;
+	\item \textbf{Reducers}: \emph{funzioni pure} che hanno come parametro un Actions e si occupano di modificare lo stato generandone una copia modificata;
 	\item \textbf{Store}: lo Store è un'interfaccia che contiene lo stato dell'applicazione e fornisce funzioni per leggere, modificare e registrare \emph{listeners}\glosp allo stato.
 \end{itemize}
-\noindent
 
 \subsection{Soluzione}
-La soluzione adottata è stata quella di usare sia React che Redux. React è stato usato per gestire solo gli aggiornamenti visivi dell'applicazione, mentre Redux per gestire lo stato completo dell'applicazione. Il dataflow del prodotto è quindi il seguente:
+Per lo sviluppo di questo componente oltre all'architettura Redux descritta nella sezione precedente è stato utilizzato anche \emph{dataflow} di React per gestire gli aggiornamenti visivi. Il \emph{dataflow} finale del prodotto è quindi il seguente:
 \begin{enumerate}
 	\item se l'utente esegue una azione che implica un cambiamento dello stato verrà mandata allo Store una Action;
 	\item lo Store si occuperà di chiamare un Reducer in modo da ricevere lo stato successivo;
 	\item lo stato verrà aggiornato e i cambiamenti saranno visibili a tutti i componenti React che sono registrati allo Store.
 \end{enumerate}
-Utilizzando questo dataflow lo stato dell'applicazione non dipende da un componente grafico perchè è esterno alla gerarchia dei componenti grafici. Quindi ogni componente React che ha bisogno di una frazione dei dati dello stato può semplicemente registrarsi allo Store per ricevere i dati.
-\\
-\\
-Per applicare al meglio il dataflow precedentemente descritto ho progettato i componenti di Redux nel seguente modo. Per prima cosa ho suddiviso lo stato dell'applicazione in "Slice" cioè in pezzi di stato. In questo modo la struttura dello stato è modulare e scalabile dato che, se questa applicazione verrà ampliata in un futuro basterà aggiungere uno "slice" allo stato. Ogni slice deve essere strutturato nel seguente modo:
+Per applicare al meglio il dataflow precedentemente descritto ho progettato i componenti di Redux nel seguente modo. Per prima cosa ho suddiviso lo stato dell'applicazione in \emph{slice} cioè in "pezzi" di stato. In questo modo la sua struttura è modulare e scalabile dato che, se questa applicazione verrà ampliata basterà aggiungere uno \emph{slice} allo stato. Ogni slice deve essere definito nel seguente modo:
 \begin{lstlisting}[caption={Esempio Slice}, label={lst:bodycells}, language=Kotlin]
 object Slice {
 	// Stato
@@ -117,12 +115,14 @@ object Slice {
 \end{lstlisting}
 
 \subsubsection*{Stato}
-In ogni slice deve essere definito un \verb|data class| che contiene tutte le informazioni che si vuole contenere nello "Slice". Per quanto riguarda la realizzazione della tabella pivot esso conterrà i seguenti campi dati:
+In ogni \emph{slice} deve essere definito un \verb|data class| che contiene tutte le informazioni necessarie. Per quanto riguarda la realizzazione della tabella pivot ho individuato la necessità di uno \emph{slice} con i seguenti campi dati:
 \begin{itemize}
 	\item \verb|isLoading|: valore booleano che indica se si stanno effettuando chiamate http o funzionalità asincrone;
 	\item \verb|rows|: insieme di celle che rappresentano le dimensioni delle righe;
 	\item \verb|cols|: insieme di celle che rappresentano le dimensioni delle colonne;
 	\item \verb|cells|: insieme di celle che contengono i dati relativi alle dimensioni;
+	\item \verb|rowTree|: struttura ad albero che definisce la relazione tra le dimensioni delle righe;
+	\item \verb|colTree|: struttura ad albero che definisce la relazione tra le dimensioni delle colonne;
 	\item \verb|rowActions|: insieme di possibili azioni eseguibili sulle dimensioni delle righe;
 	\item \verb|colActions|: insieme di possibili azioni eseguibili sulle dimensioni delle colonne.
 \end{itemize}
@@ -130,10 +130,12 @@ In ogni slice deve essere definito un \verb|data class| che contiene tutte le in
 \subsubsection*{Actions}
 Le actions sono definiti come delle classi di tipo \verb|RAction| che vengono usati per innescare l'update dello stato. Solitamente un'action si occuperà di modificare solo un campo dato dello stato. Quindi dalla mia precedente progettazione dello stato ho individuato cinque Actions:
 \begin{itemize}
-	\item \verb|class UpdateRows(): RAction|;
 	\item \verb|class SetIsLoading(): RAction|;
+	\item \verb|class UpdateRows(): RAction|;
 	\item \verb|class UpdateCols(): RAction|;
 	\item \verb|class UpdateCells(): RAction|;
+	\item \verb|class UpdateRowTree(): RAction|;
+	\item \verb|class UpdateColTree(): RAction|;
 	\item \verb|class UpdateRowActions(): RAction|;
 	\item \verb|class UpdateColActions(): RAction|.
 \end{itemize}
@@ -167,13 +169,15 @@ val nullAction = js {}.unsafeCast<WrapperAction>()
 \end{lstlisting}
 
 \subsubsection*{Reducer}
-Un \emph{reducer} è una \emph{funzione pura} che riceve come argomento un \verb|RAction| e ritorna una copia dello stato modificato. In kotlin il modo per realizzare una funzione reducer è realizzare una struttura switch (in kotlin corrisponde ad una struttura when) dove vengono definiti tanti casi quanto sono le actions disponibili che vogliono essere utilizzate. Per le actions definite precedentemente:
+Un \emph{reducer} è una \emph{funzione pura} che riceve come argomento un \verb|RAction| e ritorna una copia dello stato modificato. In kotlin il modo per realizzare una funzione reducer è realizzare una struttura \emph{switch} (in kotlin corrisponde ad una struttura \emph{when}) dove vengono definiti tanti casi quanto sono le actions disponibili che vogliono essere utilizzate. Per le actions definite precedentemente:
 \begin{lstlisting}[caption={Interfaccia Thunk}, label={lst:bodycells}, language=Kotlin]
 fun reducer(state: State = State(), action: RAction) : State {
   return when (action) {
-    is UpdateRows -> state.copy(...)
     is SetIsLoading -> state.copy(...)
+    is UpdateRows -> state.copy(...)
     is UpdateCols -> state.copy(...)
+    is UpdateRowTree -> state.copy(...)
+    is UpdateColTree -> state.copy(...) 
     is UpdateCells -> state.copy(...)
     is UpdateRowActions -> state.copy(...)
     is UpdateColActions -> state.copy(...)
@@ -185,7 +189,7 @@ fun reducer(state: State = State(), action: RAction) : State {
 
 \section{Parser e adapter}
 Per quanto riguarda la progettazione del parser json per l'api ho per prima cosa definito i passaggi necessari per ottenere i dati dall'API di Gruppo4. Ho individuato la necessità di due funzioni \verb|fetch| e \verb|sendAction|, la prima per richiedere i dati iniziali e la seconda per ottenere nuovi dati in seguito all'azione passata per argomento a \verb|sendAction|. \\
-Per quanto riguarda il parser del json ho studiato la struttura del json ritornato dall'API in modo da identificare tutte le data class \verb|@Serializable| che mi permetteranno di mappare il json in data class. La struttura del json è la seguente:
+Per quanto riguarda il parser del json ho studiato la struttura del json ritornato dall'API in modo da identificare tutte le data class \verb|@Serializable| che mi permetteranno di mappare il json in \verb|data class|. La struttura del json è la seguente:
 \begin{lstlisting}[caption={Struttura JSON API}, label={lst:bodycells}, language=json]
 {
 	"Rows": {
@@ -259,13 +263,13 @@ Per quanto riguarda la progettazione dell'adapter ho analizzato le data class ot
 \end{itemize}
 
 \section{Gestione del caricamento parziale}
-Per quanto riguarda il caricamento parziale della tabella, l'azienda mi ha richiesto di realizzarlo sotto due aspetti. Il primo riguarda il caricamento parziale di informazioni quando si "apre" una cella d'intestazione delle dimensioni. Il secondo invece riguarda il caricamento parziale durante lo scroll di un utente.
+L'azienda ha identificato due requisiti riguardanti il caricamento parziale dei dati della tabella in modo da non sovraccaricare l'API con file JSON troppo grandi. In particolare mi ha richiesto di implementarlo sotto due aspetti. Il primo riguarda il caricamento parziale di informazioni quando si "apre" una cella d'intestazione delle dimensioni. Il secondo invece riguarda il caricamento parziale durante lo scroll di un utente.
 
 \subsection*{Caricamento parziale di un nodo}
-La struttura della tabella viene fornita dall'API sotto forma di struttura ad albero. Per realizzare il caricamento parziale di un nodo ho pensato di mantenere nello stato una copia di questa struttura. In questo modo quando viene aperto o chiuso un nodo di una dimensione viene sostituito nella struttura ad albero e infine viene trasformato nella struttura semplice utilizzata per la renderizzazione mediante le funzioni adapter.
+Le dimensioni della tabella vengono fornite dall'API sotto forma di struttura ad albero, da questa struttura verrà poi generata una matrice di oggetti in modo da semplificare l'iterazione di essa durante la renderizzazione. La struttura ad albero fornisce però dei vantaggi per quanto riguarda il caricamento parziale di un nodo infatti basterà modificare un nodo dell'albero e poi generare la matrice di oggetti. Per farlo ho pensato di mantenere nello stato una copia della struttura ad albero. In questo modo quando viene aperto o chiuso un nodo di una dimensione della tabella verrà sostituito nella struttura ad albero contenuto nello stato che verrà poi trasformato nella struttura semplice utilizzata per la renderizzazione.
 
 \subsection*{Caricamento parziale scroll}
-Per quanto riguarda il caricamento parziale della tabella durante lo scroll di un utente l'azienda mi ha richiesto di realizzare un componente che si occuperà di chiamare l'API quando l'utente raggiunge un punto preciso della tabella.
+Per quanto riguarda il caricamento parziale della tabella durante lo scroll di un utente l'azienda mi ha richiesto di realizzare un componente che si occuperà di chiamare l'API quando l'utente raggiunge un punto preciso della tabella. La progettazione di questo componente è stata molto semplice in quanto non presentava problema particolari.
 
 \section{Componenti grafici}
 Per quanto riguarda la progettazione dei componenti grafici l'azienda mi ha dato completa libertà per quanto riguarda la loro struttura. La progettazione di essi consiste nel loro mockup e la definizione degli stili grafici necessari. Questa prima immagine rappresenta il mockup iniziale da cui sono partito: \\
@@ -293,7 +297,7 @@ Da questo mockup generale ho individuato i seguenti componenti grafici. In parti
 \end{itemize}
 
 \noindent
-Da questo mockup ho deciso in che modo organizzare questi componenti. In particolare ho suddiviso il componente \verb|Table| in quattro quadranti utilizzando \verb|css grid|. Ogni quadrante conterrà i singoli componenti. \\
+In seguito ho suddiviso il componente \verb|Table| in quattro quadranti utilizzando \verb|css grid|. Ogni quadrante conterrà i singoli componenti. \\
 Per quanto riguarda \verb|TableActionUI| ho pensato di suddividerlo in quattro quadranti in modo similare a \verb|Table| così da posizionare i pulsanti delle azioni in modo semplice.
 In \verb|TableBody| ho definito la sua struttura come una tabella html.
 Nel componente \verb|TableHeader| ho deciso di realizzare una tabella per ogni dimensione disponibile con una singola riga contenente un'insieme di \verb|TableLabel|.

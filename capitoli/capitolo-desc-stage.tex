@@ -8,7 +8,7 @@
 %**************************************************************
 
 La codifica del prodotto, come descritto nel capitolo 2 è stata suddivisa in sprint di sviluppo che corrispondono a circa 4-5 giorni lavorativi dove vengono implementati parte delle user stories indicate nel product backlog. Per ogni sprint verrano descritti lo Sprint Backlog e le Soluzioni che sono state implementate e i seguenti eventi: \textbf{Sprint Review} e \textbf{Backlog refinement}.
-Infine verranno elencati i possibili ritardi, i problemi riscontrati e le soluzioni trovate. Ogni sprint è stato identificato da un codice univoco e da un titolo. In questo progetto gli sprint individuati sono stati:
+Infine verranno elencati i possibili ritardi, i problemi riscontrati e le soluzioni trovate. Ogni sprint è stato identificato da un codice univoco e da un titolo. In questo progetto gli sprint individuati sono i seguenti:
 \begin{itemize}
 	\item \textbf{S1: Struttura dello stato e dell'architettura Redux};
 	\item \textbf{S2: Componenti grafici e container Redux};
@@ -16,10 +16,9 @@ Infine verranno elencati i possibili ritardi, i problemi riscontrati e le soluzi
 	\item \textbf{S4: Caricamento parziale}.
 \end{itemize}
 
-
 \section{S1: Struttura dello stato e dell'architettura Redux}
 \textbf{Durata:} \textit{5 giorni} \\
-Nel primo sprint di sviluppo sono stati implementati i requisiti considerati più importanti per porre delle solide basi dell'applicazione web; in particolare la progettazione e codifica della struttura dello stato e l'architettura di Redux.
+Nel primo sprint di sviluppo sono stati implementati i requisiti considerati più importanti per porre delle solide basi dell'applicazione; in particolare la progettazione e codifica della struttura dello stato e l'architettura di Redux.
 
 \subsection{Sprint Backlog}
 In particolare sono stati implementati questi requisiti.
@@ -198,7 +197,7 @@ Implementare correttamente l'architettura Redux è risultato difficoltoso a caus
 \newpage
 
 \section{S2: Componenti grafici e container Redux}
-\textbf{Durata:} \textit{4 giorni} \\
+\textbf{Durata:} \textit{5 giorni} \\
 Nel secondo sprint di sviluppo ho lavorato sull'interfaccia grafica e quindi i componenti React e i relativi container Redux.
 
 \subsection{Sprint Backlog}
@@ -216,22 +215,30 @@ R2.1.1 & Sviluppo di TableView                & O\\ \hline
 R2.1.2 & Sviluppo di TableHeaderView          & O\\ \hline
 R2.1.3 & Sviluppo di TableSidebarView         & O \\ \hline
 R2.1.4 & Sviluppo di TableBodyView            & O\\ \hline
+R2.1.5 & Sviluppo di TableActionUI            & O\\ \hline
+R2.1.6 & Sviluppo di TableLabelView            & O\\ \hline
 R2.2   & Sviluppo dei container Redux         & O  \\ \hline
 R2.2.2 & Sviluppo di TableController          & O   \\ \hline
 R2.2.3 & Sviluppo di TableHeaderController    & O      \\ \hline
 R2.2.4 & Sviluppo di TableSidebarController   & O      \\ \hline
 R2.2.5 & Sviluppo di TableBodyController      & O   \\ \hline
+R2.2.6 & Sviluppo di TableLabelController   & O      \\ \hline
+R2.2.7 & Sviluppo di TableActionUIController      & O   \\ \hline
 \end{longtable}
 
 \subsection{Soluzioni implementate}
-\subsubsection{view}
+Le componenti grafiche realizzate sono le seguenti: \\
 \begin{minipage}{\linewidth}
 	\makebox[\linewidth] {
-		\includegraphics[scale=0.75]{./immagini/table-pivot.png}
+		\includegraphics[scale=0.60]{./immagini/table-pivot.png}
 	}
 \end{minipage}
+\\
+\\
+Per rendere l'interfaccia utente chiara e utilizzabile da un dispositivo mobile ho realizzato le dimensione dimensioni della tabella in modo che possano essere nascoste. Inoltre ogni cella di intestazione può essere cliccata per attivare l'azione, questo perchè cliccare un pulsante molto piccolo da un dispositivo mobile è risultato difficile nei test manuali effettuati.
+
 \subsubsection{redux.container}
-Per ogni componente che richiedeva un collegamento con lo stato di Redux è stato realizzato un wrapper che permette di mappare lo stato di Redux nelle \emph{props} di un componente React. Questi wrapper sono stati definiti in questo modo:
+Per ogni componente che richiedeva un collegamento con lo stato di Redux ho realizzato un wrapper che permette di mappare lo stato di Redux alle \emph{props} di un componente React. I wrapper sono stati definiti nel seguente modo:
 \begin{lstlisting}[caption={BodyCells}, label={lst:bodycells}, language=Kotlin]
 // campi dato dello stato da mappare alle props
 private interface StateProps : RProps {
@@ -262,7 +269,7 @@ Niente da segnalare.
 Il Product Backlog non è stato modificato.
 
 \subsection{Problemi riscontrati}
-All'inizio dello sprint ho realizzato i componenti grafici con una scrittura funzionale, tuttavia dopo aver implementato i container Redux ho notato la presenza di alcuni bug nell'uso di Redux e componenti React scritti in modo funzionale. Quindi ho riscritto i componenti con una scrittura a classi. Questo problema non ha però causato ritardi gravi. 
+All'inizio dello sprint ho realizzato i componenti grafici con una scrittura funzionale, tuttavia dopo aver implementato i container Redux ho notato la presenza di alcuni limitazioni nell'uso di Redux e componenti funzionale di React. Quindi ho riscritto i componenti con una scrittura a classi. Questo problema non ha però causato ritardi gravi. 
 
 \newpage
 
@@ -271,7 +278,31 @@ All'inizio dello sprint ho realizzato i componenti grafici con una scrittura fun
 Nel terzo sprint ho realizzato le funzioni per eseguire richieste HTTP e le ho implementate in modo da funzionare correttamente con le funzioni eseguite nel primo sprint. In seguito ho realizzato le \verb|data class @Serializable| per eseguire il parsing del json. Infine ho scritto le funzioni che mi hanno permesso di tradurre i dati ricevuti dall'api nelle strutture dati definite nel primo sprint.
  
 \subsection{Sprint Backlog}
-INSERIRE TABELLA
+\begin{longtable} {
+		|>{}p{10mm}| 
+		|>{}p{90mm}|
+		|>{}p{15mm}|
+		|>{}p{15mm}|
+		|>{}p{15mm}|
+		>{}p{0mm}}
+	\hline
+	R3.0   & \textbf{Sviluppo parser per JSON dell'API}         & O\\ \hline
+	R3.1   & Sviluppo data class @Serializable 	   & O\\ \hline
+	R3.1.1 & Sviluppo Gruppo4JSON & O\\ \hline
+	R3.1.2 & Sviluppo Gruppo4Data & O\\ \hline
+	R3.1.3 & Sviluppo Gruppo4Filter & O\\ \hline
+	R3.1.4 & Sviluppo Gruppo4Actions & O\\ \hline
+	R3.1.5 & Sviluppo Gruppo4Node & O\\ \hline
+	R3.2   & \textbf{Sviluppo adapter da JSON a TableState} & O\\ \hline
+	R3.2.1   & Sviluppo funzione convertListOfGruppo4Node() & O\\ \hline
+	R3.2.2   & Sviluppo funzione convertTree() & O \\ \hline
+	R3.2.3   & Sviluppo funzione convertListOfGruppo4Actions() & O\\ \hline
+	R3.2.4   & Sviluppo funzione convertCells() & O\\ \hline
+	
+	R4.0 & \textbf{Sviluppo funzioni per effettuare richieste HTTP}  & O    \\ \hline
+	R4.1   & Sviluppo funzione fetch() & O     \\ \hline
+	R4.2   & Sviluppo funzione sendAction() & O    \\ \hline
+\end{longtable}
 
 \subsection{Soluzioni implementate}
 \subsubsection{Gestione delle richieste all'API}
@@ -319,7 +350,138 @@ suspend fun sendAction(body: String, type: String) {
 \end{lstlisting}
 
 \subsubsection{Entità @Serializable}
+Per non dilungare troppo questa sezione mostrerò solo una entità:
+\begin{lstlisting}[caption={data class Gruppo4Action}, label={lst:bodycells}, language=Kotlin]
+@Serializable
+data class Gruppo4Action(
+  @SerialName("Action")
+  val action: String? = null,
+  @SerialName("Dim")
+  val dim: Int? = null,
+  @SerialName("Depth")
+  val depth: Int? = null,
+  @SerialName("Path")
+  val path: Array<String>? = null
+)
+\end{lstlisting}
 \subsubsection{Funzioni adapter}
+Di seguito indico le funzioni principali per eseguire la conversione tra le entità \verb|@Serializable| e le entità dello stato. Dalle seguenti funzioni si può vedere l'utilizzo delle \emph{higher order functions} per semplificare il più possibile il codice.
+
+\begin{lstlisting}[caption={Funzione convertListOfGruppo4Node()}, label={lst:bodycells}, language=Kotlin]
+fun convertListOfGruppo4Node(list: ArrayList<Gruppo4Node>?): ArrayList<DimensionsNode>? {
+	return list?.map { it.toDimensionsNode() }?.toCollection(ArrayList())
+}
+\end{lstlisting}
+
+\begin{lstlisting}[caption={Funzione convertListOfGruppo4Actions()}, label={lst:bodycells}, language=Kotlin]
+fun convertListOfGruppo4Actions(list: ArrayList<Gruppo4Action>, limit: Int): ArrayList<ArrayList<HeaderAction>> {
+	val res: ArrayList<ArrayList<HeaderAction>> = ArrayList()
+	var index = 0
+	while (index < limit) {
+		res.add(index, ArrayList())
+		index++
+	}
+	
+	list.groupBy { it.dim }.entries.map {
+		val tmpList = it.value.map { c -> c.toHeaderAction() }.toCollection(ArrayList())
+		val limit = tmpList.last().depth
+		res.set(it.key!!, normaliseListAction(tmpList, limit))
+	}
+	
+	return res
+}
+\end{lstlisting}
+
+\begin{lstlisting}[caption={Funzione convertCells()}, label={lst:bodycells}, language=Kotlin]
+fun convertCells(list: Array<Array<Double>>, rowsPaths: Array<Array<String>>? , colsPaths: Array<Array<String>>?): ArrayList<ArrayList<BodyCells>>? {
+	val tmp: ArrayList<ArrayList<BodyCells>> = ArrayList()
+	var cellTmp: ArrayList<BodyCells> = ArrayList()
+	if (rowsPaths == null || colsPaths == null) {
+		return null
+	}
+	for ((indx, items) in list.withIndex()) {
+		val rPath = rowsPaths[indx]
+		for ((index, item) in items.withIndex()) {
+			cellTmp.add(
+			BodyCells(
+			value = item.toInt(),
+			cPath = colsPaths[index],
+			rPath = rPath
+			)
+			)
+		}
+		tmp.add(cellTmp)
+		cellTmp = ArrayList()
+	}
+	return tmp
+}
+\end{lstlisting}
+
+\begin{lstlisting}[caption={Funzione convertTree()}, label={lst:bodycells}, language=Kotlin]
+fun convertTree(node: DimensionsNode?, level: Int, currentPath: List<String>, depth: Int): List<DimensionsNode?> =
+if (node == null) {
+	listOf()
+} else {
+	val subDimNode = node.subDim
+	val action = createActionFor(node.children)
+	val newNode = node.setLevel(level).setPath(currentPath).setActionType(action).setDepth(depth)
+	(
+	listOf(newNode) +
+	(
+	subDimNode?.flatMap {
+		getRow(
+		it.setLevel(level + 1),
+		level + 1,
+		currentPath + it.id,
+		if (!node.isChild) depth else 0
+		)
+	} ?: listOf()
+	) +
+	(
+	node.children?.flatMap {
+		getRow(
+		it.setLevel(level).setIsChild(true),
+		level,
+		currentPath.dropLast(1) + it.id,
+		depth + 1
+		)
+	} ?: listOf()
+	)
+	).sortedWith(compareBy { it?.level })
+}
+\end{lstlisting}
+
+\begin{lstlisting}[caption={Funzione parseJSON()}, label={lst:bodycells}, language=Kotlin]
+fun parseJSON(res: String): TableState {
+  val obj = Json.decodeFromString<Gruppo4Json>(res)
+
+  val tableData: ArrayList<ArrayList<BodyCells>> = convertCells(obj.cells, obj.rows?.paths, obj.cols?.paths)!!
+  val rowTree = convertListOfGruppo4Node(obj.rows?.tree)
+  val colTree = convertListOfGruppo4Node(obj.cols?.tree)
+
+  val rowCells = getCellsFromTree(rowTree !!)
+  val colCells = getCellsFromTree(colTree !!)
+
+  val rowNormalisedCells = normaliseList(rowCells)
+  val colNormalisedCells = normaliseList(colCells)
+
+  val rowAction = gruppo4actionsToActionType(obj.rows?.actions !!, rowCells.groupBy { it?.level }.size)
+  val colAction = gruppo4actionsToActionType(obj.cols?.actions !!, colCells.groupBy { it?.level }.size)
+
+  val rows = rowCells.toCollection(ArrayList())
+  val cols = colCells.toCollection(ArrayList())
+
+  return TableState(
+    cells = tableData,
+    cols = colNormalisedCells,
+    rows = rowNormalisedCells,
+    colTree = cols,
+    rowTree = rows,
+    rowAction = rowAction,
+    colAction = colAction
+  )
+}
+\end{lstlisting}
 
 \subsection{Sprint Review}
 Niente da segnalare.
@@ -328,20 +490,110 @@ Niente da segnalare.
 Il Product Backlog non è stato modificato.
 
 \subsection{Problemi riscontrati}
-La realizzazione dell'adapter è stata rallentata da cambiamenti della struttura dell'API da parte dell'azienda. I rallentamenti hanno causato una lunghezza dello sprint elevata. La realizzazione dell'adapter ha infatti anche occupato parte della settimana riservata al quarto sprint.
+La realizzazione dell'adapter è stata rallentata da cambiamenti della struttura dell'API da parte dell'azienda, infatti la struttura ad albero delle dimensioni della tabella è stata modificata, ogni nodo infatti presenta due tipologie di figli: i nodi graficamente sotto di esso e i nodi graficamente laterali ad esso. I rallentamenti hanno causato una lunghezza dello sprint elevata. La realizzazione dell'adapter ha infatti anche occupato parte della settimana riservata al quarto sprint. I rallentamenti sono dovuti anche alla codifica della funzione \verb|convertTree()| data la sua complessità.
 
 \newpage
 
 \section{S4: Caricamento parziale}
-\textbf{Durata:} \textit{5 giorni} \\
+\textbf{Durata:} \textit{4 giorni} \\
 Nell'ultimo sprint finale sono state realizzate le funzioni che riguardano il caricamento parziale dei dati della tabella. Tuttavia per alcuni problemi riguardanti l'API fornita da Gruppo4 è stato impossibile realizzare in modo completo la funzionalità del caricamento parziale.
 
 \subsection{Sprint Backlog}
-INSERIRE TABELLA
+\begin{longtable} {
+		|>{}p{10mm}| 
+		|>{}p{90mm}|
+		|>{}p{15mm}|
+		|>{}p{15mm}|
+		|>{}p{15mm}|
+		>{}p{0mm}}
+	\hline
+	R5.0 & \textbf{Sviluppo caricamento parziale}  & O  \\ \hline
+	R5.1   & Sviluppo componente infinteScroller &      \\ \hline
+	R5.2   & Sviluppo funzioni per aggiornare struttura ad albero & O     \\ \hline
+\end{longtable}
+
+\subsection{Soluzioni implementate}
+Il seguente componente utilizza funzioni della programmazione funzionale fornite da React come: \verb|useState| e \verb|useEffect| per controllare quando l'utente ha raggiunto la fine della tabella in modo da effettuare una successiva chiamata all'API.
+
+\begin{lstlisting}[caption={Funzione parseJSON()}, label={lst:bodycells}, language=Kotlin]
+val infiniteScroller = functionalComponent<InfiniteScrollerProps> { props ->
+	val (isFetchingVertical, setIsFetchingVertical) = useState(false)
+	val (isFetchingHorizontal, setIsFetchingHorizontal) = useState(false)
+	
+	val isScrolling = { e: Event ->
+		val el = document.getElementById("pivot-table-body");
+		if (el != null && el.scrollTop.toInt() + el.clientHeight == el.scrollHeight) {
+			setIsFetchingVertical(true)
+		}
+		
+		if (el != null && el.scrollLeft.toInt() + el.clientWidth == el.scrollWidth) {
+			setIsFetchingHorizontal(true)
+		}
+	}
+	
+	useEffect(listOf(isFetchingVertical)) {
+		if (isFetchingVertical) {
+			// eseguire chiamata api
+		}
+	}
+	
+	useEffect(listOf(isFetchingHorizontal)) {
+		if (isFetchingHorizontal) {
+			// eseguire chiamata api
+		}
+	}
+	div {
+		attrs.id = "pivot-table-body"
+		attrs.onScrollFunction = isScrolling
+		props.children()
+	}
+}
+\end{lstlisting}
+
+Per quanto riguarda il caricamento parziale all'apertura o chiusura di un nodo di una dimensione ho realizzato le seguenti funzioni:
+\begin{lstlisting}[caption={Funzione parseJSON()}, label={lst:bodycells}, language=Kotlin]
+fun updateNode(tree: ArrayList<DimensionsNode>, node: DimensionsNode): ArrayList<DimensionsNode> {
+	if (tree.size > 1) {
+		tree.map {
+			findNode(it, node)
+		}
+	} else {
+		findNode(tree[0], node)
+	}
+	return tree
+}
+
+fun findNodeChildren(current: DimensionsNode, node: DimensionsNode) {
+	current.children?.map { child ->
+		findNode(child, node)
+	}
+}
+
+fun findNode(current: DimensionsNode, node: DimensionsNode) {
+	if (current.subDim.isNullOrEmpty())
+	return
+	
+	if (current.path == node.path) {
+		current.replace(node)
+		return
+	}
+	
+	current.subDim!!.map {
+		findNode(it, node)
+		it.children?.map { child ->
+			if (child.subDim.isNullOrEmpty())
+			  findNodeChildren(child, node)
+			else
+			  findNode(child, node)
+		}
+	}
+}
+\end{lstlisting}
 \subsection{Sprint Review}
 Niente da segnalare.
+
 \subsection{Backlog refinement}
 Il Product Backlog non è stato modificato.
 
 \subsection{Problemi riscontrati}
-Nell'ultimo sprint sono stati riscontrati dei problemi per quanto riguarda la realizzazione del caricamento parziale durante lo scroll di un utente. Il componente che si occuperà di realizzare la chiamata all'API è stato implementato, tuttavia l'API di Gruppo4 non presenta ancora le informazioni necessarie per implementare questa funzionalità.
+Nell'ultimo sprint sono stati riscontrati dei problemi per quanto riguarda la realizzazione del caricamento parziale durante lo scroll di un utente. Il componente che si occuperà di realizzare la chiamata all'API è stato implementato, tuttavia l'API di Gruppo4 non presenta ancora le informazioni necessarie per implementare questa funzionalità; l'azienda mi ha informato che queste modifiche potranno essere implementate solo dopo la fine del tirocinio curriculare. Le funzione e il componente richiesto dall'azienda è stato comunque implementato.

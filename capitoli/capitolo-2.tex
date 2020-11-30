@@ -7,7 +7,7 @@
 \label{cap:processi-metodologie}
 %**************************************************************
 
-In questo capitolo verrà fornito una descrizione dei metodi e dei processi messi in atto durante il tirocinio, in particolare riguardo: la metodologia agile, la programmazione funzionale, la gestione del progetto in locale e l'organizzazione del lavoro.
+In questo capitolo verrà fornita una descrizione dei metodi e dei processi messi in atto durante il tirocinio e in particolare riguardo: la metodologia agile, la programmazione funzionale, la gestione del progetto in locale e l'organizzazione del lavoro.
 
 %**************************************************************
 \section{Metodologia Agile}
@@ -50,14 +50,14 @@ La metodologia agile applicata presenta inoltre i seguenti eventi che sono stati
 %\end{minipage}
 
 \section{Programmazione funzionale}
-La programmazione funzionale è un paradigma di programmazione dichiarativa dove un programma è costituito dall'applicazione e dalla composizione di funzioni. In questo progetto si è utilizzata, dove possibile, la programmazione funzionale mediante le \gls{hofg} fornite da Kotlin. Questi strumenti sono molto utili perchè permettono di scrivere codice più leggibile, conciso e soprattutto hanno la caratteristica di evitare \gls{sideeffectsg}. Come definito dalla documentazione di Kotlin, le funzioni scritte nel linguaggio Kotlin sono considerate come \emph{first-class} quindi esse possono essere contenute in variabili e strutture dati, passate come argomento di altre funzioni e ritornate da altre \emph{Funzioni di ordine superiore}. Le \emph{higher-order functions} più usate nel progetto sono state:
+La programmazione funzionale è un paradigma di programmazione dichiarativa dove un programma è costituito dall'applicazione e dalla composizione di funzioni. In questo progetto si è utilizzata, dove possibile, la programmazione funzionale mediante le \gls{hofg} fornite da Kotlin. Questi strumenti sono molto utili perchè permettono di scrivere un codice più leggibile, conciso. Soprattutto hanno la caratteristica di evitare \gls{sideeffectsg}. Come definito dalla documentazione di Kotlin, le funzioni scritte nel linguaggio Kotlin sono considerate come \emph{first-class} quindi esse possono essere contenute in variabili e strutture dati, passate come argomento di altre funzioni e ritornate da altre \emph{Funzioni di ordine superiore}. Le \emph{higher-order functions} più usate nel progetto sono state:
 \begin{itemize}
 	\item \verb|map|: ritorna una nuova lista contenente i risultati ottenuti dalla funzione di trasformazione per ogni elemento della collezione originale;
 	\item \verb|sortedWith|: ritorna una lista contenente tutti gli elementi della lista originale ordinati secondo un \verb|comparator| una funzione che impone una condizione tra gli elementi della lista;
 	\item \verb|flatMap|: stesse funzionalità di \verb|map| ma può essere invocato su più di una lista e ritorna una collezione unica;
 	\item \verb|groupBy|: raggruppa gli elementi di una lista ottenuta con i risultati della funzione \verb|keySelector| applicata ad ogni elemento della lista originale, ritorna una collezione di tipo: \verb|Map<K, V>|.
 \end{itemize}
-Oltre all'uso delle \emph{Funzioni di ordine superiore} il paradigma di programmazione funzionale è stato applicato anche all'architettura dell'applicazione infatti è stato utilizzato un'insieme di funzioni dichiarative rispetto ad gerarchia di classi ed una sequenza di operazioni imperative che cambiano lo stato del programma.
+Oltre all'uso delle \emph{Funzioni di ordine superiore} il paradigma di programmazione funzionale è stato applicato anche all'architettura dell'applicazione infatti è stato utilizzato un'insieme di funzioni dichiarative rispetto ad una gerarchia di classi ed una sequenza di operazioni imperative che cambiano lo stato del programma.
 
 \section{Versionamento della soluzione}
 \subsection{Git}
@@ -95,7 +95,7 @@ Gradle è uno strumento di \gls{buildautomationg} per molti linguaggi tra cui Ko
 	\item \verb|kotlinx-coroutines-core|: libreria utilizzata per eseguire funzioni asincrone.
 \end{itemize}
 \noindent
-Oltre alla gestione delle dipendenze Gradle offre delle task, utili per compilare ed eseguire l'applicativo. Nell'ambito del progetto ho utilizzato la task: \verb|runDevelopment| e come parametro della task: \verb|--continuous| in modo da eseguire automaticamente la compilazione del codice quando viene cambiato uno dei file sorgente; questo risulta molto utile quando si codifica un'interfaccia web dato che i cambiamenti vengono renderizzati automaticamente.
+Oltre alla gestione delle dipendenze Gradle offre delle task, utili per compilare ed eseguire l'applicativo. Nell'ambito del progetto ho utilizzato la task: \verb|runDevelopment| e come parametro della task: \verb|--continuous| in modo da eseguire automaticamente la compilazione del codice quando viene cambiato uno dei file sorgente; questo risulta molto utile quando si codifica un'interfaccia web dato che i cambiamenti vengono visualizzati automaticamente.
 
 \subsection{Organizzazione del lavoro}
 Per l'organizzazione del lavoro, in particolare per la gestione dei macro obiettivi di ogni sprint, ho utilizzato l'\emph{ITS} fornito da Gitlab che fornisce un'interfaccia \emph{Kanban} che permette di categorizzare in modo efficace le singole attività da realizzare. \\

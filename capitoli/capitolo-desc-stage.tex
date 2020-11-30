@@ -166,7 +166,7 @@ data class HeaderAction(
 \end{lstlisting}
 
 \paragraph*{NodeActionType} \mbox{} \\
-L'entità \verb|HeaderAction| è una \verb|enum class| che definisce il tipo di azione che può essere eseguita da una cella.
+L'entità \verb|HeaderAction| è una \verb|enum class| che definisce il tipo di azione che può essere eseguita da una cella (apertura, chiusura o nessuna azione).
 \begin{lstlisting}[caption={NodeActionType}, label={lst:nodeactiontype}, language=Kotlin]
 enum class NodeActionType(val type: String) {
   EXPAND("E"),
@@ -192,7 +192,7 @@ Niente da segnalare.
 Il Product Backlog non è stato modificato.
 
 \subsection{Problemi riscontrati}
-Implementare correttamente l'architettura Redux è risultato difficoltoso a causa della mia inesperienza con la libreria e la mancanza di documentazione relativa a \verb|kotlin-redux|. Questi problemi non hanno però causato rallentamenti nell'implementazione degli altri requisiti dello Sprint Backlog.
+Implementare correttamente l'architettura Redux è risultato difficoltoso a causa della mia inesperienza con la libreria e la mancanza di documentazione relativa a \verb|kotlin-redux|. In particolare definire correttamente lo "Slice" dello stato ha richiesto molte ore di studio e ricerca dei wrapper di Kotlin per \emph{Redux} Questi problemi non hanno però causato rallentamenti nell'implementazione degli altri requisiti dello Sprint Backlog.
 
 \newpage
 
@@ -235,7 +235,7 @@ Le componenti grafiche realizzate sono le seguenti: \\
 \end{minipage}
 \\
 \\
-Per rendere l'interfaccia utente chiara e utilizzabile da un dispositivo mobile ho realizzato le dimensione dimensioni della tabella in modo che possano essere nascoste. Inoltre ogni cella di intestazione può essere cliccata per attivare l'azione, questo perchè cliccare un pulsante molto piccolo da un dispositivo mobile è risultato difficile nei test manuali effettuati.
+Per rendere l'interfaccia utente chiara e utilizzabile da un dispositivo mobile ho implementato la funzionalità di nascondere le dimensioni d'analisi della tabella per ampliare lo spazio relativo ai dati in caso ce ne fosse bisogno. Inoltre ogni cella di intestazione può essere cliccata per attivare l'azione, questo perchè cliccare un pulsante molto piccolo da un dispositivo mobile è risultato difficile nei test manuali effettuati.
 
 \subsubsection{redux.container}
 Per ogni componente che richiedeva un collegamento con lo stato di Redux ho realizzato un wrapper che permette di mappare lo stato di Redux alle \emph{props} di un componente React. I wrapper sono stati definiti nel seguente modo:
@@ -269,7 +269,7 @@ Niente da segnalare.
 Il Product Backlog non è stato modificato.
 
 \subsection{Problemi riscontrati}
-All'inizio dello sprint ho realizzato i componenti grafici con una scrittura funzionale, tuttavia dopo aver implementato i container Redux ho notato la presenza di alcuni limitazioni nell'uso di Redux e componenti funzionale di React. Quindi ho riscritto i componenti con una scrittura a classi. Questo problema non ha però causato ritardi gravi. 
+All'inizio dello sprint ho realizzato i componenti grafici con una scrittura funzionale, tuttavia dopo aver implementato i container Redux ho notato la presenza di alcuni limitazioni nell'uso di Redux e componenti funzionale di React. In particolare le funzioni dei wrapper \emph{Redux} di Kotlin non permettono di eseguire la connessione tra i componenti funzionali React e lo stato di Redux. Per risolvere questo problema ho quindi riscritto i componenti grafici con una scrittura a classi. Questo problema non ha causato ritardi gravi. 
 
 \newpage
 
@@ -327,7 +327,7 @@ suspend fun fetch() {
 \end{lstlisting}
 
 \noindent
-La seguente funzione effettua una richiesta HTTP GET alla API di Gruppo4 la quale ritorna il JSON risultante e una chiave necessaria per effettuare le chiamate successive per la corretta tabella pivot. Per le richieste in seguito ad un'azione da parte di un utente ho utilizzato la seguente funzione \verb|sendAction()| che in modo similare alla precedente esegue una richiesta HTTP POST all'API della tabella di un JSON che contiene le seguenti informazioni:
+La seguente funzione effettua una richiesta HTTP GET alla API di Gruppo4 la quale ritorna il JSON risultante e una chiave necessaria per effettuare le chiamate successive per la corretta tabella pivot. Quando un utente esegue un'azione all'interno della tabella questa deve essere comunicata all'API. Per ottenere questa funzionalità ho utilizzato la seguente funzione \verb|sendAction()| che in modo similare alla precedente esegue una richiesta HTTP POST all'API della tabella di un JSON che contiene le seguenti informazioni:
 \begin{itemize}
 	\item \verb|axis|: può essere "R" o "C" (righe o colonne);
 	\item \verb|path|: array identificativo della cella su cui è stata effettuata l'azione.
@@ -350,7 +350,7 @@ suspend fun sendAction(body: String, type: String) {
 \end{lstlisting}
 
 \subsubsection{Entità @Serializable}
-Per non dilungare troppo questa sezione mostrerò solo una entità:
+Le entità \verb|@Serializable| sono state scritte per ogni oggetto JSON all'interno del JSON in arrivo dall'API. Per non dilungare questa sezione con codice molto simile mostrerò solo la struttura di una entità:
 \begin{lstlisting}[caption={data class Gruppo4Action}, label={lst:bodycells}, language=Kotlin]
 @Serializable
 data class Gruppo4Action(
@@ -490,7 +490,8 @@ Niente da segnalare.
 Il Product Backlog non è stato modificato.
 
 \subsection{Problemi riscontrati}
-La realizzazione dell'adapter è stata rallentata da cambiamenti della struttura dell'API da parte dell'azienda, infatti la struttura ad albero delle dimensioni della tabella è stata modificata, ogni nodo infatti presenta due tipologie di figli: i nodi graficamente sotto di esso e i nodi graficamente laterali ad esso. I rallentamenti hanno causato una lunghezza dello sprint elevata. La realizzazione dell'adapter ha infatti anche occupato parte della settimana riservata al quarto sprint. I rallentamenti sono dovuti anche alla codifica della funzione \verb|convertTree()| data la sua complessità.
+La realizzazione dell'adapter è stata rallentata da cambiamenti della struttura dell'API da parte dell'azienda. In particolare il cambiamento di alcuni oggetti JSON che hanno implicato un'ampliamento delle entità \verb|@Serializable|. Inoltre la struttura ad albero che contiene le dimensioni d'analisi della tabella è stata modifica estensivamente. La nuova struttura identifica per ogni nodo due tipologie di figli: i nodi graficamente sotto di esso e i nodi graficamente laterali ad esso. Questi cambiamenti hanno implicato una riscrittura delle funzioni dell'adapter per ovviare a questo cambiamento. \\
+La realizzazione dell'adapter ha quindi occupato parte della settimana riservata al quarto sprint.
 
 \newpage
 

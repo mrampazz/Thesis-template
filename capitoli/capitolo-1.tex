@@ -7,7 +7,7 @@
 \label{cap:introduzione}
 %**************************************************************
 
-Questa tesi descrive l'esperienza e il percorso lavorativo svolto presso l'azienda GRUPPO4 sotto la supervisione di Tobia Conforto.
+Questa tesi descrive l'esperienza e il percorso lavorativo svolto presso l'azienda GRUPPO4 sotto la supervisione del Dott. Tobia Conforto.
 
 %**************************************************************
 \section{L'azienda}
@@ -15,11 +15,11 @@ Gruppo4 è una web agency Padovana, da oltre vent'anni ha accumulato competenze 
 
 %**************************************************************
 \section{Gli obiettivi del progetto}
-L'obiettivo principale di questo progetto consiste nella realizzazione di un componente di interfaccia grafica per il web in Kotlin. Il componente deve essere una tabella pivot interattiva che permette ad un utente la possibilità di esplorare liberamente i \emph{big data} contenuti al suo interno. Oltre alla realizzazione del componente, questo progetto ha anche lo scopo di valutare l'efficacia di Kotlin nel realizzare interfacce utente per il web in quanto l'azienda utilizza Kotlin nello sviluppo di \gls{api}.
+L'obiettivo principale di questo progetto consiste nella realizzazione di un componente di interfaccia grafica per il web in Kotlin. Il componente deve essere una tabella pivot interattiva che permette ad un utente la possibilità di esplorare liberamente i \emph{big data} contenuti al suo interno. Oltre alla realizzazione del componente, questo progetto ha anche lo scopo di valutare l'efficacia di Kotlin nel realizzare interfacce utente per il web in quanto l'azienda utilizza già Kotlin nello sviluppo di \gls{api}.
 
 %**************************************************************
 \section{Tabella pivot}
-L'azienda mi ha fornito una descrizione accurata della tabella pivot, in particolare della sua struttura e delle sue funzionalità. Nelle prossime sottosezioni descriverò gli elementi che la compongono e le possibili interazioni con l'utente. Durante la discussione dei requisiti del componente, l'azienda mi ha fornito un accesso ad una istanza della loro applicazione correntemente in uso. \\
+L'azienda mi ha fornito una descrizione accurata della tabella pivot, in particolare della sua struttura e delle sue funzionalità. Nelle prossime sottosezioni descriverò gli elementi che la compongono e le possibili interazioni con l'utente. Durante la discussione dei requisiti del componente, l'azienda mi ha fornito un accesso ad una istanza della loro applicazione correntemente in uso. Quindi mi sono stati forniti dei dati da usare nello sviluppo del componente ed un'accesso ad una loro tabella esistente.
 \begin{minipage}{\linewidth}
 	\makebox[\linewidth] {
 		\includegraphics[scale=0.75]{./immagini/tabella-pivot-old.png}
@@ -28,10 +28,15 @@ L'azienda mi ha fornito una descrizione accurata della tabella pivot, in partico
 
 \subsection{Struttura}
 La tabella pivot si può suddividere in tre parti ben distinte: le celle contenente i dati, le celle d'intestazione delle righe e quelle delle colonne. 
-Le celle d'intestazione sono definite come le dimensioni della tabella. Ognuna di essa rappresenta tutti i campi dati riguardanti una tabella di un database che in seguito viene unita ad altre tabelle rappresentante dalle altre dimensioni in modo da ottenere l'intera tabella.
+Le celle d'intestazione sono definite come le dimensioni di analisi della tabella. Esse rappresentano tutte le variabili riguardanti i dati contenuti nella tabella. Le dimensioni di analisi della tabella pivot possono essere molteplici sia per le righe che per le colonne. Ad esempio nello screenshot precedente le dimensioni di analisi della tabella delle righe sono l'insieme delle due variabili: Associazioni e Genere.
 
 \subsection{Funzionalità}
-La tabella deve essere completamente esplorabile da un utente. Come si può vedere dallo screenshot della tabella che sono presenti alcuni pulsanti. Essi servono per esguire due tipi di azioni: sulle dimensioni (tutti i figli di una dimensione possono essere aperti o chiusi contemporaneamente) e sulle singole celle di una dimensione (ogni cella di una dimensione deve poter essere aperta o chiusa con un semplice pulsante se essa presenta altri figli da renderizzare).
+La tabella deve essere completamente esplorabile da un utente, per farlo bisogna identificare le azioni che si possono eseguire:
+\begin{itemize}
+	\item aprire e chiudere tutti i figli di una dimensioni;
+	\item aprire e chiudere un singolo figlio di una dimension.
+\end{itemize}
+Mediante queste azioni i big data possono essere esplorati ed analizzati dall'utente.
 
 %**************************************************************
 \section{Organizzazione del testo}

@@ -11,7 +11,7 @@ In questo capitolo verrà fornito una descrizione dei metodi e dei processi mess
 
 %**************************************************************
 \section{Metodologia Agile}
-Per lo sviluppo del prodotto è stato deciso di applicare una metodologia agile in modo da reagire velocemente a possibili problemi e cambiamenti dei requisiti così da migliorare e velocizzare la realizzazione dell'applicativo. L'azienda ha deciso di utilizzare una metodologia agile simile a \emph{SCRUM}\glo. Infatti applicare nella sua interezza il metodo \emph{SCRUM} sarebbe stato impossibile dato il ristretto numero di sviluppatori nel team di sviluppo e il limitato periodo riservato alla codifica. \\
+Per lo sviluppo del prodotto è stato deciso di applicare una metodologia agile in modo da reagire velocemente a possibili problemi e cambiamenti dei requisiti così da migliorare e velocizzare la realizzazione dell'applicativo. L'azienda ha deciso di utilizzare una metodologia agile simile a \gls{scrumg}. Infatti applicare nella sua interezza il metodo \emph{SCRUM} sarebbe stato impossibile dato il ristretto numero di sviluppatori nel team di sviluppo e il limitato periodo riservato alla codifica. \\
 Le caratteristiche principali della metodologia agile applicata per la realizzazione di questo progetto sono le seguenti:
 \begin{itemize}
 	\item \textbf{Modello incrementale}: vengono realizzati rilasci multipli e successivi che aiutano a definire più chiaramente i requisiti più importanti dato che essi verranno implementati per primi. Ogni rilascio corrisponde ad una parte funzionante di applicazione;
@@ -50,7 +50,7 @@ La metodologia agile applicata presenta inoltre i seguenti eventi che sono stati
 %\end{minipage}
 
 \section{Programmazione funzionale}
-La programmazione funzionale è un paradigma di programmazione dichiarativa dove un programma è costituito dall'applicazione e dalla composizione di funzioni. In questo progetto si è utilizzata, dove possibile, la programmazione funzionale mediante le \emph{Funzioni di ordine superiore}\glosp fornite da Kotlin. Questi strumenti sono molto utili perchè permettono di scrivere codice più leggibile, conciso e soprattutto hanno la caratteristica di evitare \emph{side-effects}\glo. Come definito dalla documentazione di Kotlin, le funzioni scritte nel linguaggio Kotlin sono considerate come \emph{first-class} quindi esse possono essere contenute in variabili e strutture dati, passate come argomento di altre funzioni e ritornate da altre \emph{Funzioni di ordine superiore}. Le higher-order functions più usate nel progetto sono state:
+La programmazione funzionale è un paradigma di programmazione dichiarativa dove un programma è costituito dall'applicazione e dalla composizione di funzioni. In questo progetto si è utilizzata, dove possibile, la programmazione funzionale mediante le \gls{hofg} fornite da Kotlin. Questi strumenti sono molto utili perchè permettono di scrivere codice più leggibile, conciso e soprattutto hanno la caratteristica di evitare \gls{sideeffectsg}. Come definito dalla documentazione di Kotlin, le funzioni scritte nel linguaggio Kotlin sono considerate come \emph{first-class} quindi esse possono essere contenute in variabili e strutture dati, passate come argomento di altre funzioni e ritornate da altre \emph{Funzioni di ordine superiore}. Le \emph{higher-order functions} più usate nel progetto sono state:
 \begin{itemize}
 	\item \verb|map|: ritorna una nuova lista contenente i risultati ottenuti dalla funzione di trasformazione per ogni elemento della collezione originale;
 	\item \verb|sortedWith|: ritorna una lista contenente tutti gli elementi della lista originale ordinati secondo un \verb|comparator| una funzione che impone una condizione tra gli elementi della lista;
@@ -61,20 +61,20 @@ Oltre all'uso delle \emph{Funzioni di ordine superiore} il paradigma di programm
 
 \section{Versionamento della soluzione}
 \subsection{Git}
-Git è un \emph{VCS}\glosp (Version Control System) distribuito che permette di tenere traccia delle modifiche in un prodotto software e di organizzarne la codifica. 
+Git è un \gls{vcsg} distribuito che permette di tenere traccia delle modifiche in un prodotto software e di organizzarne la codifica. 
 
 \subsubsection*{Feature-branch}
-In questo tirocinio è stata usata la tecnica del feature-branch: ogni aggiunta di feature corrisponde all'apertura di un nuovo branch\glosp che deve essere poi approvato previa verifica prima di essere unito al branch \verb|master| mediante una \emph{pull request}.
+In questo tirocinio è stata usata la tecnica del feature-branch: ogni aggiunta di feature corrisponde all'apertura di un nuovo branch che deve essere poi approvato previa verifica prima di essere unito al branch \verb|master| mediante una \emph{pull request}.
 
 \subsection{Gitlab}
-Gitlab è uno strumento web che permette di implementare un DevOps lifecycle che fornisce una gestione di repository git, un \emph{ITS}\glosp (Issue Tracking System) e altri strumenti quali la \emph{Continuous integration} e \emph{Continuous deployement}. Per lo sviluppo di questo progetto mi è stato fornito l'accesso al server privato aziendale Gitlab.
+Gitlab è uno strumento web che permette di implementare un DevOps lifecycle che fornisce una gestione di repository git, un \gls{itsg} e altri strumenti quali la \emph{Continuous integration} e \emph{Continuous deployement}. Per lo sviluppo di questo progetto mi è stato fornito l'accesso al server privato aziendale Gitlab.
 
 \section{Ambiente di sviluppo locale}
 \subsection{IntelliJ Idea}
-IntelliJ IDEA Community Edition è una \emph{IDE}/glosp realizzata da JetBrains che fornisce funzionalità di supporto per lo sviluppo di molti linguaggi, specialmente Kotlin. Questa IDE è stata vivamente consigliata dal mio tutor aziendale per lo sviluppo in Kotlin rispetto ad altri editor per molti vantaggi come l'autocompletamento, la possibilità di eseguire un refactoring automatico di funzioni e classi e un'interfaccia grafica per eseguire task di Gradle.
+IntelliJ IDEA Community Edition è una \gls{ideg} realizzata da JetBrains che fornisce funzionalità di supporto per lo sviluppo di molti linguaggi, specialmente Kotlin. Questa \emph{IDE} è stata vivamente consigliata dal mio tutor aziendale per lo sviluppo in Kotlin rispetto ad altri editor per molti vantaggi come l'autocompletamento, la possibilità di eseguire un refactoring automatico di funzioni e classi e un'interfaccia grafica per eseguire task di Gradle.
  
 \subsection{Gradle}
-Gradle è uno strumento di \emph{build automation}\glosp per molti linguaggi tra cui Kotlin e Java. Gradle è stato usato per la gestione e l'installazione delle dipendenze del componente, il file di configurazione di Gradle è \verb|build.gradle.kts|, al suo interno sono definite le seguenti dipendenze:
+Gradle è uno strumento di \gls{buildautomationg} per molti linguaggi tra cui Kotlin e Java. Gradle è stato usato per la gestione e l'installazione delle dipendenze del componente, il file di configurazione di Gradle è \verb|build.gradle.kts|, al suo interno sono definite le seguenti dipendenze:
 \begin{itemize}
 	\item \verb|stdlib-js|: insieme di classi e funzioni in kotlin che forniscono un entry-point per funzioni e oggetti Javascript;
 	
@@ -98,8 +98,8 @@ Gradle è uno strumento di \emph{build automation}\glosp per molti linguaggi tra
 Oltre alla gestione delle dipendenze Gradle offre delle task, utili per compilare ed eseguire l'applicativo. Nell'ambito del progetto ho utilizzato la task: \verb|runDevelopment| e come parametro della task: \verb|--continuous| in modo da eseguire automaticamente la compilazione del codice quando viene cambiato uno dei file sorgente; questo risulta molto utile quando si codifica un'interfaccia web dato che i cambiamenti vengono renderizzati automaticamente.
 
 \subsection{Organizzazione del lavoro}
-Per l'organizzazione del lavoro, in particolare per la gestione dei macro obiettivi di ogni sprint, ho utilizzato l'\emph{ITS}\glosp fornito da Gitlab che fornisce un'interfaccia \emph{Kanban} che permette di categorizzare in modo efficace le singole attività da realizzare. \\
-Per quanto riguarda le riunioni telematiche è stato usato  \emph{Google meet}.
+Per l'organizzazione del lavoro, in particolare per la gestione dei macro obiettivi di ogni sprint, ho utilizzato l'\emph{ITS} fornito da Gitlab che fornisce un'interfaccia \emph{Kanban} che permette di categorizzare in modo efficace le singole attività da realizzare. \\
+Per quanto riguarda le riunioni telematiche è stato usato \emph{Google meet}.
 
 
 

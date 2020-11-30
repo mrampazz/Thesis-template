@@ -65,10 +65,10 @@ Quindi per rappresentare l'intero stato della tabella ho definito un ultimo \ver
 In questa sezione verrà descritto il ragionamento e il modo in cui è avvenuta la progettazione degli elementi che si occuperanno di gestire lo stato dell'applicazione.
 
 \subsection{Dataflow dell'applicazione}
-Un aspetto che è stato molto discusso dal team di sviluppo riguarda il \emph{dataflow}\glosp dell'applicazione. Durante la prima settimana del tirocinio, oltre allo studio delle tecnologie, si è pensato a come verrà gestito lo stato dell'applicazione e in particolare alle possibili soluzioni per garantirne la scalabilità. Nelle prossime sezioni verranno descritti i \emph{dataflow} forniti da React e Redux, infine verrà identificato quello adottato nell'ambito del progetto.
+Un aspetto che è stato molto discusso dal team di sviluppo riguarda il \gls{dataflowg} dell'applicazione. Durante la prima settimana del tirocinio, oltre allo studio delle tecnologie, si è pensato a come verrà gestito lo stato dell'applicazione e in particolare alle possibili soluzioni per garantirne la scalabilità. Nelle prossime sezioni verranno descritti i \emph{dataflow} forniti da React e Redux, infine verrà identificato quello adottato nell'ambito del progetto.
 
 \subsubsection*{React}
-React è una libreria per realizzare interfacce utente che utilizza un \emph{dataflow} unidirezionale, questo significa che il flusso dei dati deve passare mediante dei componenti grafici. I dati possono essere contenuti nello stato locale di un componente che è accessibile solo a quest'ultimo. Le informazioni possono invece essere passate tra un componente padre ai suoi componenti figli mediante le \emph{props}\glo. \\
+React è una libreria per realizzare interfacce utente che utilizza un \emph{dataflow} unidirezionale, questo significa che il flusso dei dati deve passare mediante dei componenti grafici. I dati possono essere contenuti nello stato locale di un componente che è accessibile solo a quest'ultimo. Le informazioni possono invece essere passate tra un componente padre ai suoi componenti figli mediante le \gls{propsg}. \\
 Questo \emph{dataflow} è molto semplice da utilizzare però presenta alcune limitazioni per quanto riguarda la scalabilità. Per avere uno stato unico di tutta l'applicazione bisognerebbe dare tutta la responsabilità ad un componente grafico. L'architettura che ne deriva, nel caso di applicazioni complesse, è difficile da manutenere e poco scalabile. \\
 Tuttavia questo semplice dataflow ha il vantaggio che per un numero ristretto di componenti i cambiamenti di stato locale e i passaggi di informazioni mediante le \emph{props} sono molto veloci e semplici.
 
@@ -77,7 +77,7 @@ Per garantire scalabilità nella gestione dello stato dell'applicazione è stato
 \begin{itemize}
 	\item lo stato è l'unica fonte di verità;
 	\item lo stato non è modificabile direttamente;
-	\item le modifiche avvengono medianti \emph{funzioni pure}\glosp che creano un nuovo stato per evitare \emph{side effects}\glo.
+	\item le modifiche avvengono medianti \gls{purefunctionsg} che creano un nuovo stato per evitare \emph{side effects}.
 \end{itemize}
 
 \noindent

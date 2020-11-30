@@ -14,7 +14,20 @@
 Kotlin è un linguaggio tipizzato, realizzato da JetBrains, utilizzato da molti sviluppatori per il fatto che il codice è conciso, sicuro e permette di lavorare utilizzando librerie per la JVM, Android e il browser.
 
 \section{React}
-Libreria utilizzata per la realizzazione dei componenti grafici dell'applicazione.
+React è una libreria JavaScript dichiarativa, efficiente e flessibile che viene usata per costruire interfacce utente. Permette di realizzare interfacce utente complesse da piccoli e isolati "pezzi di codice" chiamati componenti. Le principali caratteristiche che lo rendono una delle librerie usate più usate sono la presenza di:
+\begin{itemize}
+	\item componenti (che possono essere scritti in modo funzionale o a classe);
+	\item virtual DOM, React crea una cache della struttura del DOM, in seguito computa le differenze e infine esegue l'update solo dei componenti che sono cambiati (riconciliazione). 
+\end{itemize}
+
+\section{Redux}
+Redux è un contenitore prevedibile dello stato per applicazioni JavaScript. Lo stato in Redux viene definito come dati che cambiano nel tempo. Lo stato determina ciò che viene renderizzato nell'interfaccia utente. Redux esegue anche la funzione di gestione dello stato, in particolare si occupa di:
+\begin{enumerate}
+	\item recupero e memorizzazione dei dati;
+	\item assegnare i dati agli elementi dell'interfaccia utente;
+	\item modifica dei dati.
+\end{enumerate}
+
 
 \section{Kotlin Wrappers}
 Durante la codifica del progetto sono state utilizzati alcuni wrapper forniti da JetBrains per lo sviluppo web di React, Redux e React-Redux.
@@ -28,8 +41,6 @@ Wrapper utilizzato per la realizzazione dell'architettura Redux utilizzata nell'
 \subsection{kotlin-react-redux}
 Wrapper utilizzato per la realizzazione del collegamento tra i componenti React e lo stato di Redux.
 
-\section{Redux}
-Libreria utilizzata per la realizzazione dello stato dell'applicazione e della sua gestione
 
 
 % parlare magari di come si è scritto il codice magari

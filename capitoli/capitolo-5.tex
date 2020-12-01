@@ -16,12 +16,12 @@ Kotlin è un linguaggio tipizzato, realizzato da JetBrains, utilizzato da molti 
 \section{React}
 React è una libreria JavaScript dichiarativa, efficiente e flessibile che viene usata per costruire interfacce utente. Permette di realizzare interfacce utente complesse da piccoli e isolati "pezzi di codice" chiamati componenti. Le principali caratteristiche che lo rendono una delle librerie usate più usate sono la presenza di:
 \begin{itemize}
-	\item componenti (che possono essere scritti in modo funzionale o a classe);
-	\item virtual DOM, React crea una cache della struttura del DOM, in seguito computa le differenze e infine esegue l'update solo dei componenti che sono cambiati (riconciliazione). 
+	\item componenti (che possono essere scritti in modo funzionale o a classe), questo implica un alto riutilizzo del codice;
+	\item virtual DOM, React crea una cache della struttura del DOM, in seguito computa le differenze e infine esegue l'update solo dei componenti che sono cambiati (riconciliazione), questo implica migliori prestazioni. 
 \end{itemize}
 
 \section{Redux}
-Redux è un contenitore prevedibile dello stato per applicazioni JavaScript. Lo stato in Redux viene definito come dati che cambiano nel tempo. Lo stato determina ciò che viene renderizzato nell'interfaccia utente. Redux esegue anche la funzione di gestione dello stato, in particolare si occupa di:
+Redux è un contenitore prevedibile dello stato per applicazioni JavaScript. Lo stato in Redux viene definito come dati che cambiano nel tempo. Lo stato determina ciò che viene renderizzato nell'interfaccia utente. Oltre alla semplice funzione di contenitore dello stato, Redux esegue anche la gestione di esso, in particolare si occupa di:
 \begin{enumerate}
 	\item recupero e memorizzazione dei dati;
 	\item assegnare i dati agli elementi dell'interfaccia utente;
@@ -30,7 +30,7 @@ Redux è un contenitore prevedibile dello stato per applicazioni JavaScript. Lo 
 
 
 \section{Kotlin Wrappers}
-Durante la codifica del progetto sono state utilizzati alcuni wrapper forniti da JetBrains per lo sviluppo web di React, Redux e React-Redux.
+Durante la codifica del progetto sono state utilizzati alcuni wrapper forniti da JetBrains per lo sviluppo web di React, Redux e React-Redux. Questi wrapper mi hanno permesso di scrivere componenti React e utilizzare funzioni e classi delle due librerie.
 
 \subsection{kotlin-react}
 Wrapper utilizzato per l'utilizzo di funzioni che permettono la codifica di componenti React.

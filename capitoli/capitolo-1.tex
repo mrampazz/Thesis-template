@@ -19,7 +19,7 @@ L'obiettivo principale di questo progetto consiste nella realizzazione di un com
 
 %**************************************************************
 \section{Tabella pivot}
-L'azienda mi ha fornito una descrizione accurata della tabella pivot, in particolare della sua struttura e delle sue funzionalità. Nelle prossime sottosezioni descriverò gli elementi che la compongono e le possibili interazioni con l'utente. Durante la discussione dei requisiti del componente, l'azienda mi ha fornito un accesso ad una istanza della loro applicazione correntemente in uso. Quindi mi sono stati forniti dei dati da usare nello sviluppo del componente ed un'accesso ad una loro tabella esistente.
+L'azienda mi ha fornito una descrizione accurata della tabella pivot, in particolare riguardo la sua struttura e le sue funzionalità. Nelle prossime sottosezioni descriverò gli elementi che la compongono e le possibili interazioni con l'utente. Durante la discussione dei requisiti del componente, l'azienda mi ha fornito un accesso ad una istanza della loro applicazione correntemente in uso. Mi sono stati forniti dei dati da usare nello sviluppo del componente ed un accesso all'interfaccia di una tabella esistente per capire al meglio il suo funzionamento.
 \begin{minipage}{\linewidth}
 	\makebox[\linewidth] {
 		\includegraphics[scale=0.75]{./immagini/tabella-pivot-old.png}
@@ -28,13 +28,13 @@ L'azienda mi ha fornito una descrizione accurata della tabella pivot, in partico
 
 \subsection{Struttura}
 La tabella pivot si può suddividere in tre parti ben distinte: le celle contenente i dati, le celle d'intestazione delle righe e quelle delle colonne. 
-Le celle d'intestazione sono definite come le dimensioni di analisi della tabella. Esse rappresentano tutte le variabili riguardanti i dati contenuti nella tabella. Le dimensioni di analisi della tabella pivot possono essere molteplici sia per le righe che per le colonne. Ad esempio nello screenshot precedente le dimensioni di analisi della tabella delle righe sono l'insieme delle due variabili: Associazioni e Genere.
+Le celle d'intestazione sono definite come le \emph{dimensioni di analisi} della tabella. Esse rappresentano tutte le variabili riguardanti i dati contenuti nella tabella. Le \emph{dimensioni di analisi} della tabella pivot possono essere molteplici sia per le righe che per le colonne. Ad esempio, nello screenshot precedente, le \emph{dimensioni di analisi} delle righe sono l'insieme delle due variabili: Associazioni e Genere. Quindi ogni cella dei dati corrisponde ad una intersezione tra le \emph{dimensioni di analisi} delle righe e delle colonne.
 
 \subsection{Funzionalità}
-La tabella deve essere completamente esplorabile da un utente, per farlo bisogna identificare le azioni che si possono eseguire:
+La tabella deve essere completamente esplorabile da un utente, per farlo bisogna identificare le azioni che possono essere eseguite:
 \begin{itemize}
-	\item aprire e chiudere tutti i figli di una dimensioni;
-	\item aprire e chiudere un singolo figlio di una dimension.
+	\item aprire e chiudere tutti i figli di una dimensione;
+	\item aprire e chiudere un singolo figlio di una dimensione.
 \end{itemize}
 Mediante queste azioni i big data possono essere esplorati ed analizzati dall'utente.
 

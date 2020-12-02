@@ -10,6 +10,16 @@
 \newacronym[description={\glslink{umlg}{Unified Modeling Language}}]
     {uml}{UML}{Unified Modeling Language}
 
+\newacronym[description={\glslink{vcsg}{Version Control System}}]
+	{vcs}{VCS}{Version Control System}
+	
+\newacronym[description={\glslink{itsg}{Issue Tracking System}}]
+	{its}{ITS}{Issue Tracking System}
+	
+\newacronym[description={\glslink{ideg}{Integrated Development Environment}}]
+	{ide}{IDE}{Integrated Development Environment}
+
+
 %**************************************************************
 % Glossario
 %**************************************************************
@@ -72,18 +82,18 @@
 
 \newglossaryentry{vcsg}
 {
-	name=VCS,
-	text=VCS,
+	name=\glslink{vcs}{VCS},
+	text=Version Control System,
 	sort=vcs,
-	description={VCS o "Version Control System". In ingegneria del software, il controllo del versionamento è una classe di sistemi responsabili della gestione di cambiamenti nel codice sorgente di un software. Ogni cambiamento (revisione) viene identificato attraverso un numero o un codice, esso viene associato ad un'orario e alla persona che ha eseguito la modifica. Ogni revisione può essere confrontata, restaurata e, con alcuni tipi di file, combinata (merged)}
+	description={In ingegneria del software, il controllo del versionamento è una classe di sistemi responsabili della gestione di cambiamenti nel codice sorgente di un software. Ogni cambiamento (revisione) viene identificato attraverso un numero o un codice, esso viene associato ad un'orario e alla persona che ha eseguito la modifica. Ogni revisione può essere confrontata, restaurata e, con alcuni tipi di file, combinata (merged)}
 }
 
 \newglossaryentry{itsg}
 {
-	name=ITS,
-	text=ITS,
+	name=\glslink{its}{ITS},
+	text=Issue Tracking System,
 	sort=its,
-	description={ITS o "Issue Tracking System" è un pacchetto software che si occupa di gestire e mantenere una lista di attività (issues) da completare. Un ITS viene utilizzato principalmente durante la collaborazione in team di sviluppo grandi, tuttavia può essere utilizzato da individui per gestire il proprio tempo e/o la loro produttività}
+	description={Un ITS è un pacchetto software che si occupa di gestire e mantenere una lista di attività (issues) da completare. Un ITS viene utilizzato principalmente durante la collaborazione in team di sviluppo grandi, tuttavia può essere utilizzato da individui per gestire il proprio tempo e/o la loro produttività}
 }
 
 \newglossaryentry{ideg}
@@ -91,7 +101,7 @@
 	name=IDE,
 	text=IDE,
 	sort=ide,
-	description={IDE o "Integrated Development Environment" è un software per sviluppare applicazioni che combina strumenti per lo sviluppatore in un'interfaccia grafica comune}
+	description={Un IDE è un software per sviluppare applicazioni che combina strumenti per lo sviluppatore in un'interfaccia grafica comune}
 }
 
 \newglossaryentry{buildautomationg}
@@ -117,6 +127,80 @@
 	sort=props,
 	description={I componenti di React sono delle funzioni Javascript, esse accettano dei valori di input chiamati "props". Quindi le "props" sono i dati che possono essere passati come argomento ad un componente React}
 }
+
+\newglossaryentry{listenerg}
+{
+	name=Listener,
+	text=Listener,
+	sort=listener,
+	description={Un listener è una procedura o una funzione di una applicazione che ascolta un altro elemento. Un listener viene notificato quando l'elemento ascoltato viene modificato}
+}
+
+\newglossaryentry{branchg}
+{
+	name=Branch (Git),
+	text=Branch,
+	sort=branch,
+	description={Un branch in Git è considerato come un puntatore a una modifica effettuata nella repository. Una repository può avere molteplici branch. Questo sistema chiamato "branching" è un meccanismo molto potente che permette agli sviluppatori di creare diverse linee di sviluppo}
+}
+
+\newglossaryentry{pullreqg}
+{
+	name=Pull Request (Git),
+	text=Pull request,
+	sort=pullreq,
+	description={Pull request sono un meccanismo per uno sviluppatore per notificare il team di sviluppo che hanno completato una funzionalità del prodotto. Questo permette di notificare i membri coinvolti a verificare il codice e poi unirlo al branch master}
+}
+
+\newglossaryentry{ci_g}
+{
+	name=Continuous Integration,
+	text=Continuous Integration,
+	sort=ci,
+	description={Continuous integration è una pratica dello sviluppo software dove gli sviluppatori integrano codice all'interno di una repository. Ogni integrazione può essere dopo verificata da un sistema di build e test automatico}
+}
+
+\newglossaryentry{cd_g}
+{
+	name=Continuous Deployement,
+	text=Continuous Deployement,
+	sort=cd,
+	description={Continuous deployment è una strategia per il rilascio di software dove ogni modifica che passa un sistema automatico di test viene rilasciato automaticamente nell'ambiente di produzione}
+}
+
+\newglossaryentry{refactoring_g}
+{
+	name=Refactoring,
+	text=Refactoring,
+	sort=refactoring,
+	description={In informatica per refactoring si intende il processo di ristrutturare codice senza cambiarne il suo comportamento esterno. Ad esempio eseguire il refactoring di una funzione rappresenta un cambiamento della funzione senza però cambiare il modo in cui viene chiamata dall'esterno}
+}
+
+\newglossaryentry{middleware_g}
+{
+	name=Middleware,
+	text=Middleware,
+	sort=middlerware,
+	description={Un middlerware è un software che fornisce servizi particolari oltre a quelli del sistema operativo. Nel contesto di Redux un middleware può essere utilizzato per sovrascrivere le funzioni base dello store (dispatch, getState, subscribe)}
+}
+
+\newglossaryentry{parser_g}
+{
+	name=Parser,
+	text=Parser,
+	sort=parser,
+	description={Un parser è un programma che analizza una stringa di testo per poi tradurla in un linguaggio di programmazione se conforme alle regole formali del suddetto linguaggio}
+}
+
+\newglossaryentry{wrapper_g}
+{
+	name=Wrapper,
+	text=Wrapper,
+	sort=wrapper,
+	description={In informatica un wrapper è una entità che incapsula un altro oggetto. Nell'ambito di questo progetto i wrapper utilizzati sono quelli forniti da Jetbrains che forniscono un'interfaccia ad alcune librerie di JavaScript}
+}
+
+
 
 
 

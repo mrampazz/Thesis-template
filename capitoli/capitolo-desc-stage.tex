@@ -7,7 +7,7 @@
 \label{cap:codifica}
 %**************************************************************
 
-La codifica del prodotto, come descritto nel capitolo 2 è stata suddivisa in sprint di sviluppo che corrispondono a circa 4-5 giorni lavorativi dove vengono implementati parte delle user stories indicate nel product backlog. Per ogni sprint verrano descritti lo Sprint Backlog e le Soluzioni che sono state implementate e i seguenti eventi: \textbf{Sprint Review} e \textbf{Backlog refinement}.
+La codifica del prodotto, come descritto nel capitolo 2 è stata suddivisa in sprint di sviluppo che corrispondono a circa 4-5 giorni lavorativi dove vengono implementati parte delle user stories indicate nel \emph{product backlog}. Per ogni \emph{sprint} verrano identificate lo \emph{sprint backlog}, le soluzioni che sono state implementate e i seguenti eventi: \emph{Sprint Review} e \emph{Backlog refinement}.
 Infine verranno elencati i possibili ritardi, i problemi riscontrati e le soluzioni trovate. Ogni sprint è stato identificato da un codice univoco e da un titolo. In questo progetto gli sprint individuati sono i seguenti:
 \begin{itemize}
 	\item \textbf{S1: Struttura dello stato e dell'architettura Redux};
@@ -42,6 +42,7 @@ In particolare sono stati implementati questi requisiti.
 	R1.1.2 & Sviluppo di Thunk & O\\ \hline
 	R1.1.3 & Sviluppo delle Actions & O\\ \hline
 	R1.1.4 & Sviluppo dei Reducers & O\\ \hline
+	\caption{Sprint backlog - 1}
 \end{longtable}
 
 \subsection{Soluzioni implementate}
@@ -55,7 +56,7 @@ Ho realizzato i seguenti \verb|package|:
 \end{itemize}
 
 \subsubsection{redux.slice}
-\begin{lstlisting}[caption={TableState}, label={lst:tablestate}, language=Kotlin]
+\begin{lstlisting}[caption={TableStateSlice}, label={lst:tablestateslice}, language=Kotlin]
 object TableStateSlice {
 	data class State(
 	  val cols: ArrayList<ArrayList<DimensionsNode>> = ArrayList(),
@@ -91,8 +92,8 @@ object TableStateSlice {
 \end{lstlisting}
 
 \subsubsection{redux.thunks}
-La classe \verb|InitState| si occuperà di riempire lo stato della tabella con il risultato della richiesta HTTP non ancora implementata.
-\begin{lstlisting}[caption={TableState}, label={lst:tablestate}, language=Kotlin]
+La classe \verb|InitState| si occuperà di riempire lo stato della tabella con il risultato della richiesta HTTP non ancora implementata in questo \emph{sprint}.
+\begin{lstlisting}[caption={InitState}, label={lst:initState}, language=Kotlin]
 class InitState : RThunk {
 	override fun invoke(dispatch: (RAction) -> WrapperAction, getState: () -> AppState): WrapperAction {
 		val mainScope = MainScope()
@@ -110,8 +111,8 @@ class InitState : RThunk {
 \end{lstlisting}
 
 \subsubsection{redux.state}
-Lo stato dell'applicazione è definito in modo che sia completamente modulare. Infatti la \verb|data class AppState| contiene un'istanza dello stato di \verb|TableStateSlice|. In questo modo in un futuro, se si vorrà espandere questo componente si potrà semplicemente aggiungere un nuovo "slice" e modificare questo file in modo da collegarlo a \verb|AppState|.
-\begin{lstlisting}[caption={TableState}, label={lst:tablestate}, language=Kotlin]
+Lo stato dell'applicazione è definito in modo che sia completamente modulare. Infatti la \verb|data class AppState| contiene un'istanza dello stato di \verb|TableStateSlice|. In questo modo in un futuro, se si vorrà espandere questo componente si potrà semplicemente modificare questo file aggiungendo alla funzione \verb|rootReducer()| e a \verb|data class AppState| una referenza del nuovo \emph{slice}.
+\begin{lstlisting}[caption={AppState}, label={lst:appstate}, language=Kotlin]
 data class AppState (
   val tableState: TableStateSlice.State = TableStateSlice.State()
 )
@@ -130,7 +131,7 @@ fun <S, A, R> getRootReducers(reducers: Map<KProperty1<S, R>, Reducer<*, A>>): R
 
 \subsubsection{entities}
 \paragraph*{TableState} \mbox{} \\
-L'entità \verb|TableState| è la \verb|data class| che contiene l'intero stato dell'applicazione. Al suo interno sono presenti tutte le informazioni necessarie per la corretta renderizzazione della tabella pivot.
+L'entità \verb|TableState| è la \verb|data class| che contiene l'intero stato dell'applicazione. Al suo interno sono presenti tutte le informazioni necessarie per la corretta visualizzazione della tabella pivot.
 \begin{lstlisting}[caption={TableState}, label={lst:tablestate}, language=Kotlin]
 data class TableState(
   val cols: ArrayList<ArrayList<DimensionsNode>>,
@@ -156,7 +157,7 @@ data class DimensionsNode(
 \end{lstlisting}
 
 \paragraph*{HeaderAction} \mbox{} \\
-L'entità \verb|HeaderAction| è la \verb|data class| che contiene le informazioni riguardanti i pulsanti che si occupano di aprire intere colonne o righe di dimensioni nella TableActionUI.
+L'entità \verb|HeaderAction| è la \verb|data class| che contiene le informazioni riguardanti i pulsanti che si occupano di aprire intere colonne o righe di dimensioni nella \verb|TableActionUI|.
 \begin{lstlisting}[caption={HeaderAction}, label={lst:headeraction}, language=Kotlin]
 data class HeaderAction(
   val actionType: NodeActionType,
@@ -186,19 +187,16 @@ data class BodyCells(
 \end{lstlisting}
 
 \subsection{Sprint Review}
-Niente da segnalare.
+Implementare correttamente l'architettura Redux è risultato difficoltoso a causa della mia inesperienza con la libreria e la mancanza di documentazione relativa a \verb|kotlin-redux|. In particolare definire correttamente lo \emph{Slice} dello stato ha richiesto molte ore di studio e ricerca dei wrapper di Kotlin per Redux. Questi problemi non hanno però causato rallentamenti nell'implementazione degli altri requisiti dello \emph{Sprint Backlog}.
 
 \subsection{Backlog refinement}
 Il Product Backlog non è stato modificato.
-
-\subsection{Problemi riscontrati}
-Implementare correttamente l'architettura Redux è risultato difficoltoso a causa della mia inesperienza con la libreria e la mancanza di documentazione relativa a \verb|kotlin-redux|. In particolare definire correttamente lo "Slice" dello stato ha richiesto molte ore di studio e ricerca dei wrapper di Kotlin per \emph{Redux} Questi problemi non hanno però causato rallentamenti nell'implementazione degli altri requisiti dello Sprint Backlog.
 
 \newpage
 
 \section{S2: Componenti grafici e container Redux}
 \textbf{Durata:} \textit{5 giorni} \\
-Nel secondo sprint di sviluppo ho lavorato sull'interfaccia grafica e quindi i componenti React e i relativi container Redux.
+Nel secondo \emph{sprint} di sviluppo ho lavorato sull'interfaccia grafica. Quindi in questo \emph{sprint} mi sono occupato della codifica dei componenti React e i relativi container Redux.
 
 \subsection{Sprint Backlog}
 \begin{longtable} {
@@ -209,6 +207,7 @@ Nel secondo sprint di sviluppo ho lavorato sull'interfaccia grafica e quindi i c
 		|>{}p{15mm}|
 		>{}p{0mm}}
 	\hline
+\textbf{Id} & \textbf{Descrizione} & \textbf{Tipo} \\ \hline
 R2.0   & \textbf{Definizione dei componenti} & O\\ \hline
 R2.1   & Sviluppo dei componenti React 		  & O\\ \hline
 R2.1.1 & Sviluppo di TableView                & O\\ \hline
@@ -224,22 +223,22 @@ R2.2.4 & Sviluppo di TableSidebarController   & O      \\ \hline
 R2.2.5 & Sviluppo di TableBodyController      & O   \\ \hline
 R2.2.6 & Sviluppo di TableLabelController   & O      \\ \hline
 R2.2.7 & Sviluppo di TableActionUIController      & O   \\ \hline
+\caption{Sprint backlog - 2}
 \end{longtable}
 
 \subsection{Soluzioni implementate}
 Le componenti grafiche realizzate sono le seguenti: \\
 \begin{minipage}{\linewidth}
-	\makebox[\linewidth] {
-		\includegraphics[scale=0.60]{./immagini/table-pivot.png}
-	}
+\includegraphics[scale=0.60]{./immagini/table-pivot.png}
+\captionof{figure}{Screenshot del componente realizzato}
 \end{minipage}
 \\
 \\
-Per rendere l'interfaccia utente chiara e utilizzabile da un dispositivo mobile ho implementato la funzionalità di nascondere le dimensioni d'analisi della tabella per ampliare lo spazio relativo ai dati in caso ce ne fosse bisogno. Inoltre ogni cella di intestazione può essere cliccata per attivare l'azione, questo perchè cliccare un pulsante molto piccolo da un dispositivo mobile è risultato difficile nei test manuali effettuati.
+Per rendere l'interfaccia utente chiara e utilizzabile da un dispositivo mobile ho implementato la funzionalità di nascondere le \emph{dimensioni d'analisi della tabella} per ampliare lo spazio relativo ai dati in caso ce ne fosse bisogno. Inoltre ogni cella d'intestazione può essere cliccata per attivare l'azione, questo perchè cliccare un pulsante molto piccolo da un dispositivo mobile è risultato difficile nei test manuali effettuati.
 
 \subsubsection{redux.container}
-Per ogni componente che richiedeva un collegamento con lo stato di Redux ho realizzato un wrapper che permette di mappare lo stato di Redux alle \emph{props} di un componente React. I wrapper sono stati definiti nel seguente modo:
-\begin{lstlisting}[caption={BodyCells}, label={lst:bodycells}, language=Kotlin]
+Per ogni componente che richiedeva un collegamento con lo stato di Redux ho realizzato un \emph{wrapper} che permette di mappare lo stato di Redux alle \emph{props} di un componente React. I \emph{wrapper} sono stati definiti nel seguente modo:
+\begin{lstlisting}[caption={ReduxContainer}, label={lst:reduxcontainer}, language=Kotlin]
 // campi dato dello stato da mappare alle props
 private interface StateProps : RProps {
 	var rows: ArrayList<DimensionsNode>
@@ -262,20 +261,18 @@ mapDispatchToProps = { dispatch, _ ->
 }
 )(TableActionUI::class.js.unsafeCast<RClass<RComponentProps>>())
 \end{lstlisting}
+
 \subsection{Sprint Review}
-Niente da segnalare.
+All'inizio dello sprint ho realizzato i componenti grafici con una scrittura funzionale, tuttavia dopo aver implementato i container Redux ho notato la presenza di alcuni limitazioni nell'uso di Redux e componenti funzionale di React. In particolare le funzioni dei wrapper \emph{Redux} di Kotlin non permettono di eseguire la connessione tra i componenti funzionali React e lo stato di Redux. Per risolvere questo problema ho quindi riscritto i componenti grafici con una scrittura a classi. Questo problema non ha causato ritardi gravi. 
 
 \subsection{Backlog refinement}
 Il Product Backlog non è stato modificato.
-
-\subsection{Problemi riscontrati}
-All'inizio dello sprint ho realizzato i componenti grafici con una scrittura funzionale, tuttavia dopo aver implementato i container Redux ho notato la presenza di alcuni limitazioni nell'uso di Redux e componenti funzionale di React. In particolare le funzioni dei wrapper \emph{Redux} di Kotlin non permettono di eseguire la connessione tra i componenti funzionali React e lo stato di Redux. Per risolvere questo problema ho quindi riscritto i componenti grafici con una scrittura a classi. Questo problema non ha causato ritardi gravi. 
 
 \newpage
 
 \section{S3: Parser JSON e adapter}
 \textbf{Durata:} \textit{8 giorni} \\
-Nel terzo sprint ho realizzato le funzioni per eseguire richieste HTTP e le ho implementate in modo da funzionare correttamente con le funzioni eseguite nel primo sprint. In seguito ho realizzato le \verb|data class @Serializable| per eseguire il parsing del json. Infine ho scritto le funzioni che mi hanno permesso di tradurre i dati ricevuti dall'api nelle strutture dati definite nel primo sprint.
+Nel terzo \emph{sprint} ho realizzato le funzioni per eseguire richieste HTTP e le ho integrate con le funzioni eseguite nel primo \emph{sprint}. In seguito ho realizzato le \verb|data class @Serializable| per eseguire il \emph{parsing} del json. Infine ho scritto le funzioni che mi hanno permesso di tradurre i dati ricevuti dall'\emph{API} nelle strutture dati definite nel primo \emph{sprint}.
  
 \subsection{Sprint Backlog}
 \begin{longtable} {
@@ -286,6 +283,7 @@ Nel terzo sprint ho realizzato le funzioni per eseguire richieste HTTP e le ho i
 		|>{}p{15mm}|
 		>{}p{0mm}}
 	\hline
+	\textbf{Id} & \textbf{Descrizione} & \textbf{Tipo} \\ \hline
 	R3.0   & \textbf{Sviluppo parser per JSON dell'API}         & O\\ \hline
 	R3.1   & Sviluppo data class @Serializable 	   & O\\ \hline
 	R3.1.1 & Sviluppo Gruppo4JSON & O\\ \hline
@@ -302,12 +300,13 @@ Nel terzo sprint ho realizzato le funzioni per eseguire richieste HTTP e le ho i
 	R4.0 & \textbf{Sviluppo funzioni per effettuare richieste HTTP}  & O    \\ \hline
 	R4.1   & Sviluppo funzione fetch() & O     \\ \hline
 	R4.2   & Sviluppo funzione sendAction() & O    \\ \hline
+	\caption{Sprint backlog - 3}
 \end{longtable}
 
 \subsection{Soluzioni implementate}
 \subsubsection{Gestione delle richieste all'API}
-Il primo passo per utilizzare dei dati reali all'interno della tabella pivot è stato quello di realizzare una funzione per effettuare richieste HTTP alla API di Gruppo4. Per farlo ho utilizzato l'implementazione in Kotlin di \verb|window.fetch|. La funzione risultante è la seguente:
-\begin{lstlisting}[caption={Funzione fetch()}, label={lst:bodycells}, language=Kotlin]
+Il primo passo per utilizzare dei dati reali all'interno della tabella pivot è stato quello di realizzare una funzione per effettuare richieste HTTP alla \emph{API} di Gruppo4. Per farlo ho utilizzato l'implementazione in Kotlin di \verb|window.fetch|. La funzione risultante è la seguente:
+\begin{lstlisting}[caption={Funzione fetch()}, label={lst:fetch}, language=Kotlin]
 suspend fun fetch() {
   val res = window.fetch(url, RequestInit(
     method = "GET",
@@ -327,13 +326,13 @@ suspend fun fetch() {
 \end{lstlisting}
 
 \noindent
-La seguente funzione effettua una richiesta HTTP GET alla API di Gruppo4 la quale ritorna il JSON risultante e una chiave necessaria per effettuare le chiamate successive per la corretta tabella pivot. Quando un utente esegue un'azione all'interno della tabella questa deve essere comunicata all'API. Per ottenere questa funzionalità ho utilizzato la seguente funzione \verb|sendAction()| che in modo similare alla precedente esegue una richiesta HTTP POST all'API della tabella di un JSON che contiene le seguenti informazioni:
+La seguente funzione effettua una richiesta HTTP GET alla \emph{API} di Gruppo4 la quale ritorna il json risultante e una chiave necessaria per effettuare le chiamate successive per la corretta tabella pivot. Quando un utente esegue un'azione all'interno della tabella questa deve essere comunicata all'API. Per ottenere questa funzionalità ho utilizzato la seguente funzione \verb|sendAction()| che in modo similare alla precedente esegue una richiesta HTTP POST all'\emph{API} della tabella di un json che contiene le seguenti informazioni:
 \begin{itemize}
 	\item \verb|axis|: può essere "R" o "C" (righe o colonne);
 	\item \verb|path|: array identificativo della cella su cui è stata effettuata l'azione.
 \end{itemize}
 L'implementazione di \verb|sendAction()| è la seguente: 
-\begin{lstlisting}[caption={Funzione sendAction()}, label={lst:bodycells}, language=Kotlin]
+\begin{lstlisting}[caption={Funzione sendAction()}, label={lst:sendaction}, language=Kotlin]
 suspend fun sendAction(body: String, type: String) {
     val res: Any? = window.fetch("$url$INSTANCE_KEY/$type", RequestInit(
       method = "POST",
@@ -350,8 +349,8 @@ suspend fun sendAction(body: String, type: String) {
 \end{lstlisting}
 
 \subsubsection{Entità @Serializable}
-Le entità \verb|@Serializable| sono state scritte per ogni oggetto JSON all'interno del JSON in arrivo dall'API. Per non dilungare questa sezione con codice molto simile mostrerò solo la struttura di una entità:
-\begin{lstlisting}[caption={data class Gruppo4Action}, label={lst:bodycells}, language=Kotlin]
+Le entità \verb|@Serializable| sono state scritte per ogni oggetto json all'interno del json in arrivo dall'\emph{API}. Per non dilungare questa sezione con codice molto simile mostrerò solo la struttura di una entità:
+\begin{lstlisting}[caption={data class Gruppo4Action}, label={lst:gruppo4action}, language=Kotlin]
 @Serializable
 data class Gruppo4Action(
   @SerialName("Action")
@@ -367,13 +366,13 @@ data class Gruppo4Action(
 \subsubsection{Funzioni adapter}
 Di seguito indico le funzioni principali per eseguire la conversione tra le entità \verb|@Serializable| e le entità dello stato. Dalle seguenti funzioni si può vedere l'utilizzo delle \emph{higher order functions} per semplificare il più possibile il codice.
 
-\begin{lstlisting}[caption={Funzione convertListOfGruppo4Node()}, label={lst:bodycells}, language=Kotlin]
+\begin{lstlisting}[caption={Funzione convertListOfGruppo4Node()}, label={lst:gruppo4node}, language=Kotlin]
 fun convertListOfGruppo4Node(list: ArrayList<Gruppo4Node>?): ArrayList<DimensionsNode>? {
 	return list?.map { it.toDimensionsNode() }?.toCollection(ArrayList())
 }
 \end{lstlisting}
 
-\begin{lstlisting}[caption={Funzione convertListOfGruppo4Actions()}, label={lst:bodycells}, language=Kotlin]
+\begin{lstlisting}[caption={Funzione convertListOfGruppo4Actions()}, label={lst:convertlistofgruppo4actions}, language=Kotlin]
 fun convertListOfGruppo4Actions(list: ArrayList<Gruppo4Action>, limit: Int): ArrayList<ArrayList<HeaderAction>> {
 	val res: ArrayList<ArrayList<HeaderAction>> = ArrayList()
 	var index = 0
@@ -392,7 +391,7 @@ fun convertListOfGruppo4Actions(list: ArrayList<Gruppo4Action>, limit: Int): Arr
 }
 \end{lstlisting}
 
-\begin{lstlisting}[caption={Funzione convertCells()}, label={lst:bodycells}, language=Kotlin]
+\begin{lstlisting}[caption={Funzione convertCells()}, label={lst:convertcells}, language=Kotlin]
 fun convertCells(list: Array<Array<Double>>, rowsPaths: Array<Array<String>>? , colsPaths: Array<Array<String>>?): ArrayList<ArrayList<BodyCells>>? {
 	val tmp: ArrayList<ArrayList<BodyCells>> = ArrayList()
 	var cellTmp: ArrayList<BodyCells> = ArrayList()
@@ -417,7 +416,7 @@ fun convertCells(list: Array<Array<Double>>, rowsPaths: Array<Array<String>>? , 
 }
 \end{lstlisting}
 
-\begin{lstlisting}[caption={Funzione convertTree()}, label={lst:bodycells}, language=Kotlin]
+\begin{lstlisting}[caption={Funzione convertTree()}, label={lst:converttree}, language=Kotlin]
 fun convertTree(node: DimensionsNode?, level: Int, currentPath: List<String>, depth: Int): List<DimensionsNode?> =
 if (node == null) {
 	listOf()
@@ -451,7 +450,7 @@ if (node == null) {
 }
 \end{lstlisting}
 
-\begin{lstlisting}[caption={Funzione parseJSON()}, label={lst:bodycells}, language=Kotlin]
+\begin{lstlisting}[caption={Funzione parseJSON()}, label={lst:parsejson}, language=Kotlin]
 fun parseJSON(res: String): TableState {
   val obj = Json.decodeFromString<Gruppo4Json>(res)
 
@@ -484,14 +483,11 @@ fun parseJSON(res: String): TableState {
 \end{lstlisting}
 
 \subsection{Sprint Review}
-Niente da segnalare.
+La realizzazione dell'adapter è stata rallentata da cambiamenti della struttura dell'API da parte dell'azienda. In particolare il cambiamento di alcuni oggetti JSON che hanno implicato un'ampliamento delle entità \verb|@Serializable|. Inoltre la struttura ad albero che contiene le dimensioni d'analisi della tabella è stata modifica estensivamente. La nuova struttura identifica per ogni nodo due tipologie di figli: i nodi graficamente sotto di esso e i nodi graficamente laterali ad esso. Questi cambiamenti hanno implicato una riscrittura delle funzioni dell'adapter per ovviare a questo cambiamento. \\
+La realizzazione dell'adapter ha quindi occupato parte della settimana riservata al quarto sprint.
 
 \subsection{Backlog refinement}
 Il Product Backlog non è stato modificato.
-
-\subsection{Problemi riscontrati}
-La realizzazione dell'adapter è stata rallentata da cambiamenti della struttura dell'API da parte dell'azienda. In particolare il cambiamento di alcuni oggetti JSON che hanno implicato un'ampliamento delle entità \verb|@Serializable|. Inoltre la struttura ad albero che contiene le dimensioni d'analisi della tabella è stata modifica estensivamente. La nuova struttura identifica per ogni nodo due tipologie di figli: i nodi graficamente sotto di esso e i nodi graficamente laterali ad esso. Questi cambiamenti hanno implicato una riscrittura delle funzioni dell'adapter per ovviare a questo cambiamento. \\
-La realizzazione dell'adapter ha quindi occupato parte della settimana riservata al quarto sprint.
 
 \newpage
 
@@ -508,15 +504,17 @@ Nell'ultimo sprint finale sono state realizzate le funzioni che riguardano il ca
 		|>{}p{15mm}|
 		>{}p{0mm}}
 	\hline
+	\textbf{Id} & \textbf{Descrizione} & \textbf{Tipo} \\ \hline
 	R5.0 & \textbf{Sviluppo caricamento parziale}  & O  \\ \hline
 	R5.1   & Sviluppo componente infinteScroller &      \\ \hline
 	R5.2   & Sviluppo funzioni per aggiornare struttura ad albero & O     \\ \hline
+\caption{Sprint backlog - 4}
 \end{longtable}
 
 \subsection{Soluzioni implementate}
 Il seguente componente utilizza funzioni della programmazione funzionale fornite da React come: \verb|useState| e \verb|useEffect| per controllare quando l'utente ha raggiunto la fine della tabella in modo da effettuare una successiva chiamata all'API.
 
-\begin{lstlisting}[caption={Funzione parseJSON()}, label={lst:bodycells}, language=Kotlin]
+\begin{lstlisting}[caption={Componente infiniteScroller}, label={lst:infinitescroller}, language=Kotlin]
 val infiniteScroller = functionalComponent<InfiniteScrollerProps> { props ->
 	val (isFetchingVertical, setIsFetchingVertical) = useState(false)
 	val (isFetchingHorizontal, setIsFetchingHorizontal) = useState(false)
@@ -552,7 +550,7 @@ val infiniteScroller = functionalComponent<InfiniteScrollerProps> { props ->
 \end{lstlisting}
 
 Per quanto riguarda il caricamento parziale all'apertura o chiusura di un nodo di una dimensione ho realizzato le seguenti funzioni:
-\begin{lstlisting}[caption={Funzione parseJSON()}, label={lst:bodycells}, language=Kotlin]
+\begin{lstlisting}[caption={Funzioni update struttura albero}, label={lst:updateTree}, language=Kotlin]
 fun updateNode(tree: ArrayList<DimensionsNode>, node: DimensionsNode): ArrayList<DimensionsNode> {
 	if (tree.size > 1) {
 		tree.map {
@@ -591,10 +589,7 @@ fun findNode(current: DimensionsNode, node: DimensionsNode) {
 }
 \end{lstlisting}
 \subsection{Sprint Review}
-Niente da segnalare.
+Nell'ultimo sprint sono stati riscontrati dei problemi per quanto riguarda la realizzazione del caricamento parziale durante lo scroll di un utente. Il componente che si occuperà di realizzare la chiamata all'\emph{API} è stato implementato, tuttavia l'\emph{API} di Gruppo4 non presenta ancora le informazioni necessarie per implementare questa funzionalità; l'azienda mi ha informato che queste modifiche potranno essere implementate solo dopo la fine del tirocinio curriculare. Le funzione e il componente richiesto dall'azienda è stato comunque implementato.
 
 \subsection{Backlog refinement}
 Il Product Backlog non è stato modificato.
-
-\subsection{Problemi riscontrati}
-Nell'ultimo sprint sono stati riscontrati dei problemi per quanto riguarda la realizzazione del caricamento parziale durante lo scroll di un utente. Il componente che si occuperà di realizzare la chiamata all'API è stato implementato, tuttavia l'API di Gruppo4 non presenta ancora le informazioni necessarie per implementare questa funzionalità; l'azienda mi ha informato che queste modifiche potranno essere implementate solo dopo la fine del tirocinio curriculare. Le funzione e il componente richiesto dall'azienda è stato comunque implementato.

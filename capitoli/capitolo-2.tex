@@ -59,14 +59,14 @@ Il secondo invece riguarda le \gls{hofg} fornite da Kotlin; sono funzioni molto 
 Git è un \gls{vcsg} distribuito che permette di tenere traccia delle modifiche in un prodotto software e di organizzarne la codifica. 
 
 \subsubsection*{Feature-branch}
-In questo tirocinio è stata usata la tecnica del \emph{feature-branch}: ogni aggiunta di una funzionalità corrisponde all'apertura di un nuovo branch che deve essere poi approvato, previa verifica, prima di essere unito al branch \verb|master| mediante una \emph{pull request}.
+In questo tirocinio è stata usata la tecnica del \emph{feature-branch}: ogni aggiunta di una funzionalità corrisponde all'apertura di un nuovo \gls{branchg} che deve essere poi approvato, previa verifica, prima di essere unito al \emph{branch} \verb|master| mediante una \gls{pullreqg}.
 
 \subsection{Gitlab}
-Gitlab è uno strumento web che permette di implementare un DevOps lifecycle. In particolare fornisce un'interfaccia per gestire una repository git, un \gls{itsg} e altri strumenti quali la \emph{Continuous integration} e \emph{Continuous deployement}. Per lo sviluppo di questo progetto mi è stato fornito l'accesso al server privato aziendale Gitlab.
+Gitlab è uno strumento web che permette di implementare un DevOps lifecycle. In particolare fornisce un'interfaccia per gestire una repository git, un \gls{itsg} e altri strumenti quali la \gls{ci_g} e \gls{cd_g}. Per lo sviluppo di questo progetto mi è stato fornito l'accesso al server privato aziendale Gitlab.
 
 \section{Ambiente di sviluppo locale}
 \subsection{IntelliJ Idea}
-IntelliJ IDEA Community Edition è una \gls{ideg} realizzata da JetBrains che fornisce funzionalità di supporto per lo sviluppo di molti linguaggi, specialmente Kotlin. Questa \emph{IDE} è stata vivamente consigliata dal mio tutor aziendale per lo sviluppo in Kotlin rispetto ad altri editor per molti vantaggi come l'autocompletamento, la possibilità di eseguire un refactoring automatico di funzioni e classi e un'interfaccia grafica per eseguire task di Gradle.
+IntelliJ IDEA Community Edition è una \gls{ideg} realizzata da JetBrains che fornisce funzionalità di supporto per lo sviluppo di molti linguaggi, tra cui Kotlin. Questa \emph{IDE} è stata consigliata dal mio tutor aziendale per lo sviluppo in Kotlin rispetto ad altri editor per molti vantaggi come l'autocompletamento, la possibilità di eseguire un \gls{refactoring_g} automatico di funzioni e classi e un'interfaccia grafica per eseguire task di Gradle.
  
 \subsection{Gradle}
 Gradle è uno strumento di \gls{buildautomationg} per molti linguaggi tra cui Kotlin e Java. Gradle è stato usato per la gestione e l'installazione delle dipendenze del componente, il file di configurazione di Gradle è \verb|build.gradle.kts|, al suo interno sono definite le seguenti dipendenze:
@@ -81,9 +81,9 @@ Gradle è uno strumento di \gls{buildautomationg} per molti linguaggi tra cui Ko
 	
 	\item \verb|kotlin-react-redux|: implementazione di kotlin della libreria React, Redux;
 	
-	\item \verb|kotlin-extensions|: libreria che fornisce dei \emph{wrapper} per oggetti JavaScript e alcune funzione \emph{helper} per \verb|kotlin-react|;
+	\item \verb|kotlin-extensions|: libreria che fornisce dei \gls{wrapper_g} per oggetti JavaScript e alcune funzione \emph{helper} per \verb|kotlin-react|;
 	
-	\item \verb|kotlinx-serialization-core|: libreria utilizzata per ottenere funzioni di parse per Json;
+	\item \verb|kotlinx-serialization-core|: libreria utilizzata per ottenere funzioni di parse per json;
 	
 	\item \verb|test-js|: libreria di test per Kotlin/Js;
 	
